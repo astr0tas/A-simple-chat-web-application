@@ -1,0 +1,67 @@
+.mytaskArea {
+    display: flex;
+    flex-direction: column;
+    padding-left: 250px;
+    padding-bottom: 20px;
+}
+
+.mytaskArea h1 {
+    text-align: center;
+}
+
+.mytaskArea table button {
+    padding: 5px;
+    margin: 15px;
+    background-color: antiquewhite;
+}
+
+.mytaskArea button:active {
+    padding: 5px;
+    margin: 15px;
+    background-color: bisque;
+}
+
+.mytaskArea button {
+    padding: 5px;
+    margin: 15px;
+    background-color: antiquewhite;
+    width: 125px;
+}
+
+.mytaskArea view {
+    align-self: center;
+}
+
+.mytaskArea table,
+tr {
+    text-align: center;
+    border-bottom: 1px solid;
+    border-color: black;
+}
+
+.mytaskArea th,
+tr,
+td {
+    margin: 20px;
+    padding: 10px;
+}
+
+.mytaskArea table {
+    width: 50%;
+    height: 100%;
+    align-self: center;
+}
+
+.mytaskArea #TaskArea .checkBox {
+    position: alternative;
+    height: 53px;
+    width: 40px;
+    background-color: #eee;
+}
+
+.mytaskArea #TaskArea .areas {
+    padding: 2px;
+    margin: 5px;
+    background-color: antiquewhite;
+    width: 60px;
+}

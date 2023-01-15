@@ -1,0 +1,68 @@
+.myMCPList {
+    display: flex;
+    flex-direction: column;
+    padding-left: 250px;
+    padding-bottom: 20px;
+}
+
+.myMCPList h1 {
+    text-align: center;
+}
+
+.myMCPList table button {
+    padding: 5px;
+    margin: 15px;
+    background-color: antiquewhite;
+}
+
+.myMCPList button:active {
+    padding: 5px;
+    margin: 15px;
+    background-color: bisque;
+}
+
+.myMCPList button {
+    padding: 5px;
+    margin: 15px;
+    background-color: antiquewhite;
+    width: 200px;
+}
+
+.myMCPList view {
+    align-self: center;
+}
+
+.myMCPList .MCPDel {
+    padding: 5px;
+    margin: 15px;
+    background-color: red;
+    color: antiquewhite;
+}
+
+
+.myMCPList .MCPDel:active {
+    padding: 5px;
+    margin: 15px;
+    background-color: rgb(213, 75, 103);
+    color: antiquewhite;
+}
+
+.myMCPList table,
+tr {
+    text-align: center;
+    border-bottom: 1px solid;
+    border-color: black;
+}
+
+.myMCPList th,
+tr,
+td {
+    margin: 20px;
+    padding: 10px;
+}
+
+.myMCPList table {
+    width: 90%;
+    height: 100%;
+    align-self: center;
+}

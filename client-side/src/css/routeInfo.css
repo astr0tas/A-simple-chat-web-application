@@ -1,0 +1,55 @@
+.RouteID {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.RouteID .Properties {
+    border-bottom: 1px solid;
+    border-color: black;
+}
+
+.RouteID .Properties h2 {
+    display: inline;
+}
+
+.RouteID .Properties .Props {
+    font-weight: normal;
+    font-size: 150%;
+}
+
+.RouteID button {
+    margin: 1rem;
+    background-color: antiquewhite;
+    padding: 10px;
+    width: 200px;
+}
+
+.RouteID button:active {
+    margin: 1rem;
+    background-color: bisque;
+    padding: 10px;
+    width: 200px;
+}
+
+.RouteID .Properties a {
+    display: inline;
+    font-weight: normal;
+    font-size: 150%;
+    text-decoration: none;
+    color:blue;
+}
+
+.RouteID .Properties #printWorkerList {
+    display: inline;
+    font-weight: normal;
+    text-decoration: none;
+    color: blue;
+}
+
+.RouteID .Properties #printMCPList {
+    display: inline;
+    font-weight: normal;
+    text-decoration: none;
+    color: blue;
+}

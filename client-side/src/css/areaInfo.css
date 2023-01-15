@@ -1,0 +1,55 @@
+.AreaID {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.AreaID .Properties {
+    border-bottom: 1px solid;
+    border-color: black;
+}
+
+.AreaID .Properties h2 {
+    display: inline;
+}
+
+.AreaID .Properties .Props {
+    font-weight: normal;
+    font-size: 150%;
+}
+
+.AreaID button {
+    margin: 1rem;
+    background-color: antiquewhite;
+    padding: 10px;
+    width: 200px;
+}
+
+.AreaID button:active {
+    margin: 1rem;
+    background-color: bisque;
+    padding: 10px;
+    width: 200px;
+}
+
+.AreaID .Properties a {
+    display: inline;
+    font-weight: normal;
+    font-size: 150%;
+    text-decoration: none;
+    color: blue;
+}
+
+.AreaID .Properties #printWorkerList {
+    display: inline;
+    font-weight: normal;
+    text-decoration: none;
+    color: blue;
+}
+
+.AreaID .Properties #printMCPList {
+    display: inline;
+    font-weight: normal;
+    text-decoration: none;
+    color: blue;
+}

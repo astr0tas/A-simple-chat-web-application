@@ -1,0 +1,60 @@
+.vehicleID {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+}
+
+.vehicleID img {
+      height: 300px;
+      width: 600px;
+}
+
+.vehicleID button {
+      margin: 1rem;
+      background-color: antiquewhite;
+      padding: 10px;
+      width: 200px;
+}
+
+.vehicleID button:active {
+      margin: 1rem;
+      background-color: bisque;
+      padding: 10px;
+      width: 200px;
+}
+
+.vehicleID .Properties {
+      border-bottom: 1px solid;
+      border-color: black;
+}
+
+.vehicleID .Properties h2 {
+      display: inline;
+}
+
+.vehicleID .Properties .Props {
+      font-weight: normal;
+      font-size: 150%;
+}
+
+.vehicleID .Properties button {
+      margin: 1rem;
+      background-color: antiquewhite;
+      padding: 3px;
+      width: 80px;
+}
+
+.vehicleID .Properties button:active {
+      margin: 1rem;
+      background-color: bisque;
+      padding: 3px;
+      width: 80px;
+}
+
+.vehicleID .Properties a {
+      display: inline;
+      font-weight: normal;
+      font-size: 150%;
+      text-decoration: none;
+      color:blue;
+}

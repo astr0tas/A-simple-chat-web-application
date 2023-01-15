@@ -1,0 +1,44 @@
+.workerInfo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+}
+
+.workerInfo button {
+      margin: 1rem;
+      background-color: antiquewhite;
+      padding: 10px;
+      width: 200px;
+}
+
+.workerInfo button:active {
+      margin: 1rem;
+      background-color: bisque;
+      padding: 10px;
+      width: 200px;
+}
+
+.workerInfo img {
+      height: 300px;
+      width: 300px;
+}
+
+.workerInfo .Properties {
+      border-bottom: 1px solid;
+      border-color: black;
+}
+
+.workerInfo .Properties h2 {
+      display: inline;
+}
+
+.workerInfo .Properties .Props {
+      font-weight: normal;
+      font-size: 150%;
+}
+
+.workerInfo .buttons {
+      display: inline-block;
+      align-self: center;
+      text-align: center;
+}

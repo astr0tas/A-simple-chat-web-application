@@ -1,0 +1,68 @@
+.mytaskRoute {
+    display: flex;
+    flex-direction: column;
+    padding-left: 250px;
+    padding-bottom: 20px;
+}
+
+.mytaskRoute h1 {
+    text-align: center;
+}
+
+.mytaskRoute table button {
+    padding: 5px;
+    margin: 15px;
+    background-color: antiquewhite;
+}
+
+.mytaskRoute button:active {
+    padding: 5px;
+    margin: 15px;
+    background-color: bisque;
+}
+
+.mytaskRoute button {
+    padding: 5px;
+    margin: 15px;
+    background-color: antiquewhite;
+    width: 125px;
+}
+
+.mytaskRoute view {
+    align-self: center;
+}
+
+.mytaskRoute table,
+tr {
+    text-align: center;
+    border-bottom: 1px solid;
+    border-color: black;
+}
+
+.mytaskRoute th,
+tr,
+td {
+    margin: 20px;
+    padding: 10px;
+}
+
+.mytaskRoute table {
+    width: 50%;
+    height: 100%;
+    align-self: center;
+}
+
+.mytaskRoute #TaskRoute .vehicle,
+.mytaskRoute #TaskRoute .route {
+    padding: 2px;
+    margin: 5px;
+    background-color: antiquewhite;
+    width: 60px;
+}
+
+.mytaskRoute #TaskRoute .checkBox {
+    position: alternative;
+    height: 53px;
+    width: 40px;
+    background-color: #eee;
+}

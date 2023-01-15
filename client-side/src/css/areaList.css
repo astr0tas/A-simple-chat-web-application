@@ -1,0 +1,68 @@
+.myAreaList {
+    display: flex;
+    flex-direction: column;
+    padding-left: 250px;
+    padding-bottom: 20px;
+}
+
+.myAreaList h1 {
+    text-align: center;
+}
+
+.myAreaList table button {
+    padding: 5px;
+    margin: 15px;
+    background-color: antiquewhite;
+}
+
+.myAreaList button:active {
+    padding: 5px;
+    margin: 15px;
+    background-color: bisque;
+}
+
+.myAreaList button {
+    padding: 5px;
+    margin: 15px;
+    background-color: antiquewhite;
+    width: 200px;
+}
+
+.myAreaList view {
+    align-self: center;
+}
+
+.myAreaList .areaDel {
+    padding: 5px;
+    margin: 15px;
+    background-color: red;
+    color: antiquewhite;
+}
+
+
+.myAreaList .areaDel:active {
+    padding: 5px;
+    margin: 15px;
+    background-color: rgb(213, 75, 103);
+    color: antiquewhite;
+}
+
+.myAreaList table,
+tr {
+    text-align: center;
+    border-bottom: 1px solid;
+    border-color: black;
+}
+
+.myAreaList th,
+tr,
+td {
+    margin: 20px;
+    padding: 10px;
+}
+
+.myAreaList table {
+    width: 50%;
+    height: 100%;
+    align-self: center;
+}

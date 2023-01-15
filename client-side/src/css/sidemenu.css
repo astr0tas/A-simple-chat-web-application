@@ -1,0 +1,57 @@
+.menu {
+    background-color: rgba(111, 219, 255, 0.4);
+    color: azure;
+    width: 250px;
+    height: 100vh;
+    padding-top: 10px;
+    left: 0;
+    align-self: flex-start;
+    align-items: baseline;
+    align-content: flex-start;
+    justify-self: start;
+    justify-content: flex-start;
+    font-size: large;
+    text-align: center;
+    display: inline-flexbox;
+    position: fixed;
+}
+
+
+.menu h1 {
+    border-bottom: 10px;
+    border-color: blanchedalmond;
+    color: blue;
+}
+
+.menu a {
+    color: rgb(0, 0, 0);
+    display: block;
+    padding: 20px;
+    font-size: larger;
+    text-decoration: none;
+}
+
+.menu a:hover {
+    color: rgb(74, 147, 255);
+    display: block;
+    padding: 20px;
+    font-size: larger;
+}
+
+.menu button {
+    color: aliceblue;
+    background-color: red;
+    padding: 10px;
+    width: 200px;
+    align-self: center;
+    margin-top: 56vh;
+}
+
+.menu button:active {
+    color: aliceblue;
+    background-color: crimson;
+    padding: 10px;
+    width: 200px;
+    align-self: center;
+    margin-top: 56vh;
+}
