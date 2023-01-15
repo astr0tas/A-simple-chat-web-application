@@ -8,8 +8,7 @@ import { MyMenu } from './pages/sidemenu.jsx';
 import { Message } from './pages/message.jsx';
 import { VehicleList } from './pages/vehicleList.jsx';
 import { VehicleInfo } from './pages/vehicleInfo.jsx';
-import { CollectorList } from './pages/collectorList.jsx';
-import { JanitorList } from './pages/janitorList.jsx';
+import { WorkerList } from './pages/workerList.jsx';
 import { WorkerInfo } from './pages/workerInfo.jsx';
 import { WorkerSchedule } from './pages/workerSchedule.jsx';
 import { RouteList } from './pages/routeList.jsx';
@@ -28,25 +27,24 @@ function App()
                   <BrowserRouter>
                         <Routes>
                               <Route index element={ <Login /> } />
-                              <Route path="sideMenu" element={ <MyMenu /> }>
+                              <Route element={ <MyMenu /> }>
                                     <Route path="mcpList" element={ <MCPList /> } />
-                                    <Route path="mcpList/:MCPxx" element={ <MCPInfo /> } />
+                                    <Route path="mcpList/:mcpID" element={ <MCPInfo /> } />
                                     <Route path="message" element={ <Message /> } />
                                     <Route path="inDev" element={ <Sorry /> } />
                                     <Route path="vehicleList" element={ <VehicleList /> } />
-                                    <Route path="vehicleList/:vehiclexx" element={ <VehicleInfo /> } />
-                                    <Route path="workerList/collectorList" element={ <CollectorList /> } />
-                                    <Route path="workerList/janitorList" element={ <JanitorList /> } />
+                                    <Route path="vehicleList/:vehicleID" element={ <VehicleInfo /> } />
+                                    <Route path="workerList" element={ <WorkerList /> } />
                                     <Route path="workerList/:workerID" element={ <WorkerInfo /> } />
                                     <Route path="workerList/:workerID/schedule" element={ <WorkerSchedule /> } />
                                     <Route path="routeList" element={ <RouteList /> } />
-                                    <Route path="routeList/:Rxx" element={ <RouteInfo /> } />
+                                    <Route path="routeList/:routeID" element={ <RouteInfo /> } />
                                     <Route path="areaList" element={ <AreaList /> } />
-                                    <Route path="areaList/:Axx" element={ <AreaInfo /> } />
+                                    <Route path="areaList/:areaID" element={ <AreaInfo /> } />
                                     <Route path="workerList/janitorList/:janitorID/taskScheduleJanitor" element={ <TaskScheduleJanitor /> } />
                                     <Route path="workerList/janitorList/:janitorID/taskScheduleJanitor/taskArea" element={ <TaskArea /> } />
                                     <Route path="workerList/collectorList/:collectorID/taskScheduleCollector" element={ <TaskScheduleCollector /> } />
-                                    <Route path="workerList/collectorList/:collectorID/taskScheduleCollector/taskRoute" element={ <TaskRoute /> } />                               
+                                    <Route path="workerList/collectorList/:collectorID/taskScheduleCollector/taskRoute" element={ <TaskRoute /> } />
                               </Route>
                         </Routes>
                   </BrowserRouter>

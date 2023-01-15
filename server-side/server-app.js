@@ -3,7 +3,7 @@ var mysql = require('mysql');
 var con = mysql.createConnection({
       host: "localhost",
       user: "root",
-      password: "Nghia0785237606",
+      password: "",
       database: "uwc"
 });
 
@@ -21,9 +21,9 @@ const PORT = 4000;
 
 app.use(cors());
 
-app.get('/mcpList', (req, res) =>
+app.get('/login', (req, res) =>
 {
-      con.query("select mcpID,address,maximumCap,currentCap from mcp;", function (err, result, fields)
+      con.query("select * from accounts;", function (err, result, fields)
       {
             if (err) throw err;
             res.status(200);
@@ -31,20 +31,29 @@ app.get('/mcpList', (req, res) =>
       });
 });
 
-// app.get('/mcpList/detail', (req, res) =>
-// {
-//       const id;
-//       con.query("select * from mcp;", function (err, result, fields)
-//       {
-//             if (err) throw err;
-//             res.status(200);
-//             res.json(result);
-//       });
-// });
+app.get('/mcpList', (req, res) =>
+{
+      con.query("select mcpID,address,maximumCap,currentCap from mcp order by mcpID;", function (err, result, fields)
+      {
+            if (err) throw err;
+            res.status(200);
+            res.json(result);
+      });
+});
+
+app.get('/mcpList/detail', (req, res) =>
+{
+      con.query("select * from mcp where mcpID=\'" + req.query.ID + "\';", function (err, result, fields)
+      {
+            if (err) throw err;
+            res.status(200);
+            res.json(result);
+      });
+});
 
 app.get('/vehicleList', (req, res) =>
 {
-      con.query("select vehicleID,status from vehicle;", function (err, result, fields)
+      con.query("select vehicleID,status from vehicle order by vehicleID;", function (err, result, fields)
       {
             if (err) throw err;
             res.status(200);
@@ -52,20 +61,19 @@ app.get('/vehicleList', (req, res) =>
       });
 });
 
-// app.get('/vehicleList/detail', (req, res) =>
-// {
-//       const id;
-//       con.query("select vehicleID,status from vehicle;", function (err, result, fields)
-//       {
-//             if (err) throw err;
-//             res.status(200);
-//             res.json(result);
-//       });
-// });
+app.get('/vehicleList/detail', (req, res) =>
+{
+      con.query("select * from vehicle where vehicleID=\'" + req.query.ID + "\';", function (err, result, fields)
+      {
+            if (err) throw err;
+            res.status(200);
+            res.json(result);
+      });
+});
 
 app.get('/routeList', (req, res) =>
 {
-      con.query("select * from route;", function (err, result, fields)
+      con.query("select * from route order by routeID;", function (err, result, fields)
       {
             if (err) throw err;
             res.status(200);
@@ -86,7 +94,7 @@ app.get('/routeList', (req, res) =>
 
 app.get('/areaList', (req, res) =>
 {
-      con.query("select * from area;", function (err, result, fields)
+      con.query("select * from area order by areaID;", function (err, result, fields)
       {
             if (err) throw err;
             res.status(200);
@@ -105,27 +113,25 @@ app.get('/areaList', (req, res) =>
 //       });
 // });
 
-// app.get('/workerList', (req, res) =>
-// {
-//       const type;
-//       con.query("select * from where left(employeeID,1)={type};", function (err, result, fields)
-//       {
-//             if (err) throw err;
-//             res.status(200);
-//             res.json(result);
-//       });
-// });
+app.get('/workerList', (req, res) =>
+{
+      con.query("select name,employeeID from employee where left(employeeID,1)=\'" + req.query.type + "\' order by employeeID;", function (err, result, fields)
+      {
+            if (err) throw err;
+            res.status(200);
+            res.json(result);
+      });
+});
 
-// app.get('/workerList/detail', (req, res) =>
-// {
-//       const id;
-//       con.query("select * from employee;", function (err, result, fields)
-//       {
-//             if (err) throw err;
-//             res.status(200);
-//             res.json(result);
-//       });
-// });
+app.get('/workerList/detail', (req, res) =>
+{
+      con.query("select * from employee where employeeID=\'" + req.query.ID + "\';", function (err, result, fields)
+      {
+            if (err) throw err;
+            res.status(200);
+            res.json(result);
+      });
+});
 
 app.listen(PORT, (error) =>
 {

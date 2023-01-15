@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../css/areaList.css';
-import areaList from '../data/area.js';
 
-export const AreaList = () => {
+export const AreaList = () =>
+{
     const effectRan = useRef(false);
 
     useEffect(() =>
@@ -12,30 +13,36 @@ export const AreaList = () => {
         {
             let setColor = document.getElementsByClassName('AreaManage');
             setColor[0].style.color = "blue";
-        
-            for (let key in areaList){
-                document.getElementById("AreaList").innerHTML += "<tr>"
-                    + "<td>" + areaList[key].ma + "</td>"
-                    + "<td>"
-                    + "<button class = 'areas' id =" + areaList[key].ma + "> Chi tiết </button>"
-                    + "<button class='areaDel'>Xóa</button>"
-                    + "</td>"
-                    + "<tr/>";
-            }
-            let obj = document.getElementsByClassName('areaDel');
-            for (let i = 0; i < obj.length; i++)
-                obj[i].addEventListener('click', handleClickNotDev);
 
-            obj = document.getElementsByClassName('areas');
-            for (let i = 0; i < obj.length; i++)
-                obj[i].addEventListener('click', handleClickInfo);
+            axios.get('http://localhost:4000/areaList')
+                .then(res =>
+                {
+                    for (let i in res.data)
+                    {
+                        document.getElementById("AreaList").innerHTML += "<tr>"
+                            + "<td>" + res.data[i].areaID + "</td>"
+                            + "<td>"
+                            + "<button class = 'areas' id =" + res.data[i].areaID + "> Chi tiết </button>"
+                            + "<button class='areaDel'>Xóa</button>"
+                            + "</td>"
+                            + "<tr/>";
+                    }
+                    let obj = document.getElementsByClassName('areaDel');
+                    for (let i = 0; i < obj.length; i++)
+                        obj[i].addEventListener('click', handleClickNotDev);
+                    obj = document.getElementsByClassName('areas');
+                    for (let i = 0; i < obj.length; i++)
+                        obj[i].addEventListener('click', handleClickInfo);
+                })
+                .catch(error => console.log(error));
+
             effectRan.current = true;
         }
-        
-    })
+
+    });
 
     const Navigate = useNavigate();
-    
+
     const handleClickNotDev = (event) =>
     {
         event.preventDefault();
@@ -47,25 +54,25 @@ export const AreaList = () => {
         event.preventDefault();
         Navigate("./" + event.currentTarget.id);
     }
-    
+
     return (
         <div className='myAreaList'>
             <h1 >Danh sách khu vực</h1>
-                <table>
-                    <thead>
-                        <tr>
-                            <th><h3>Mã khu vực</h3></th>
-                            <th><h3>Tác vụ</h3></th>
-                        </tr>
-                    </thead>
-                    <tbody id="AreaList">
-                    </tbody>
-                </table>
-                <br />
-                <br />
-                <view>
-                    <button onClick={ handleClickNotDev }>Thêm khu vực</button>
-                </view>
+            <table>
+                <thead>
+                    <tr>
+                        <th><h3>Mã khu vực</h3></th>
+                        <th><h3>Tác vụ</h3></th>
+                    </tr>
+                </thead>
+                <tbody id="AreaList">
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <view>
+                <button onClick={ handleClickNotDev }>Thêm khu vực</button>
+            </view>
         </div>
     );
 }

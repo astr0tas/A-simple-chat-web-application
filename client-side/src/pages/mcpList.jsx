@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../css/mcpList.css';
-import mcpList from '../data/mcps.js';
 
 export const MCPList = () =>
 {
@@ -14,24 +14,30 @@ export const MCPList = () =>
                   let setColor = document.getElementsByClassName('MCPManage');
                   setColor[0].style.color = "blue";
 
-                  for (let key in mcpList)
-                  {
-                        document.getElementById("MCPList").innerHTML += "<tr>"
-                              + "<td>" + mcpList[key].ma + "</td>"
-                              + "<td>" + mcpList[key].diaChi + "</td>"
-                              + "<td>" + Math.ceil(mcpList[key].sucChuaHienTai / mcpList[key].sucChuaToiDa * 100) + "%" + "</td>"
-                              + "<td>"
-                              + "<button class = 'MCPs' id =" + mcpList[key].ma + "> Chi tiết </button>"
-                              + "<button class='MCPDel'>Xóa</button>"
-                              + "</td>"
-                              + "<tr/>";
-                  }
-                  let obj = document.getElementsByClassName('MCPDel');
-                  for (let i = 0; i < obj.length; i++)
-                        obj[i].addEventListener('click', handleClickNotDev);
-                  obj = document.getElementsByClassName('MCPs');
-                  for (let i = 0; i < obj.length; i++)
-                        obj[i].addEventListener('click', handleClickInfo);
+                  axios.get('http://localhost:4000/mcpList')
+                        .then(res =>
+                        {
+                              for (let i in res.data)
+                              {
+                                    document.getElementById("MCPList").innerHTML += "<tr>"
+                                          + "<td>" + res.data[i].mcpID + "</td>"
+                                          + "<td>" + res.data[i].address + "</td>"
+                                          + "<td>" + Math.ceil(res.data[i].currentCap / res.data[i].maximumCap * 100) + "%" + "</td>"
+                                          + "<td>"
+                                          + "<button class = 'MCPs' id =" + res.data[i].mcpID + "> Chi tiết </button>"
+                                          + "<button class='MCPDel'>Xóa</button>"
+                                          + "</td>"
+                                          + "<tr/>";
+                              }
+                              let obj = document.getElementsByClassName('MCPDel');
+                              for (let i = 0; i < obj.length; i++)
+                                    obj[i].addEventListener('click', handleClickNotDev);
+                              obj = document.getElementsByClassName('MCPs');
+                              for (let i = 0; i < obj.length; i++)
+                                    obj[i].addEventListener('click', handleClickInfo);
+                        })
+                        .catch(error => console.log(error));
+
                   effectRan.current = true;
             }
       });
@@ -41,7 +47,7 @@ export const MCPList = () =>
       const handleClickNotDev = (event) =>
       {
             event.preventDefault();
-            Navigate("/sideMenu/inDev");
+            Navigate("/inDev");
       }
 
       const handleClickInfo = (event) =>
@@ -62,7 +68,7 @@ export const MCPList = () =>
                                     <th><h3>Thao tác</h3></th>
                               </tr>
                         </thead>
-                        <tbody id="MCPList"/>
+                        <tbody id="MCPList" />
                   </table>
                   <br />
                   <br />

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../css/vehicleList.css';
-import vehicleList from '../data/vehicle.js';
 
 
 export const VehicleList = () =>
@@ -15,23 +15,29 @@ export const VehicleList = () =>
                   let setColor = document.getElementsByClassName('VehicleManage');
                   setColor[0].style.color = "blue";
 
-                  for (let key in vehicleList)
-                  {
-                        document.getElementById("vehicleList").innerHTML += "<tr>"
-                              + "<td>" + vehicleList[key].ma + "</td>"
-                              + "<td>" + vehicleList[key].trangthai + "</td>"
-                              + "<td>"
-                              + "<button class = 'Vehicles' id =" + vehicleList[key].ma + "> Chi tiết </button>"
-                              + "<button class='VehicleDel'>Xóa</button>"
-                              + "</td>"
-                              + "<tr/>";
-                  }
-                  let obj = document.getElementsByClassName('VehicleDel');
-                  for (let i = 0; i < obj.length; i++)
-                        obj[i].addEventListener('click', handleClickNotDev);
-                  obj = document.getElementsByClassName('Vehicles');
-                  for (let i = 0; i < obj.length; i++)
-                        obj[i].addEventListener('click', handleClickInfo);
+                  axios.get('http://localhost:4000/vehicleList')
+                        .then(res =>
+                        {
+                              for (let i in res.data)
+                              {
+                                    document.getElementById("vehicleList").innerHTML += "<tr>"
+                                          + "<td>" + res.data[i].vehicleID + "</td>"
+                                          + "<td>" + res.data[i].status + "</td>"
+                                          + "<td>"
+                                          + "<button class = 'Vehicles' id =" + res.data[i].vehicleID + "> Chi tiết </button>"
+                                          + "<button class='VehicleDel'>Xóa</button>"
+                                          + "</td>"
+                                          + "<tr/>";
+                              }
+                              let obj = document.getElementsByClassName('VehicleDel');
+                              for (let i = 0; i < obj.length; i++)
+                                    obj[i].addEventListener('click', handleClickNotDev);
+                              obj = document.getElementsByClassName('Vehicles');
+                              for (let i = 0; i < obj.length; i++)
+                                    obj[i].addEventListener('click', handleClickInfo);
+                        })
+                        .catch(error => console.log(error));
+
                   effectRan.current = true;
             }
 
@@ -42,7 +48,7 @@ export const VehicleList = () =>
       const handleClickNotDev = (event) =>
       {
             event.preventDefault();
-            Navigate("/sideMenu/inDev");
+            Navigate("/inDev");
       }
 
       const handleClickInfo = (event) =>

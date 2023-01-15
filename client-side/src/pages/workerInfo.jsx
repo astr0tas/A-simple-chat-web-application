@@ -1,11 +1,24 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
-import { Collector, Janitor } from '../data/worker.js';
+import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
+import { formatDate } from '../data/formatDate.js';
 import '../css/workerInfo.css';
 
 export const WorkerInfo = () =>
 {
       const effectRan = useRef(false);
+
+      const currentRoute = useParams();
+      const workerID = currentRoute.workerID;
+
+      const [congViec, setCongViec] = useState();
+      const [gioiTinh, setGioiTinh] = useState();
+      const [hoTen, setHoTen] = useState();
+      const [diaChi, setDiaChi] = useState();
+      const [ngaySinh, setNgaySinh] = useState();
+      const [CCCD, setCCCD] = useState();
+      const [sdt, setSdt] = useState();
+      const [email, setEmail] = useState();
 
       useEffect(() =>
       {
@@ -13,51 +26,29 @@ export const WorkerInfo = () =>
             {
                   let setColor = document.getElementsByClassName('WorkerManage');
                   setColor[0].style.color = "blue";
+
+                  if (workerID[0] === 'J')
+                        setCongViec("Công nhân thu gom rác");
+                  else
+                        setCongViec("Công nhân chở rác");
+
+                  axios.get('http://localhost:4000/workerList/detail', { params: { ID: workerID } })
+                        .then(res =>
+                        {
+                              setGioiTinh(res.data[0].gender);
+                              setHoTen(res.data[0].name);
+                              setDiaChi(res.data[0].address);
+                              setNgaySinh(formatDate(new Date(Date.parse(res.data[0].dob))));
+                              setCCCD(res.data[0].ssn);
+                              setSdt(res.data[0].phoneNum);
+                              setEmail(res.data[0].email);
+                        })
+                        .catch(error => console.log(error));
+
                   effectRan.current = true;
             }
       });
 
-      const currentRoute = useParams();
-      const workerID = currentRoute.workerID;
-
-      let gioiTinh, congViec, hoTen, diaChi, ngaySinh, CCCD, sdt, email;
-
-      if (workerID[0] === 'J')
-      {
-            congViec = "Công nhân thu gom rác";
-            for (let key in Janitor)
-            {
-                  if (Janitor[key].ID === workerID)
-                  {
-                        gioiTinh = Janitor[key].gioitinh;
-                        hoTen = Janitor[key].ten;
-                        diaChi = Janitor[key].diachi;
-                        ngaySinh = Janitor[key].ngaysinh;
-                        CCCD = Janitor[key].CCCD;
-                        sdt = Janitor[key].sdt;
-                        email = Janitor[key].email;
-                        break;
-                  }
-            }
-      }
-      else
-      {
-            congViec = "Công nhân chở rác";
-            for (let key in Collector)
-            {
-                  if (Collector[key].ID === workerID)
-                  {
-                        gioiTinh = Collector[key].gioitinh;
-                        hoTen = Collector[key].ten;
-                        diaChi = Collector[key].diachi;
-                        ngaySinh = Collector[key].ngaysinh;
-                        CCCD = Collector[key].CCCD;
-                        sdt = Collector[key].sdt;
-                        email = Collector[key].email;
-                        break;
-                  }
-            }
-      }
 
       const Navigate = useNavigate();
 

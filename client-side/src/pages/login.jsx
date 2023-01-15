@@ -1,4 +1,4 @@
-import account from '../data/account.js';
+import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/login.css';
@@ -9,7 +9,7 @@ export const Login = () =>
 
     const Navigate = useNavigate();
 
-    const handleChange = (event) =>
+    const formChange = (event) =>
     {
         const name = event.target.name;
         const value = event.target.value;
@@ -17,16 +17,29 @@ export const Login = () =>
     }
 
 
-    const handleSubmit = (event) =>
+    const formSubmit = (event) =>
     {
         event.preventDefault();
-        if (account.username === inputs.username && account.password === inputs.password)
-            Navigate("/sideMenu/workerList/janitorList");
-        else
-        {
-            window.alert("Tài khoản đăng nhập hoặc mật khẩu sai");
-            document.getElementsByClassName("loginForm")[0].reset();
-        }
+        axios.get('http://localhost:4000/login')
+            .then(res =>
+            {
+                let authSuccess = false;
+                for (const i in res.data)
+                {
+                    if (res.data[i].userID === inputs.username && res.data[i].password === inputs.password)
+                    {
+                        Navigate("/workerList/janitorList");
+                        authSuccess = true;
+                        break;
+                    }
+                }
+                if (!authSuccess)
+                {
+                    window.alert("Tài khoản đăng nhập hoặc mật khẩu sai");
+                    document.getElementsByClassName("loginForm")[0].reset();
+                }
+            })
+            .catch(error => console.log(error));
     }
 
     return (
@@ -37,12 +50,12 @@ export const Login = () =>
                 <h2>Nhóm: SE with Da Bois</h2>
                 <h3>UWC-2.0 Task management interface</h3>
             </div>
-            <div onSubmit={ handleSubmit }>
+            <div onSubmit={ formSubmit }>
                 <form class="loginForm">
                     <label for="text">Tài khoản</label>
-                    <input type="username" placeholder="Nhập tài khoản" name="username" onChange={ handleChange } />
+                    <input type="username" placeholder="Nhập tài khoản" name="username" onChange={ formChange } />
                     <label for="password">Mật khẩu</label>
-                    <input type="text" placeholder="Nhập mật khẩu" name="password" onChange={ handleChange } />
+                    <input type="password" placeholder="Nhập mật khẩu" name="password" onChange={ formChange } />
                     <input type="submit" value="Đăng nhập" class="loginButton" />
                 </form>
             </div>

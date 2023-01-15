@@ -1,12 +1,21 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 import '../css/vehicleInfo.css';
-import vehicleList from '../data/vehicle.js';
 
 export const VehicleInfo = () =>
 {
-
       const effectRan = useRef(false);
+
+      const currentRoute = useParams();
+      const vehicleId = currentRoute.vehicleID;
+
+      const [brand, setBrand] = useState();
+      const [weight, setWeight] = useState();
+      const [status, setStatus] = useState();
+      const [licensePlate, setLicensePlate] = useState();
+      const [route, setRoute] = useState();
+
 
       useEffect(() =>
       {
@@ -14,27 +23,21 @@ export const VehicleInfo = () =>
             {
                   let setColor = document.getElementsByClassName('VehicleManage');
                   setColor[0].style.color = "blue";
+
+                  axios.get('http://localhost:4000/vehicleList/detail', { params: { ID: vehicleId } })
+                        .then(res =>
+                        {
+                              setBrand(res.data[0].brand);
+                              setWeight(res.data[0].maxWeight);
+                              setStatus(res.data[0].status);
+                              setLicensePlate(res.data[0].plate);
+                              setRoute(res.data[0].routeID);
+                        })
+                        .catch(error => console.log(error));
+
                   effectRan.current = true;
             }
       });
-
-      const currentRoute = useParams();
-      const vehicleId = currentRoute.vehiclexx;
-      let brand, weight, latest, picture, licensePlate, route;
-
-      for (let key in vehicleList)
-      {
-            if (vehicleList[key].ma === vehicleId)
-            {
-                  picture = vehicleList[key].linkAnh;
-                  brand = vehicleList[key].hang;
-                  weight = vehicleList[key].taitrong;
-                  latest = vehicleList[key].trangthai;
-                  licensePlate = vehicleList[key].bienso;
-                  route = vehicleList[key].tuyenduongphutrach;
-                  break;
-            }
-      }
 
       const Navigate = useNavigate();
 
@@ -43,8 +46,6 @@ export const VehicleInfo = () =>
             event.preventDefault();
             Navigate(-1);
       }
-
-      const routeInfo = '/sideMenu/routeList/' + route;
 
       return (
             <div className="vehicleID">
@@ -62,9 +63,9 @@ export const VehicleInfo = () =>
                         <br />
                         <thead><h2>TẢI TRỌNG: </h2> <h2 class="Props">{ weight }</h2></thead>
                         <br />
-                        <thead ><h2>TUYẾN ĐƯỜNG PHỤ TRÁCH: </h2> <a href={ routeInfo }>{ route } </a> </thead>
+                        <thead ><h2>TUYẾN ĐƯỜNG PHỤ TRÁCH: </h2> <a href={ '/routeList/' + route }>{ route } </a> </thead>
                         <br />
-                        <thead><h2>TRẠNG THÁI: </h2> <h2 class="Props">{ latest }</h2></thead>
+                        <thead><h2>TRẠNG THÁI: </h2> <h2 class="Props">{ status }</h2></thead>
                         <br />
                   </table>
                   <br />
