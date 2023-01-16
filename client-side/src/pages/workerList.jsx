@@ -20,20 +20,32 @@ export const WorkerList = () =>
             Navigate("/inDev");
       }
 
-      const handleClickInfo = (event) =>
+      const handleClickInfo = (event, employeeID) =>
       {
             event.preventDefault();
-            Navigate("./" + event.currentTarget.id);
+            Navigate("./" + employeeID);
       }
 
-      const taskingRoute = (event) =>
+      const handleDelete = (event, employeeID) =>
+      {
+            event.preventDefault();
+            axios.delete('http://localhost:4000/workerList/delete', { params: { ID: employeeID } })
+                  .then(res =>
+                  {
+                        window.alert(res.data.message);
+                        window.location.reload();
+                  })
+                  .catch(error => console.log(error));
+      }
+
+      const taskingRoute = (event, employeeID) =>
       {
             event.preventDefault();
             let target = event.currentTarget.id.substring(6);
             Navigate("./" + target + "/taskScheduleCollector");
       }
 
-      const taskingArea = (event) =>
+      const taskingArea = (event, employeeID) =>
       {
             event.preventDefault();
             let target = event.currentTarget.id.substring(5);
@@ -58,28 +70,28 @@ export const WorkerList = () =>
             })
                   .then(res =>
                   {
-                        for (let i in res.data)
+                        for (let i = 0; i < res.data.length; i++)
                         {
                               document.getElementById("workerList").innerHTML += "<tr>"
                                     + "<td>" + res.data[i].name + "</td>"
                                     + "<td>" + res.data[i].employeeID + "</td>"
                                     + "<td>"
-                                    + "<button class = 'Workers' id =" + res.data[i].employeeID + "> Chi tiết </button>"
-                                    + "<button class = 'Route' id =Route_" + res.data[i].employeeID + "> Phân công khu vực</button>"
+                                    + "<button class = 'Workers'" + res.data[i].employeeID + "> Chi tiết </button>"
+                                    + "<button class = 'Area'" + res.data[i].employeeID + "> Phân công khu vực</button>"
                                     + "<button class='WorkerDel'>Xóa</button>"
                                     + "</td>"
                                     + "<tr/>";
                         }
 
                         let obj = document.getElementsByClassName('WorkerDel');
-                        for (let i = 0; i < obj.length; i++)
-                              obj[i].addEventListener('click', handleClickNotDev);
+                        for (let i = 0; i < res.data.length; i++)
+                              obj[i].addEventListener('click', event => handleDelete(event, res.data[i].employeeID));
                         obj = document.getElementsByClassName('Workers');
-                        for (let i = 0; i < obj.length; i++)
-                              obj[i].addEventListener('click', handleClickInfo);
+                        for (let i = 0; i < res.data.length; i++)
+                              obj[i].addEventListener('click', event => handleClickInfo(event, res.data[i].employeeID));
                         obj = document.getElementsByClassName('Area');
-                        for (let i = 0; i < obj.length; i++)
-                              obj[i].addEventListener('click', taskingArea);
+                        for (let i = 0; i < res.data.length; i++)
+                              obj[i].addEventListener('click', event => taskingArea(event, res.data[i].employeeID));
                   })
                   .catch(error => console.log(error));
 
@@ -109,22 +121,22 @@ export const WorkerList = () =>
                                     + "<td>" + res.data[i].name + "</td>"
                                     + "<td>" + res.data[i].employeeID + "</td>"
                                     + "<td>"
-                                    + "<button class = 'Workers' id =" + res.data[i].employeeID + "> Chi tiết </button>"
-                                    + "<button class = 'Route' id =Route_" + res.data[i].employeeID + "> Tạo tuyến đường</button>"
+                                    + "<button class = 'Workers'" + res.data[i].employeeID + "> Chi tiết </button>"
+                                    + "<button class = 'Route'" + res.data[i].employeeID + "> Tạo tuyến đường</button>"
                                     + "<button class='WorkerDel'>Xóa</button>"
                                     + "</td>"
                                     + "<tr/>";
                         }
 
                         let obj = document.getElementsByClassName('WorkerDel');
-                        for (let i = 0; i < obj.length; i++)
-                              obj[i].addEventListener('click', handleClickNotDev);
+                        for (let i = 0; i < res.data.length; i++)
+                              obj[i].addEventListener('click', event => handleDelete(event, res.data[i].employeeID));
                         obj = document.getElementsByClassName('Workers');
-                        for (let i = 0; i < obj.length; i++)
-                              obj[i].addEventListener('click', handleClickInfo);
+                        for (let i = 0; i < res.data.length; i++)
+                              obj[i].addEventListener('click', event => handleClickInfo(event, res.data[i].employeeID));
                         obj = document.getElementsByClassName('Route');
-                        for (let i = 0; i < obj.length; i++)
-                              obj[i].addEventListener('click', taskingRoute);
+                        for (let i = 0; i < res.data.length; i++)
+                              obj[i].addEventListener('click', event => taskingRoute(event, res.data[i].employeeID));
                   })
                   .catch(error => console.log(error));
       }

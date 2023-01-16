@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useRef,useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { formatDate } from '../data/formatDate.js';
 import '../css/mcpInfo.css';
@@ -34,7 +34,7 @@ export const MCPInfo = () =>
                               setMaximumCap(res.data[0].maximumCap);
                               setCurrentCap(res.data[0].currentCap);
                               setLatestCollectedDay(formatDate(new Date(Date.parse(res.data[0].latestCollectedDay))));
-                              setPicture(res.data[0].picture);
+                              setPicture(res.data[0].picture.data);
                               setRouteID(res.data[0].routeID);
                               setAreaID(res.data[0].areaID);
                         })
@@ -69,7 +69,7 @@ export const MCPInfo = () =>
             <div className="MCPID">
                   <h1>Thông tin chi tiết MCP</h1>
                   <br />
-                  <figure>
+                  <figure >
                         <img src={ picture } alt="Ảnh MCP" />
                   </figure>
                   <table className="Properties">

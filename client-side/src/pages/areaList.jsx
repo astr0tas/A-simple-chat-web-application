@@ -17,22 +17,23 @@ export const AreaList = () =>
             axios.get('http://localhost:4000/areaList')
                 .then(res =>
                 {
+                    console.log(res.data);
                     for (let i in res.data)
                     {
                         document.getElementById("AreaList").innerHTML += "<tr>"
                             + "<td>" + res.data[i].areaID + "</td>"
                             + "<td>"
-                            + "<button class = 'areas' id =" + res.data[i].areaID + "> Chi tiết </button>"
+                            + "<button class = 'areas'" + res.data[i].areaID + "> Chi tiết </button>"
                             + "<button class='areaDel'>Xóa</button>"
                             + "</td>"
                             + "<tr/>";
                     }
                     let obj = document.getElementsByClassName('areaDel');
-                    for (let i = 0; i < obj.length; i++)
-                        obj[i].addEventListener('click', handleClickNotDev);
+                    for (let i = 0; i < res.data.length; i++)
+                        obj[i].addEventListener('click', event => handleDelete(event, res.data[i].areaID));
                     obj = document.getElementsByClassName('areas');
-                    for (let i = 0; i < obj.length; i++)
-                        obj[i].addEventListener('click', handleClickInfo);
+                    for (let i = 0; i < res.data.length; i++)
+                        obj[i].addEventListener('click', event => handleClickInfo(event, res.data[i].areaID));
                 })
                 .catch(error => console.log(error));
 
@@ -46,13 +47,25 @@ export const AreaList = () =>
     const handleClickNotDev = (event) =>
     {
         event.preventDefault();
-        Navigate("/sideMenu/inDev");
+        Navigate("/inDev");
     }
 
-    const handleClickInfo = (event) =>
+    const handleDelete = (event, areaID) =>
     {
         event.preventDefault();
-        Navigate("./" + event.currentTarget.id);
+        axios.delete('http://localhost:4000/areaList/delete', { params: { ID: areaID } }).
+            then(res =>
+            {
+                window.alert(res.data.message);
+                window.location.reload();
+            })
+            .catch(error => console.log(error));
+    }
+
+    const handleClickInfo = (event, areaID) =>
+    {
+        event.preventDefault();
+        Navigate("./" + areaID);
     }
 
     return (

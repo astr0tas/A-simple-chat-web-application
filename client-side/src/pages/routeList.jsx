@@ -22,17 +22,17 @@ export const RouteList = () =>
                         document.getElementById("RouteList").innerHTML += "<tr>"
                             + "<td>" + res.data[i].routeID + "</td>"
                             + "<td>"
-                            + "<button class = 'route' id =" + res.data[i].routeID + "> Chi tiết </button>"
+                            + "<button class = 'route'" + res.data[i].routeID + "> Chi tiết </button>"
                             + "<button class='routeDel'>Xóa</button>"
                             + "</td>"
                             + "<tr/>";
                     }
                     let obj = document.getElementsByClassName('routeDel');
-                    for (let i = 0; i < obj.length; i++)
-                        obj[i].addEventListener('click', handleClickNotDev);
+                    for (let i = 0; i < res.data.length; i++)
+                        obj[i].addEventListener('click', event => handleDelete(event, res.data[i].routeID));
                     obj = document.getElementsByClassName('route');
-                    for (let i = 0; i < obj.length; i++)
-                        obj[i].addEventListener('click', handleClickInfo);
+                    for (let i = 0; i < res.data.length; i++)
+                        obj[i].addEventListener('click', event => handleClickInfo(event, res.data[i].routeID));
                 })
                 .catch(error => console.log(error));
             effectRan.current = true;
@@ -45,13 +45,25 @@ export const RouteList = () =>
     const handleClickNotDev = (event) =>
     {
         event.preventDefault();
-        Navigate("/sideMenu/inDev");
+        Navigate("/inDev");
     }
 
-    const handleClickInfo = (event) =>
+    const handleDelete = (event, routeID) =>
     {
         event.preventDefault();
-        Navigate("./" + event.currentTarget.id);
+        axios.delete('http://localhost:4000/routeList/delete', { params: { ID: routeID } })
+            .then(res =>
+            {
+                window.alert(res.data.message);
+                window.location.reload();
+            })
+            .catch(error => console.log(error));
+    }
+
+    const handleClickInfo = (event, routeID) =>
+    {
+        event.preventDefault();
+        Navigate("./" + routeID);
     }
 
     return (

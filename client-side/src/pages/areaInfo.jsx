@@ -8,7 +8,7 @@ export const AreaInfo = () =>
 {
 
       const currentRoute = useParams();
-      const AreaId = currentRoute.Axx;
+      const AreaId = currentRoute.areaID;
 
       const effectRan = useRef(false);
 
@@ -25,7 +25,7 @@ export const AreaInfo = () =>
                         {
                               mcps = areaList[key].cacmcp;
                               streets = areaList[key].tenduong;
-                              if(areaList[key].congnhan.length !== 0)
+                              if (areaList[key].congnhan.length !== 0)
                               {
                                     let i = 0;
                                     for (i; i < areaList[key].congnhan.length - 1; i++)
@@ -37,9 +37,9 @@ export const AreaInfo = () =>
                               if (areaList[key].cacmcp.length !== 0)
                               {
                                     let i = 0;
-                                    for (i=0; i < areaList[key].cacmcp.length - 1; i++)
+                                    for (i = 0; i < areaList[key].cacmcp.length - 1; i++)
                                           document.getElementById('printMCPList').innerHTML += "<a href=\"" + baseMCPPath + areaList[key].cacmcp[i] + "\">" + areaList[key].cacmcp[i] + "</a>"
-                                                + "<h2 class=\"Props\">,   </h2>";                                    
+                                                + "<h2 class=\"Props\">,   </h2>";
                                     document.getElementById('printMCPList').innerHTML += "<a href=\"" + baseMCPPath + areaList[key].cacmcp[i] + "\">" + areaList[key].cacmcp[i] + "</a>";
                               }
                               break;

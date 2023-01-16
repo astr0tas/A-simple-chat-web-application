@@ -7,7 +7,7 @@ import routeList, { baseMCPPath, baseVehiclePath, baseWorkerPath } from '../data
 export const RouteInfo = () =>
 {
       const currentRoute = useParams();
-      const RouteId = currentRoute.Rxx;
+      const RouteId = currentRoute.routeID;
 
       const effectRan = useRef(false);
 
@@ -27,15 +27,15 @@ export const RouteInfo = () =>
                                     let i = 0;
                                     for (i; i < routeList[key].congnhan.length - 1; i++)
                                           document.getElementById('printWorkerList').innerHTML += "<a href=\"" + baseWorkerPath + routeList[key].congnhan[i] + "\">" + routeList[key].congnhan[i] + "</a>"
-                                                + "<h2 class=\"Props\">,   </h2>";                                    
+                                                + "<h2 class=\"Props\">,   </h2>";
                                     document.getElementById('printWorkerList').innerHTML += "<a href=\"" + baseWorkerPath + routeList[key].congnhan[i] + "\">" + routeList[key].congnhan[i] + "</a>";
                               }
                               if (routeList[key].cacmcp.length !== 0)
                               {
                                     let i = 0;
-                                    for (i=0; i < routeList[key].cacmcp.length - 1; i++)
+                                    for (i = 0; i < routeList[key].cacmcp.length - 1; i++)
                                           document.getElementById('printMCPList').innerHTML += "<a href=\"" + baseMCPPath + routeList[key].cacmcp[i] + "\">" + routeList[key].cacmcp[i] + "</a>"
-                                                + "<h2 class=\"Props\">,   </h2>";                                    
+                                                + "<h2 class=\"Props\">,   </h2>";
                                     document.getElementById('printMCPList').innerHTML += "<a href=\"" + baseMCPPath + routeList[key].cacmcp[i] + "\">" + routeList[key].cacmcp[i] + "</a>";
                               }
                               break;
@@ -76,7 +76,7 @@ export const RouteInfo = () =>
                         <thead><h2>Mã tuyến: </h2> <h2 class="Props">{ RouteId }</h2></thead>
                         <br />
                         <thead>
-                              <h2>Các MCPs: </h2>
+                              <h2>MCP: </h2>
                               <div id="printMCPList" />
                         </thead>
                         <br />

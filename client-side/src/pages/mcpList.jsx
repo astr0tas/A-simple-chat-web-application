@@ -24,17 +24,17 @@ export const MCPList = () =>
                                           + "<td>" + res.data[i].address + "</td>"
                                           + "<td>" + Math.ceil(res.data[i].currentCap / res.data[i].maximumCap * 100) + "%" + "</td>"
                                           + "<td>"
-                                          + "<button class = 'MCPs' id =" + res.data[i].mcpID + "> Chi tiết </button>"
+                                          + "<button class = 'MCPs'" + res.data[i].mcpID + "> Chi tiết </button>"
                                           + "<button class='MCPDel'>Xóa</button>"
                                           + "</td>"
                                           + "<tr/>";
                               }
                               let obj = document.getElementsByClassName('MCPDel');
-                              for (let i = 0; i < obj.length; i++)
-                                    obj[i].addEventListener('click', handleClickNotDev);
+                              for (let i = 0; i < res.data.length; i++)
+                                    obj[i].addEventListener('click', event => handleDelete(event, res.data[i].mcpID));
                               obj = document.getElementsByClassName('MCPs');
-                              for (let i = 0; i < obj.length; i++)
-                                    obj[i].addEventListener('click', handleClickInfo);
+                              for (let i = 0; i < res.data.length; i++)
+                                    obj[i].addEventListener('click', event => handleClickInfo(event, res.data[i].mcpID));
                         })
                         .catch(error => console.log(error));
 
@@ -50,10 +50,23 @@ export const MCPList = () =>
             Navigate("/inDev");
       }
 
-      const handleClickInfo = (event) =>
+      const handleDelete = (event, mcpID) =>
       {
             event.preventDefault();
-            Navigate("./" + event.currentTarget.id);
+            axios.delete('http://localhost:4000/mcpList/delete', { params: { ID: mcpID } })
+                  .then(res =>
+                  {
+                        window.alert(res.data.message);
+                        window.location.reload();
+
+                  })
+                  .catch(error => console.log(error));
+      }
+
+      const handleClickInfo = (event, mcpID) =>
+      {
+            event.preventDefault();
+            Navigate("./" + mcpID);
       }
 
       return (

@@ -51,6 +51,16 @@ app.get('/mcpList/detail', (req, res) =>
       });
 });
 
+app.delete('/mcpList/delete', (req, res) =>
+{
+      con.query("delete from mcp where mcpID=\'" + req.query.ID + "\';", function (err, result, fields)
+      {
+            if (err) throw err;
+            res.status(200);
+            res.json({ message: "Xóa thông tin MCP thành công!" });
+      });
+});
+
 app.get('/vehicleList', (req, res) =>
 {
       con.query("select vehicleID,status from vehicle order by vehicleID;", function (err, result, fields)
@@ -71,6 +81,16 @@ app.get('/vehicleList/detail', (req, res) =>
       });
 });
 
+app.delete('/vehicleList/delete', (req, res) =>
+{
+      con.query("delete from vehicle where vehicleID=\'" + req.query.ID + "\';", function (err, result, fields)
+      {
+            if (err) throw err;
+            res.status(200);
+            res.json({ message: "Xóa thông tin xe thành công!" });
+      });
+});
+
 app.get('/routeList', (req, res) =>
 {
       con.query("select * from route order by routeID;", function (err, result, fields)
@@ -81,16 +101,25 @@ app.get('/routeList', (req, res) =>
       });
 });
 
-// app.get('/routeList/detail', (req, res) =>
-// {
-//       const id;
-//       con.query("select * from route;", function (err, result, fields)
-//       {
-//             if (err) throw err;
-//             res.status(200);
-//             res.json(result);
-//       });
-// });
+app.get('/routeList/detail', (req, res) =>
+{
+      con.query("select * from route where routeID=\'" + req.query.ID + "\';", function (err, result, fields)
+      {
+            if (err) throw err;
+            res.status(200);
+            res.json(result);
+      });
+});
+
+app.delete('/routeList/delete', (req, res) =>
+{
+      con.query("delete from route where routeID=\'" + req.query.ID + "\';", function (err, result, fields)
+      {
+            if (err) throw err;
+            res.status(200);
+            res.json({ message: "Xóa thông tin tuyến đường thành công!" });
+      });
+});
 
 app.get('/areaList', (req, res) =>
 {
@@ -113,6 +142,16 @@ app.get('/areaList', (req, res) =>
 //       });
 // });
 
+app.delete('/areaList/delete', (req, res) =>
+{
+      con.query("delete from area where areaID=\'" + req.query.ID + "\';", function (err, result, fields)
+      {
+            if (err) throw err;
+            res.status(200);
+            res.json({ message: "Xóa thông tin khu vực thành công!" });
+      });
+});
+
 app.get('/workerList', (req, res) =>
 {
       con.query("select name,employeeID from employee where left(employeeID,1)=\'" + req.query.type + "\' order by employeeID;", function (err, result, fields)
@@ -130,6 +169,16 @@ app.get('/workerList/detail', (req, res) =>
             if (err) throw err;
             res.status(200);
             res.json(result);
+      });
+});
+
+app.delete('/workerList/delete', (req, res) => 
+{
+      con.query("delete from employee where employeeID=\'" + req.query.ID + "\';", function (err, result, fields)
+      {
+            if (err) throw err;
+            res.status(200);
+            res.json({ message: "Xóa thông tin công nhân thành công!" });
       });
 });
 
