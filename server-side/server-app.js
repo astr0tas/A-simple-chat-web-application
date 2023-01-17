@@ -4,12 +4,19 @@ var con = mysql.createConnection({
       host: "localhost",
       user: "root",
       password: "",
-      database: "uwc"
+      database: "uwc",
+      multipleStatements: true
 });
 
 con.connect(function (err)
 {
       if (err) throw err;
+      con.query("SET SQL_SAFE_UPDATES = 0; "
+            + "call deleteWorkCalendar(); "
+            + "SET SQL_SAFE_UPDATES = 1; ", function (err)
+      {
+            if (err) throw err;
+      });
 });
 
 
@@ -101,19 +108,24 @@ app.get('/routeList', (req, res) =>
       });
 });
 
-app.get('/routeList/raw_info', (req, res) =>
+app.get('/routeList/info', (req, res) =>
 {
       con.query("select mcp.mcpID,mcp.address,vehicle.vehicleID "
             + "from route "
             + "join mcp on mcp.routeID = route.routeID "
             + "join vehicle on vehicle.routeID = route.routeID "
-            + "where route.routeID =\'" + req.query.ID + "\';", function (err, result, fields)
+            + "where route.routeID =\'" + req.query.ID + "\'; "
+            + "select workCalendar.employeeID "
+            + "from route "
+            + "join workCalendar on workCalendar.routeID = route.routeID "
+            + "where workCalendar.workDay =\'" + req.query.date + "\' and workCalendar.shift=\'" + req.query.shift + "\' and workCalendar.routeID=\'" + req.query.ID + "\';", function (err, result, fields)
       {
             if (err) throw err;
             res.status(200);
             res.json(result);
       });
 });
+
 
 app.delete('/routeList/delete', (req, res) =>
 {
@@ -135,12 +147,16 @@ app.get('/areaList', (req, res) =>
       });
 });
 
-app.get('/areaList/raw_info', (req, res) =>
+app.get('/areaList/info', (req, res) =>
 {
       con.query("select mcp.mcpID,mcp.address "
             + "from area "
             + "join mcp on mcp.areaID = area.areaID "
-            + "where area.areaID =\'" + req.query.ID + "\';", function (err, result, fields)
+            + "where area.areaID =\'" + req.query.ID + "\';"
+            + "select workCalendar.employeeID "
+            + "from area "
+            + "join workCalendar on workCalendar.areaID = area.areaID "
+            + "where workCalendar.workDay =\'" + req.query.date + "\' and workCalendar.shift=\'" + req.query.shift + "\' and workCalendar.areaID=\'" + req.query.ID + "\';", function (err, result, fields)
       {
             if (err) throw err;
             res.status(200);
@@ -171,6 +187,17 @@ app.get('/workerList', (req, res) =>
 app.get('/workerList/detail', (req, res) =>
 {
       con.query("select * from employee where employeeID=\'" + req.query.ID + "\';", function (err, result, fields)
+      {
+            if (err) throw err;
+            res.status(200);
+            res.json(result);
+      });
+});
+
+app.get('/workerList/detail/schedule', (req, res) =>
+{
+      con.query("select name from employee where employeeID =\'" + req.query.ID + "\'; "
+            + "select workCalendar.workDay, workCalendar.shift, workCalendar.description, workCalendar.status from workCalendar where workCalendar.employeeID =\'" + req.query.ID + "\' order by workCalendar.workDay,workCalendar.shift;", function (err, result, fields)
       {
             if (err) throw err;
             res.status(200);

@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
-import { Collector, Janitor } from '../data/worker.js';
+import { useEffect, useRef, useState } from 'react';
+import { formatDate_DDMMYYYY } from '../tools/formatDate.js';
+import ReactDOM from 'react-dom/client';
+import axios from 'axios';
 import '../css/workerSchedule.css';
 
 export const WorkerSchedule = () =>
@@ -8,33 +10,22 @@ export const WorkerSchedule = () =>
       const currentRoute = useParams();
       const workerID = currentRoute.workerID;
 
-      let name, job;
-      if (workerID[0] === 'J')
+      const PrintSchedule = (props) =>
       {
-            for (let key in Janitor)
-            {
-                  if (Janitor[key].ID === workerID)
-                  {
-                        name = Janitor[key].ten;
-                        job = "công nhân thu gom rác"
-                        break;
-                  }
-            }
-      }
-      else
-      {
-            for (let key in Collector)
-            {
-                  if (Collector[key].ID === workerID)
-                  {
-                        name = Collector[key].ten;
-                        job = "công nhân chở rác"
-                        break;
-                  }
-            }
+            return (
+                  <tr>
+                        <td> { props.date } </td>
+                        <td> { props.shift } </td>
+                        <td>{ props.description } </td>
+                        <td>{ props.status }</td>
+                  </tr>
+            );
       }
 
       const effectRan = useRef(false);
+
+      let [job, setJob] = useState(), [name, setName] = useState();
+
       useEffect(() =>
       {
             if (effectRan.current === false)
@@ -42,41 +33,33 @@ export const WorkerSchedule = () =>
                   let setColor = document.getElementsByClassName('WorkerManage');
                   setColor[0].style.color = "blue";
 
-                  let schedule;
-
                   if (workerID[0] === 'J')
-                  {
-                        for (let key in Janitor)
-                        {
-                              if (Janitor[key].ID === workerID)
-                              {
-                                    schedule = Janitor[key].lichlamviec;
-                                    break;
-                              }
-                        }
-                  }
+                        setJob("thu gom rác");
                   else
-                  {
-                        for (let key in Collector)
+                        setJob("chở rác");
+
+                  axios.get('http://localhost:4000/workerList/detail/schedule', { params: { ID: workerID } })
+                        .then(res =>
                         {
-                              if (Collector[key].ID === workerID)
+                              console.log(res);
+                              setName(res.data[0][0].name);
+                              let temp = [];
+                              for (let i = 0; i < res.data[1].length; i++)
                               {
-                                    schedule = Collector[key].lichlamviec;
-                                    break;
+                                    let shift;
+                                    if (res.data[1][i].shift === 1)
+                                          shift = "7h00-12h00";
+                                    else if (res.data[1][i].shift === 2)
+                                          shift = "13h00-18h00";
+                                    else
+                                          shift = "19h00-00h00";
+                                    temp.push(<PrintSchedule status={ res.data[1][i].status } description={ res.data[1][i].description } shift={ shift } date={ formatDate_DDMMYYYY(new Date(Date.parse(res.data[1][i].workDay))) } />);
                               }
-                        }
-                  }
-
-                  for (let key in schedule)
-                  {
-                        document.getElementById('scheduleList').innerHTML += "<tr>"
-                              + "<td>" + schedule[key].Ngay + "</td>"
-                              + "<td>" + schedule[key].Thoigian + "</td>"
-                              + "<td>" + schedule[key].Mota + "</td>"
-                              + "<td>" + schedule[key].Trangthai + "</td>"
-                              + "</tr>";
-                  }
-
+                              const render = ReactDOM.createRoot(document.getElementById('scheduleList'));
+                              render.render(<>{ temp }</>)
+                        })
+                        .catch(error => console.log(error));
+                  
                   effectRan.current = true;
             }
       });

@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import axios from 'axios';
-import { formatDate } from '../tools/formatDate.js';
+import { formatDate_DDMMYYYY } from '../tools/formatDate.js';
 import ReactDOM from 'react-dom/client';
 import '../css/workerInfo.css';
 
@@ -64,7 +64,7 @@ export const WorkerInfo = () =>
                         .then(res =>
                         {
                               const render = ReactDOM.createRoot(document.getElementById('info'));
-                              render.render(<PrintInfo workerID={ workerID } name={ res.data[0].name } gender={ res.data[0].gender } congViec={ congViec } phoneNum={ res.data[0].phoneNum } email={ res.data[0].email } ssn={ res.data[0].ssn } date={ formatDate(new Date(Date.parse(res.data[0].dob))) } address={ res.data[0].address } />);
+                              render.render(<PrintInfo workerID={ workerID } name={ res.data[0].name } gender={ res.data[0].gender } congViec={ congViec } phoneNum={ res.data[0].phoneNum } email={ res.data[0].email } ssn={ res.data[0].ssn } date={ formatDate_DDMMYYYY(new Date(Date.parse(res.data[0].dob))) } address={ res.data[0].address } />);
                         })
                         .catch(error => console.log(error));
 

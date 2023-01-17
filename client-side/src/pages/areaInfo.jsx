@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import axios from 'axios';
 import ReactDOM from 'react-dom/client';
+import { formatDate_YYYYMMDD } from '../tools/formatDate.js';
 import '../css/areaInfo.css';
 
 
@@ -16,13 +17,13 @@ export const AreaInfo = () =>
       const PrintInfo = (props) =>
       {
             return (
-                  <>
+                  <div ref={ props.callback }>
                         <thead><h2>Mã khu vực: </h2> <h2 class="Props">{ props.AreaId }</h2></thead>
                         <br />
                         <br />
 
                         <thead>
-                              <h2>Các MCPs: </h2>
+                              <h2>MCP: </h2>
                               <div class="Props" id="printMCP" />
                         </thead>
 
@@ -42,7 +43,7 @@ export const AreaInfo = () =>
                               <div class="Props" id="printJanitor" />
                         </thead>
                         <br />
-                  </>
+                  </div>
             );
       }
 
@@ -53,35 +54,72 @@ export const AreaInfo = () =>
                   let setColor = document.getElementsByClassName('AreaManage');
                   setColor[0].style.color = "blue";
 
-                  const render = ReactDOM.createRoot(document.getElementById('info'));
-                  render.render(<PrintInfo AreaId={ AreaId } />);
+                  let shift, current = new Date();
+                  if (current.getHours() < 12) shift = 1;
+                  else if (current.getHours() < 18) shift = 2;
+                  else shift = 3;
 
-                  axios.get('http://localhost:4000/areaList/raw_info', { params: { ID: AreaId } })
+                  axios.get('http://localhost:4000/areaList/info', { params: { ID: AreaId, date: formatDate_YYYYMMDD(current), shift: shift } })
                         .then(res =>
                         {
-                              let temp_mcp = [];
-                              let temp_street = [];
-                              let link;
-                              for (let i = 0; i < res.data.length - 1; i++)
+                              const render = ReactDOM.createRoot(document.getElementById('info'));
+                              render.render(<PrintInfo AreaId={ AreaId } callback={ () =>
                               {
-                                    link = "../mcpList/" + res.data[i].mcpID;
-                                    temp_mcp.push(<><a href={ link } > { res.data[i].mcpID } </a> <> - </></>);
+                                    if (res.data[0].length)
+                                    {
+                                          let temp_mcp = [];
+                                          let temp_street = [];
+                                          let link;
+                                          for (let i = 0; i < res.data[0].length - 1; i++)
+                                          {
+                                                link = "../mcpList/" + res.data[0][i].mcpID;
+                                                temp_mcp.push(<><a href={ link } > { res.data[0][i].mcpID } </a> <> - </></>);
 
 
-                                    temp_street.push(<>{ res.data[i].address } - </>);
+                                                temp_street.push(<>{ res.data[0][i].address } - </>);
+                                          }
+                                          link = "../mcpList/" + res.data[0][res.data[0].length - 1].mcpID;
+                                          temp_mcp.push(<a href={ link } > { res.data[0][res.data[0].length - 1].mcpID } </a>);
+                                          let render_mcp = ReactDOM.createRoot(document.getElementById('printMCP'));
+                                          render_mcp.render(<>{ temp_mcp }</>);
+
+                                          temp_street.push(<>{ res.data[0][res.data[0].length - 1].address }</>);
+                                          let render_street = ReactDOM.createRoot(document.getElementById('printStreet'));
+                                          render_street.render(<>{ temp_street }</>);
+                                    }
+                                    if (res.data[1].length)
+                                    {
+                                          let temp_worker = [];
+                                          for (let i = 0; i < res.data[1].length - 1; i++)
+                                          {
+                                                let link = "../workerList/" + res.data[1][i].employeeID;
+                                                temp_worker.push(<><a href={ link }>{ res.data[1][i].employeeID }</a> <> - </></>);
+                                          }
+                                          let link = "../workerList/" + res.data[1][res.data[1].length - 1].employeeID;
+                                          temp_worker.push(<a href={ link }>{ res.data[1][res.data[1].length - 1].employeeID }</a>);
+                                          let render_worker = ReactDOM.createRoot(document.getElementById('printJanitor'));
+                                          render_worker.render(<>{ temp_worker }</>);
+                                    }
                               }
-                              link = "../mcpList/" + res.data[res.data.length - 1].mcpID;
-                              temp_mcp.push(<a href={ link } > { res.data[res.data.length - 1].mcpID } </a>);
-                              let render_mcp = ReactDOM.createRoot(document.getElementById('printMCP'));
-                              render_mcp.render(<>{ temp_mcp }</>);
-
-                              temp_street.push(<>{ res.data[res.data.length - 1].address }</>);
-                              let render_street = ReactDOM.createRoot(document.getElementById('printStreet'));
-                              render_street.render(<>{ temp_street }</>);
+                              } />);
                         })
                         .catch(error => console.log(error));
 
-                  //to be continued
+                  axios.get('http://localhost:4000/areaList/current_worker', { params: { date: formatDate_YYYYMMDD(current), shift: shift, ID: AreaId } })
+                        .then(res =>
+                        {
+                              let temp = [];
+                              for (let i = 0; i < res.data.length - 1; i++)
+                              {
+                                    let link = "../workerList/" + res.data[i].employeeID;
+                                    temp.push(<><a href={ link }>{ res.data[i].employeeID }</a> <> - </></>);
+                              }
+                              let link = "../workerList/" + res.data[res.data.length - 1].employeeID;
+                              temp.push(<a href={ link }>{ res.data[res.data.length - 1].employeeID }</a>);
+                              let render = ReactDOM.createRoot(document.getElementById('printJanitor'));
+                              render.render(<>{ temp }</>);
+                        })
+                        .catch(error => console.log(error));
 
                   effectRan.current = true;
             }

@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
 import axios from 'axios';
 import ReactDOM from 'react-dom/client';
-import { formatDate } from '../tools/formatDate.js';
+import { formatDate_DDMMYYYY } from '../tools/formatDate.js';
 import '../css/mcpInfo.css';
 
 
@@ -47,7 +47,7 @@ export const MCPInfo = () =>
                         .then(res =>
                         {
                               const render = ReactDOM.createRoot(document.getElementById('info'));
-                              render.render(<PrintInfo MCPId={ MCPId } address={ res.data[0].address } maximumCap={ res.data[0].maximumCap } currentCap={ res.data[0].currentCap } date={ formatDate(new Date(Date.parse(res.data[0].latestCollectedDay))) } />);
+                              render.render(<PrintInfo MCPId={ MCPId } address={ res.data[0].address } maximumCap={ res.data[0].maximumCap } currentCap={ res.data[0].currentCap } date={ formatDate_DDMMYYYY(new Date(Date.parse(res.data[0].latestCollectedDay))) } />);
                         })
                         .catch(error => console.log(error));
 
