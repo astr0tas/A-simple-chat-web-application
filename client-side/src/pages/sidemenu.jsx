@@ -14,7 +14,7 @@ export const MyMenu = () =>
     return (
         <div>
             <div className='menu'>
-                <h1>Quản trị</h1>
+                <h1>Tác vụ</h1>
                 <a href='/workerList' class="WorkerManage">Quản lý nhân viên</a>
                 <a href='/vehicleList' class="VehicleManage">Quản lý xe</a>
                 <a href='/routeList' class="RouteManage">Quản lý tuyến đường</a>

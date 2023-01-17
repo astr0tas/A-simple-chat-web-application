@@ -16,6 +16,7 @@
 .RouteID .Properties .Props {
     font-weight: normal;
     font-size: 150%;
+    display: inline;
 }
 
 .RouteID button {
@@ -33,22 +34,6 @@
 }
 
 .RouteID .Properties a {
-    display: inline;
-    font-weight: normal;
-    font-size: 150%;
-    text-decoration: none;
-    color:blue;
-}
-
-.RouteID .Properties #printWorkerList {
-    display: inline;
-    font-weight: normal;
-    text-decoration: none;
-    color: blue;
-}
-
-.RouteID .Properties #printMCPList {
-    display: inline;
     font-weight: normal;
     text-decoration: none;
     color: blue;

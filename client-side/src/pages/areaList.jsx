@@ -1,11 +1,25 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import ReactDOM from 'react-dom/client';
 import '../css/areaList.css';
 
 export const AreaList = () =>
 {
     const effectRan = useRef(false);
+
+    const AreaRow = (props) =>
+    {
+        return (
+            <tr>
+                <td>  { props.areaID } </td>
+                <td>
+                    <button class='areas' onClick={ event => handleClickInfo(event, props.areaID) }> Chi tiết </button>
+                    <button class='areaDel' onClick={ event => handleDelete(event, props.areaID) }>Xóa</button>
+                </td>
+            </tr >
+        );
+    }
 
     useEffect(() =>
     {
@@ -17,23 +31,11 @@ export const AreaList = () =>
             axios.get('http://localhost:4000/areaList')
                 .then(res =>
                 {
-                    console.log(res.data);
+                    let temp = [];
                     for (let i in res.data)
-                    {
-                        document.getElementById("AreaList").innerHTML += "<tr>"
-                            + "<td>" + res.data[i].areaID + "</td>"
-                            + "<td>"
-                            + "<button class = 'areas'" + res.data[i].areaID + "> Chi tiết </button>"
-                            + "<button class='areaDel'>Xóa</button>"
-                            + "</td>"
-                            + "<tr/>";
-                    }
-                    let obj = document.getElementsByClassName('areaDel');
-                    for (let i = 0; i < res.data.length; i++)
-                        obj[i].addEventListener('click', event => handleDelete(event, res.data[i].areaID));
-                    obj = document.getElementsByClassName('areas');
-                    for (let i = 0; i < res.data.length; i++)
-                        obj[i].addEventListener('click', event => handleClickInfo(event, res.data[i].areaID));
+                        temp.push(<AreaRow areaID={ res.data[i].areaID } />);
+                    const render = ReactDOM.createRoot(document.getElementById('AreaList'));
+                    render.render(<>{ temp }</>);
                 })
                 .catch(error => console.log(error));
 

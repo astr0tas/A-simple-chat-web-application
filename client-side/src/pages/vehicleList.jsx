@@ -1,12 +1,29 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import ReactDOM from 'react-dom/client';
 import '../css/vehicleList.css';
 
 
 export const VehicleList = () =>
 {
       const effectRan = useRef(false);
+
+      const VehicleRow = (props) =>
+      {
+            return (
+                  <>
+                        <tr>
+                              <td> { props.vehicleID } </td>
+                              <td> { props.status } </td>
+                              <td>
+                                    <button class='Vehicles' onClick={ event => handleClickInfo(event, props.vehicleID) }> Chi tiết </button>
+                                    <button class='VehicleDel' onClick={ event => handleDelete(event, props.vehicleID) }>Xóa</button>
+                              </td>
+                        </tr >
+                  </>
+            );
+      }
 
       useEffect(() =>
       {
@@ -18,23 +35,11 @@ export const VehicleList = () =>
                   axios.get('http://localhost:4000/vehicleList')
                         .then(res =>
                         {
+                              let temp = [];
                               for (let i in res.data)
-                              {
-                                    document.getElementById("vehicleList").innerHTML += "<tr>"
-                                          + "<td>" + res.data[i].vehicleID + "</td>"
-                                          + "<td>" + res.data[i].status + "</td>"
-                                          + "<td>"
-                                          + "<button class = 'Vehicles'" + res.data[i].vehicleID + "> Chi tiết </button>"
-                                          + "<button class='VehicleDel'>Xóa</button>"
-                                          + "</td>"
-                                          + "<tr/>";
-                              }
-                              let obj = document.getElementsByClassName('VehicleDel');
-                              for (let i = 0; i < res.data.length; i++)
-                                    obj[i].addEventListener('click', event => handleDelete(event, res.data[i].vehicleID));
-                              obj = document.getElementsByClassName('Vehicles');
-                              for (let i = 0; i < res.data.length; i++)
-                                    obj[i].addEventListener('click', event => handleClickInfo(event, res.data[i].vehicleID));
+                                    temp.push(<VehicleRow vehicleID={ res.data[i].vehicleID } status={ res.data[i].status } />);
+                              const render = ReactDOM.createRoot(document.getElementById('vehicleList'));
+                              render.render(<>{ temp }</>);
                         })
                         .catch(error => console.log(error));
 

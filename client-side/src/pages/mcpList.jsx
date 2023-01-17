@@ -1,11 +1,27 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import ReactDOM from 'react-dom/client';
 import '../css/mcpList.css';
 
 export const MCPList = () =>
 {
       const effectRan = useRef(false);
+
+      const MCPRow = (props) =>
+      {
+            return (
+                  <tr>
+                        <td>{ props.mcpID } </td>
+                        <td>{ props.address }</td>
+                        <td>{ Math.ceil(props.currentCap / props.maximumCap * 100) }%</td>
+                        <td>
+                              <button class='MCPs' onClick={ event => handleClickInfo(event, props.mcpID) }> Chi tiết </button>
+                              <button class='MCPDel' onClick={ event => handleDelete(event, props.mcpID) }>Xóa</button>
+                        </td>
+                  </tr>
+            );
+      }
 
       useEffect(() =>
       {
@@ -17,24 +33,11 @@ export const MCPList = () =>
                   axios.get('http://localhost:4000/mcpList')
                         .then(res =>
                         {
+                              let temp = [];
                               for (let i in res.data)
-                              {
-                                    document.getElementById("MCPList").innerHTML += "<tr>"
-                                          + "<td>" + res.data[i].mcpID + "</td>"
-                                          + "<td>" + res.data[i].address + "</td>"
-                                          + "<td>" + Math.ceil(res.data[i].currentCap / res.data[i].maximumCap * 100) + "%" + "</td>"
-                                          + "<td>"
-                                          + "<button class = 'MCPs'" + res.data[i].mcpID + "> Chi tiết </button>"
-                                          + "<button class='MCPDel'>Xóa</button>"
-                                          + "</td>"
-                                          + "<tr/>";
-                              }
-                              let obj = document.getElementsByClassName('MCPDel');
-                              for (let i = 0; i < res.data.length; i++)
-                                    obj[i].addEventListener('click', event => handleDelete(event, res.data[i].mcpID));
-                              obj = document.getElementsByClassName('MCPs');
-                              for (let i = 0; i < res.data.length; i++)
-                                    obj[i].addEventListener('click', event => handleClickInfo(event, res.data[i].mcpID));
+                                    temp.push(<MCPRow mcpID={ res.data[i].mcpID } address={ res.data[i].address } currentCap={ res.data[i].currentCap } maximumCap={ res.data[i].maximumCap } />);
+                              const render = ReactDOM.createRoot(document.getElementById('MCPList'));
+                              render.render(<>{ temp }</>);
                         })
                         .catch(error => console.log(error));
 

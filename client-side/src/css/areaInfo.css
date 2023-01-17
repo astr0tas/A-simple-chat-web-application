@@ -16,6 +16,7 @@
 .AreaID .Properties .Props {
     font-weight: normal;
     font-size: 150%;
+    display: inline;
 }
 
 .AreaID button {
@@ -33,22 +34,6 @@
 }
 
 .AreaID .Properties a {
-    display: inline;
-    font-weight: normal;
-    font-size: 150%;
-    text-decoration: none;
-    color: blue;
-}
-
-.AreaID .Properties #printWorkerList {
-    display: inline;
-    font-weight: normal;
-    text-decoration: none;
-    color: blue;
-}
-
-.AreaID .Properties #printMCPList {
-    display: inline;
     font-weight: normal;
     text-decoration: none;
     color: blue;

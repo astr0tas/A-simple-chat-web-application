@@ -1,7 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from 'react';
+import axios from 'axios';
+import ReactDOM from 'react-dom/client';
 import '../css/areaInfo.css';
-import areaList, { baseMCPPath, baseWorkerPath } from '../data/area.js';
 
 
 export const AreaInfo = () =>
@@ -12,6 +13,39 @@ export const AreaInfo = () =>
 
       const effectRan = useRef(false);
 
+      const PrintInfo = (props) =>
+      {
+            return (
+                  <>
+                        <thead><h2>Mã khu vực: </h2> <h2 class="Props">{ props.AreaId }</h2></thead>
+                        <br />
+                        <br />
+
+                        <thead>
+                              <h2>Các MCPs: </h2>
+                              <div class="Props" id="printMCP" />
+                        </thead>
+
+                        <br />
+                        <br />
+
+                        <thead>
+                              <h2>Tên đường: </h2>
+                              <div class="Props" id="printStreet" />
+                        </thead>
+
+                        <br />
+                        <br />
+
+                        <thead>
+                              <h2>Công nhân đảm nhận: </h2>
+                              <div class="Props" id="printJanitor" />
+                        </thead>
+                        <br />
+                  </>
+            );
+      }
+
       useEffect(() =>
       {
             if (effectRan.current === false)
@@ -19,48 +53,39 @@ export const AreaInfo = () =>
                   let setColor = document.getElementsByClassName('AreaManage');
                   setColor[0].style.color = "blue";
 
-                  for (let key in areaList)
-                  {
-                        if (areaList[key].ma === AreaId)
-                        {
-                              mcps = areaList[key].cacmcp;
-                              streets = areaList[key].tenduong;
-                              if (areaList[key].congnhan.length !== 0)
-                              {
-                                    let i = 0;
-                                    for (i; i < areaList[key].congnhan.length - 1; i++)
-                                          document.getElementById('printWorkerList').innerHTML += "<a href=\"" + baseWorkerPath + areaList[key].congnhan[i] + "\">" + areaList[key].congnhan[i] + "</a>"
-                                                + "<h2 class=\"Props\">,   </h2>";
-                                    document.getElementById('printWorkerList').innerHTML += "<a href=\"" + baseWorkerPath + areaList[key].congnhan[i] + "\">" + areaList[key].congnhan[i] + "</a>";
-                              }
+                  const render = ReactDOM.createRoot(document.getElementById('info'));
+                  render.render(<PrintInfo AreaId={ AreaId } />);
 
-                              if (areaList[key].cacmcp.length !== 0)
+                  axios.get('http://localhost:4000/areaList/raw_info', { params: { ID: AreaId } })
+                        .then(res =>
+                        {
+                              let temp_mcp = [];
+                              let temp_street = [];
+                              let link;
+                              for (let i = 0; i < res.data.length - 1; i++)
                               {
-                                    let i = 0;
-                                    for (i = 0; i < areaList[key].cacmcp.length - 1; i++)
-                                          document.getElementById('printMCPList').innerHTML += "<a href=\"" + baseMCPPath + areaList[key].cacmcp[i] + "\">" + areaList[key].cacmcp[i] + "</a>"
-                                                + "<h2 class=\"Props\">,   </h2>";
-                                    document.getElementById('printMCPList').innerHTML += "<a href=\"" + baseMCPPath + areaList[key].cacmcp[i] + "\">" + areaList[key].cacmcp[i] + "</a>";
+                                    link = "../mcpList/" + res.data[i].mcpID;
+                                    temp_mcp.push(<><a href={ link } > { res.data[i].mcpID } </a> <> - </></>);
+
+
+                                    temp_street.push(<>{ res.data[i].address } - </>);
                               }
-                              break;
-                        }
-                  }
+                              link = "../mcpList/" + res.data[res.data.length - 1].mcpID;
+                              temp_mcp.push(<a href={ link } > { res.data[res.data.length - 1].mcpID } </a>);
+                              let render_mcp = ReactDOM.createRoot(document.getElementById('printMCP'));
+                              render_mcp.render(<>{ temp_mcp }</>);
+
+                              temp_street.push(<>{ res.data[res.data.length - 1].address }</>);
+                              let render_street = ReactDOM.createRoot(document.getElementById('printStreet'));
+                              render_street.render(<>{ temp_street }</>);
+                        })
+                        .catch(error => console.log(error));
+
+                  //to be continued
 
                   effectRan.current = true;
             }
       });
-
-      var mcps, streets;
-
-      for (let key in areaList)
-      {
-            if (areaList[key].ma === AreaId)
-            {
-                  mcps = areaList[key].cacmcp;
-                  streets = areaList[key].tenduong;
-                  break;
-            }
-      }
 
       const Navigate = useNavigate();
 
@@ -74,21 +99,7 @@ export const AreaInfo = () =>
             <div className="AreaID">
                   <h1>Thông tin chi tiết khu vực</h1>
                   <br />
-                  <table className="Properties">
-                        <thead><h2>Mã khu vực: </h2> <h2 class="Props">{ AreaId }</h2></thead>
-                        <br />
-                        <thead>
-                              <h2>Các MCPs: </h2>
-                              <div id="printMCPList" />
-                        </thead>
-                        <br />
-                        <thead><h2>Tên đường: </h2> <h2 class="Props">{ streets }</h2></thead>
-                        <br />
-                        <thead>
-                              <h2>Công nhân đảm nhận: </h2>
-                              <div id="printWorkerList" />
-                        </thead>
-                        <br />
+                  <table className="Properties" id="info">
                   </table>
                   <br />
                   <br />

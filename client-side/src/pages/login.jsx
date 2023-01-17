@@ -28,7 +28,7 @@ export const Login = () =>
                 {
                     if (res.data[i].userID === inputs.username && res.data[i].password === inputs.password)
                     {
-                        Navigate("/workerList/janitorList");
+                        Navigate("/workerList");
                         authSuccess = true;
                         break;
                     }

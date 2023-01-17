@@ -101,9 +101,13 @@ app.get('/routeList', (req, res) =>
       });
 });
 
-app.get('/routeList/detail', (req, res) =>
+app.get('/routeList/raw_info', (req, res) =>
 {
-      con.query("select * from route where routeID=\'" + req.query.ID + "\';", function (err, result, fields)
+      con.query("select mcp.mcpID,mcp.address,vehicle.vehicleID "
+            + "from route "
+            + "join mcp on mcp.routeID = route.routeID "
+            + "join vehicle on vehicle.routeID = route.routeID "
+            + "where route.routeID =\'" + req.query.ID + "\';", function (err, result, fields)
       {
             if (err) throw err;
             res.status(200);
@@ -131,16 +135,18 @@ app.get('/areaList', (req, res) =>
       });
 });
 
-// app.get('/areaList/detail', (req, res) =>
-// {
-//       const id;
-//       con.query("select * from area;", function (err, result, fields)
-//       {
-//             if (err) throw err;
-//             res.status(200);
-//             res.json(result);
-//       });
-// });
+app.get('/areaList/raw_info', (req, res) =>
+{
+      con.query("select mcp.mcpID,mcp.address "
+            + "from area "
+            + "join mcp on mcp.areaID = area.areaID "
+            + "where area.areaID =\'" + req.query.ID + "\';", function (err, result, fields)
+      {
+            if (err) throw err;
+            res.status(200);
+            res.json(result);
+      });
+});
 
 app.delete('/areaList/delete', (req, res) =>
 {

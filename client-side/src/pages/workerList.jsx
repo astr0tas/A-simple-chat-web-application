@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import ReactDOM from 'react-dom/client';
 import '../css/workerList.css';
 
 export const WorkerList = () =>
@@ -38,18 +39,26 @@ export const WorkerList = () =>
                   .catch(error => console.log(error));
       }
 
-      const taskingRoute = (event, employeeID) =>
-      {
-            event.preventDefault();
-            let target = event.currentTarget.id.substring(6);
-            Navigate("./" + target + "/taskScheduleCollector");
-      }
-
       const taskingArea = (event, employeeID) =>
       {
             event.preventDefault();
             let target = event.currentTarget.id.substring(5);
             Navigate("./" + target + "/taskScheduleJanitor");
+      }
+
+      const JanitorRow = (props) =>
+      {
+            return (
+                  <tr>
+                        <td> { props.name }</td>
+                        <td> { props.employeeID } </td>
+                        <td>
+                              <button class='Workers' onClick={ (event) => handleClickInfo(event, props.employeeID) }> Chi tiết </button>
+                              <button class='Area' onClick={ (event) => taskingArea(event, props.employeeID) }> Phân công khu vực</button>
+                              <button class='WorkerDel' onClick={ event => handleDelete(event, props.employeeID) }>Xóa</button>
+                        </td >
+                  </tr >
+            );
       }
 
       const renderJanitors = (event) =>
@@ -70,31 +79,36 @@ export const WorkerList = () =>
             })
                   .then(res =>
                   {
+                        let temp = [];
                         for (let i = 0; i < res.data.length; i++)
-                        {
-                              document.getElementById("workerList").innerHTML += "<tr>"
-                                    + "<td>" + res.data[i].name + "</td>"
-                                    + "<td>" + res.data[i].employeeID + "</td>"
-                                    + "<td>"
-                                    + "<button class = 'Workers'" + res.data[i].employeeID + "> Chi tiết </button>"
-                                    + "<button class = 'Area'" + res.data[i].employeeID + "> Phân công khu vực</button>"
-                                    + "<button class='WorkerDel'>Xóa</button>"
-                                    + "</td>"
-                                    + "<tr/>";
-                        }
-
-                        let obj = document.getElementsByClassName('WorkerDel');
-                        for (let i = 0; i < res.data.length; i++)
-                              obj[i].addEventListener('click', event => handleDelete(event, res.data[i].employeeID));
-                        obj = document.getElementsByClassName('Workers');
-                        for (let i = 0; i < res.data.length; i++)
-                              obj[i].addEventListener('click', event => handleClickInfo(event, res.data[i].employeeID));
-                        obj = document.getElementsByClassName('Area');
-                        for (let i = 0; i < res.data.length; i++)
-                              obj[i].addEventListener('click', event => taskingArea(event, res.data[i].employeeID));
+                              temp.push(<JanitorRow name={ res.data[i].name } employeeID={ res.data[i].employeeID } />);
+                        const render = ReactDOM.createRoot(document.getElementById('workerList'));
+                        render.render(<>{ temp }</>);
                   })
                   .catch(error => console.log(error));
 
+      }
+
+      const taskingRoute = (event, employeeID) =>
+      {
+            event.preventDefault();
+            let target = event.currentTarget.id.substring(6);
+            Navigate("./" + target + "/taskScheduleCollector");
+      }
+
+      const CollectorRow = (props) =>
+      {
+            return (
+                  <tr>
+                        <td> { props.name }</td>
+                        <td> { props.employeeID } </td>
+                        <td>
+                              <button class='Workers' onClick={ (event) => handleClickInfo(event, props.employeeID) }>Chi tiết </button>
+                              <button class='Route' onClick={ (event) => taskingRoute(event, props.employeeID) }>Tạo tuyến đường</button>
+                              <button class='WorkerDel' onClick={ event => handleDelete(event, props.employeeID) }>Xóa</button>
+                        </td >
+                  </tr >
+            );
       }
 
       const renderCollectors = (event) =>
@@ -115,28 +129,11 @@ export const WorkerList = () =>
             })
                   .then(res =>
                   {
+                        let temp = [];
                         for (let i in res.data)
-                        {
-                              document.getElementById("workerList").innerHTML += "<tr>"
-                                    + "<td>" + res.data[i].name + "</td>"
-                                    + "<td>" + res.data[i].employeeID + "</td>"
-                                    + "<td>"
-                                    + "<button class = 'Workers'" + res.data[i].employeeID + "> Chi tiết </button>"
-                                    + "<button class = 'Route'" + res.data[i].employeeID + "> Tạo tuyến đường</button>"
-                                    + "<button class='WorkerDel'>Xóa</button>"
-                                    + "</td>"
-                                    + "<tr/>";
-                        }
-
-                        let obj = document.getElementsByClassName('WorkerDel');
-                        for (let i = 0; i < res.data.length; i++)
-                              obj[i].addEventListener('click', event => handleDelete(event, res.data[i].employeeID));
-                        obj = document.getElementsByClassName('Workers');
-                        for (let i = 0; i < res.data.length; i++)
-                              obj[i].addEventListener('click', event => handleClickInfo(event, res.data[i].employeeID));
-                        obj = document.getElementsByClassName('Route');
-                        for (let i = 0; i < res.data.length; i++)
-                              obj[i].addEventListener('click', event => taskingRoute(event, res.data[i].employeeID));
+                              temp.push(<CollectorRow name={ res.data[i].name } employeeID={ res.data[i].employeeID } />);
+                        const render = ReactDOM.createRoot(document.getElementById('workerList'));
+                        render.render(<>{ temp }</>);
                   })
                   .catch(error => console.log(error));
       }

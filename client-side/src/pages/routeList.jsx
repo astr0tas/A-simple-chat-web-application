@@ -1,11 +1,25 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import ReactDOM from 'react-dom/client';
 import '../css/routeList.css';
 
 export const RouteList = () =>
 {
     const effectRan = useRef(false);
+
+    const RouteRow = (props) =>
+    {
+        return (
+            <tr>
+                <td> { props.routeID } </td>
+                <td>
+                    <button class='route' onClick={ event => handleClickInfo(event, props.routeID) }> Chi tiết </button>
+                    <button class='routeDel' onClick={ event => handleDelete(event, props.routeID) }>Xóa</button>
+                </td>
+            </tr>
+        );
+    }
 
     useEffect(() =>
     {
@@ -17,22 +31,11 @@ export const RouteList = () =>
             axios.get('http://localhost:4000/routeList')
                 .then(res =>
                 {
+                    let temp = [];
                     for (let i in res.data)
-                    {
-                        document.getElementById("RouteList").innerHTML += "<tr>"
-                            + "<td>" + res.data[i].routeID + "</td>"
-                            + "<td>"
-                            + "<button class = 'route'" + res.data[i].routeID + "> Chi tiết </button>"
-                            + "<button class='routeDel'>Xóa</button>"
-                            + "</td>"
-                            + "<tr/>";
-                    }
-                    let obj = document.getElementsByClassName('routeDel');
-                    for (let i = 0; i < res.data.length; i++)
-                        obj[i].addEventListener('click', event => handleDelete(event, res.data[i].routeID));
-                    obj = document.getElementsByClassName('route');
-                    for (let i = 0; i < res.data.length; i++)
-                        obj[i].addEventListener('click', event => handleClickInfo(event, res.data[i].routeID));
+                        temp.push(<RouteRow routeID={ res.data[i].routeID } />);
+                    const render = ReactDOM.createRoot(document.getElementById('RouteList'));
+                    render.render(<>{ temp }</>);
                 })
                 .catch(error => console.log(error));
             effectRan.current = true;

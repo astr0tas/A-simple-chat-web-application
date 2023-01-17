@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import axios from 'axios';
+import ReactDOM from 'react-dom/client';
 import '../css/vehicleInfo.css';
 
 export const VehicleInfo = () =>
@@ -10,12 +11,32 @@ export const VehicleInfo = () =>
       const currentRoute = useParams();
       const vehicleId = currentRoute.vehicleID;
 
-      const [brand, setBrand] = useState();
-      const [weight, setWeight] = useState();
-      const [status, setStatus] = useState();
-      const [licensePlate, setLicensePlate] = useState();
-      const [route, setRoute] = useState();
-
+      const PrintInfo = (props) =>
+      {
+            let link = '/routeList/' + props.routeID;
+            return (
+                  <>
+                        <thead><h2>Mã xe: </h2> <h2 class="Props"> { props.vehicleId } </h2></thead>
+                        <br />
+                        <br />
+                        <thead><h2>Biển số xe: </h2> <h2 class="Props">{ props.plate } </h2></thead>
+                        <br />
+                        <br />
+                        <thead><h2>Hãng sản xuất: </h2> <h2 class="Props">{ props.brand } </h2></thead>
+                        <br />
+                        <br />
+                        <thead><h2>Tải trọng tối đa: </h2> <h2 class="Props"> { props.maxWeight } </h2></thead>
+                        <br />
+                        <br />
+                        <thead ><h2>Tuyến đường chỉ định: </h2> <a href={ link }> { props.routeID } </a> </thead>
+                        <br />
+                        <br />
+                        <thead><h2>Trạng thái: </h2> <h2 class="Props">{ props.status }</h2></thead>
+                        <br />
+                        <br />
+                  </>
+            );
+      }
 
       useEffect(() =>
       {
@@ -27,11 +48,8 @@ export const VehicleInfo = () =>
                   axios.get('http://localhost:4000/vehicleList/detail', { params: { ID: vehicleId } })
                         .then(res =>
                         {
-                              setBrand(res.data[0].brand);
-                              setWeight(res.data[0].maxWeight);
-                              setStatus(res.data[0].status);
-                              setLicensePlate(res.data[0].plate);
-                              setRoute(res.data[0].routeID);
+                              const render = ReactDOM.createRoot(document.getElementById('info'));
+                              render.render(<PrintInfo vehicleId={ vehicleId } plate={ res.data[0].plate } brand={ res.data[0].brand } maxWeight={ res.data[0].maxWeight } routeID={ res.data[0].routeID } status={ res.data[0].status } />);
                         })
                         .catch(error => console.log(error));
 
@@ -54,19 +72,7 @@ export const VehicleInfo = () =>
                   <figure>
                         <img src='https://webexample75.files.wordpress.com/2022/12/20181029_081532_grande.jpg' alt="Ảnh MCP" />
                   </figure>
-                  <table className="Properties">
-                        <thead><h2>MÃ XE: </h2> <h2 class="Props">{ vehicleId }</h2></thead>
-                        <br />
-                        <thead><h2>BIỂN SỐ: </h2> <h2 class="Props">{ licensePlate }</h2></thead>
-                        <br />
-                        <thead><h2>HÃNG: </h2> <h2 class="Props">{ brand }</h2></thead>
-                        <br />
-                        <thead><h2>TẢI TRỌNG: </h2> <h2 class="Props">{ weight }</h2></thead>
-                        <br />
-                        <thead ><h2>TUYẾN ĐƯỜNG PHỤ TRÁCH: </h2> <a href={ '/routeList/' + route }>{ route } </a> </thead>
-                        <br />
-                        <thead><h2>TRẠNG THÁI: </h2> <h2 class="Props">{ status }</h2></thead>
-                        <br />
+                  <table className="Properties" id="info">
                   </table>
                   <br />
                   <br />
