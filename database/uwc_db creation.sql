@@ -19,7 +19,7 @@ create table employee(
     gender char(3) check (gender='Nam' or gender='Nữ'),
     phoneNum char(10) not null,
     address char(100),
-    picture longblob
+    picture mediumblob
 );
 
 create table workCalendar(
@@ -46,7 +46,7 @@ create table vehicle(
     brand char(10),
     maxWeight int not null,
 	routeID char(10) references route(routeID) on delete cascade,
-    picture longblob
+    picture mediumblob
 );
 
 create table area(
@@ -59,7 +59,7 @@ create table mcp(
     maximumCap int not null,
     currentCap int,
     latestCollectedDay date,
-    picture longblob,
+    picture mediumblob,
     routeID char(10) not null references route(routeID) on delete cascade,
     areaID char(10) not null references area(areaID) on delete cascade
 );
