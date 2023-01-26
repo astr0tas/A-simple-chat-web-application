@@ -8,7 +8,7 @@ Step 5: Press Window + R and search for services.msc, locate mysql and MySQL80 a
 Step 6: Put all the MCP picture files in the correct folder (you can not run the 'load_file()' command if you don't do this).
 	To find the path of the folder, you can run the command 'select @@secure_file_priv;' to find the path.
 	The default path is C:/ProgramData/MySQL/MySQL Server 8.0/Uploads/
-	If you want to create child folders in Uploads to store the pictures, you will have to change the paths in the uwc_data seeding file for example: from 'mcpxx.jpg' to 'your_folder/../mcpxx.jpg'.
+	If you want to create child folders in Uploads to store the pictures, you will have to change the paths in the uwc_data seeding file for example: from 'mcp01.jpg' to 'your_folder/../mcp01.jpg'.
 Step 7: You are ready to go!
 
 
