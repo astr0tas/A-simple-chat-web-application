@@ -4,6 +4,7 @@ import axios from 'axios';
 import ReactDOM from 'react-dom/client';
 import { formatDate_DDMMYYYY } from '../tools/formatDate.js';
 import '../css/mcpInfo.css';
+import { Buffer } from 'buffer';
 
 
 export const MCPInfo = () =>
@@ -36,6 +37,8 @@ export const MCPInfo = () =>
             );
       }
 
+      let base64String;
+
       useEffect(() =>
       {
             if (effectRan.current === false)
@@ -46,6 +49,8 @@ export const MCPInfo = () =>
                   axios.get('http://localhost:4000/mcpList/detail', { params: { ID: MCPId } })
                         .then(res =>
                         {
+                              document.getElementById('pic').src = 'data:image/jpg;base64,' + res.data[0].picture;
+
                               const render = ReactDOM.createRoot(document.getElementById('info'));
                               render.render(<PrintInfo MCPId={ MCPId } address={ res.data[0].address } maximumCap={ res.data[0].maximumCap } currentCap={ res.data[0].currentCap } date={ formatDate_DDMMYYYY(new Date(Date.parse(res.data[0].latestCollectedDay))) } />);
                         })
@@ -68,6 +73,7 @@ export const MCPInfo = () =>
                   <h1>Thông tin chi tiết MCP</h1>
                   <br />
                   <img id="pic" alt="Ảnh MCP" />
+
                   <table className="Properties" id="info">
                   </table>
                   <br />

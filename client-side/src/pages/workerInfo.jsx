@@ -63,6 +63,8 @@ export const WorkerInfo = () =>
                   axios.get('http://localhost:4000/workerList/detail', { params: { ID: workerID } })
                         .then(res =>
                         {
+                              document.getElementById('pic').src = 'data:image/jpg;base64,' + res.data[0].picture;
+
                               const render = ReactDOM.createRoot(document.getElementById('info'));
                               render.render(<PrintInfo workerID={ workerID } name={ res.data[0].name } gender={ res.data[0].gender } congViec={ congViec } phoneNum={ res.data[0].phoneNum } email={ res.data[0].email } ssn={ res.data[0].ssn } date={ formatDate_DDMMYYYY(new Date(Date.parse(res.data[0].dob))) } address={ res.data[0].address } />);
                         })
@@ -91,7 +93,7 @@ export const WorkerInfo = () =>
             <div class="workerInfo">
                   <h1>Thông tin chi tiết nhân viên</h1>
                   <br />
-                  <img src='https://d2gg9evh47fn9z.cloudfront.net/800px_COLOURBOX33936888.jpg' alt="Ảnh nhân viên" />
+                  <img id='pic' alt="Ảnh nhân viên" />
                   <br />
                   <table className="Properties" id="info">
                   </table>

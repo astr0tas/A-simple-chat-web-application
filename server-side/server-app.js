@@ -1,9 +1,10 @@
-var mysql = require('mysql');
+const fs = require('fs');
 
-var con = mysql.createConnection({
+const mysql = require('mysql');
+const con = mysql.createConnection({
       host: "localhost",
-      user: "root",
-      password: "",
+      user: "uwc",
+      password: "uwc123",
       database: "uwc",
       multipleStatements: true
 });
@@ -53,9 +54,11 @@ app.get('/mcpList/detail', (req, res) =>
       con.query("select * from mcp where mcpID=\'" + req.query.ID + "\';", function (err, result, fields)
       {
             if (err) throw err;
+            result[0].picture = result[0].picture.toString('base64');
             res.status(200);
             res.json(result);
       });
+
 });
 
 app.delete('/mcpList/delete', (req, res) =>
@@ -83,6 +86,7 @@ app.get('/vehicleList/detail', (req, res) =>
       con.query("select * from vehicle where vehicleID=\'" + req.query.ID + "\';", function (err, result, fields)
       {
             if (err) throw err;
+            result[0].picture = result[0].picture.toString('base64');
             res.status(200);
             res.json(result);
       });
@@ -189,6 +193,7 @@ app.get('/workerList/detail', (req, res) =>
       con.query("select * from employee where employeeID=\'" + req.query.ID + "\';", function (err, result, fields)
       {
             if (err) throw err;
+            result[0].picture = result[0].picture.toString('base64');
             res.status(200);
             res.json(result);
       });

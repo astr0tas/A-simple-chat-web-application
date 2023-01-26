@@ -48,6 +48,8 @@ export const VehicleInfo = () =>
                   axios.get('http://localhost:4000/vehicleList/detail', { params: { ID: vehicleId } })
                         .then(res =>
                         {
+                              document.getElementById('pic').src = 'data:image/jpg;base64,' + res.data[0].picture;
+
                               const render = ReactDOM.createRoot(document.getElementById('info'));
                               render.render(<PrintInfo vehicleId={ vehicleId } plate={ res.data[0].plate } brand={ res.data[0].brand } maxWeight={ res.data[0].maxWeight } routeID={ res.data[0].routeID } status={ res.data[0].status } />);
                         })
@@ -70,7 +72,7 @@ export const VehicleInfo = () =>
                   <h1>Thông tin kỹ thuật</h1>
                   <br />
                   <figure>
-                        <img src='https://webexample75.files.wordpress.com/2022/12/20181029_081532_grande.jpg' alt="Ảnh MCP" />
+                        <img id='pic' alt="Ảnh MCP" />
                   </figure>
                   <table className="Properties" id="info">
                   </table>

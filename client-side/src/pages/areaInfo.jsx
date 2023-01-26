@@ -105,22 +105,6 @@ export const AreaInfo = () =>
                         })
                         .catch(error => console.log(error));
 
-                  axios.get('http://localhost:4000/areaList/current_worker', { params: { date: formatDate_YYYYMMDD(current), shift: shift, ID: AreaId } })
-                        .then(res =>
-                        {
-                              let temp = [];
-                              for (let i = 0; i < res.data.length - 1; i++)
-                              {
-                                    let link = "../workerList/" + res.data[i].employeeID;
-                                    temp.push(<><a href={ link }>{ res.data[i].employeeID }</a> <> - </></>);
-                              }
-                              let link = "../workerList/" + res.data[res.data.length - 1].employeeID;
-                              temp.push(<a href={ link }>{ res.data[res.data.length - 1].employeeID }</a>);
-                              let render = ReactDOM.createRoot(document.getElementById('printJanitor'));
-                              render.render(<>{ temp }</>);
-                        })
-                        .catch(error => console.log(error));
-
                   effectRan.current = true;
             }
       });
