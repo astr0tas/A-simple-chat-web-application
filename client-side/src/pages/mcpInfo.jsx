@@ -4,7 +4,6 @@ import axios from 'axios';
 import ReactDOM from 'react-dom/client';
 import { formatDate_DDMMYYYY } from '../tools/formatDate.js';
 import '../css/mcpInfo.css';
-import { Buffer } from 'buffer';
 
 
 export const MCPInfo = () =>
@@ -36,8 +35,6 @@ export const MCPInfo = () =>
                   </>
             );
       }
-
-      let base64String;
 
       useEffect(() =>
       {
