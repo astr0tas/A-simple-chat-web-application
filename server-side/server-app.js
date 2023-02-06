@@ -54,7 +54,6 @@ app.get('/mcpList/detail', (req, res) =>
       con.query("select * from mcp where mcpID=\'" + req.query.ID + "\';", function (err, result, fields)
       {
             if (err) throw err;
-            result[0].picture = result[0].picture.toString('base64');
             res.status(200);
             res.json(result);
       });
@@ -86,7 +85,6 @@ app.get('/vehicleList/detail', (req, res) =>
       con.query("select * from vehicle where vehicleID=\'" + req.query.ID + "\';", function (err, result, fields)
       {
             if (err) throw err;
-            result[0].picture = result[0].picture.toString('base64');
             res.status(200);
             res.json(result);
       });
@@ -193,7 +191,6 @@ app.get('/workerList/detail', (req, res) =>
       con.query("select * from employee where employeeID=\'" + req.query.ID + "\';", function (err, result, fields)
       {
             if (err) throw err;
-            result[0].picture = result[0].picture.toString('base64');
             res.status(200);
             res.json(result);
       });

@@ -63,7 +63,10 @@ export const WorkerInfo = () =>
                   axios.get('http://localhost:4000/workerList/detail', { params: { ID: workerID } })
                         .then(res =>
                         {
-                              document.getElementById('pic').src = 'data:image/jpg;base64,' + res.data[0].picture;
+                              const data = new Uint8Array(res.data[0].picture.data);
+                              const blob = new Blob([data], { type: "image/png" });
+                              const url = URL.createObjectURL(blob);
+                              document.getElementById('pic').src = url;
 
                               const render = ReactDOM.createRoot(document.getElementById('info'));
                               render.render(<PrintInfo workerID={ workerID } name={ res.data[0].name } gender={ res.data[0].gender } congViec={ congViec } phoneNum={ res.data[0].phoneNum } email={ res.data[0].email } ssn={ res.data[0].ssn } date={ formatDate_DDMMYYYY(new Date(Date.parse(res.data[0].dob))) } address={ res.data[0].address } />);

@@ -48,7 +48,10 @@ export const VehicleInfo = () =>
                   axios.get('http://localhost:4000/vehicleList/detail', { params: { ID: vehicleId } })
                         .then(res =>
                         {
-                              document.getElementById('pic').src = 'data:image/jpg;base64,' + res.data[0].picture;
+                              const data = new Uint8Array(res.data[0].picture.data);
+                              const blob = new Blob([data], { type: "image/png" });
+                              const url = URL.createObjectURL(blob);
+                              document.getElementById('pic').src = url;
 
                               const render = ReactDOM.createRoot(document.getElementById('info'));
                               render.render(<PrintInfo vehicleId={ vehicleId } plate={ res.data[0].plate } brand={ res.data[0].brand } maxWeight={ res.data[0].maxWeight } routeID={ res.data[0].routeID } status={ res.data[0].status } />);
