@@ -1,5 +1,6 @@
 use uwc;
-set @path=@@secure_file_priv;
+-- set @path=@@secure_file_priv;
+set @path="E:/Projects/UWC-2.0-Enhanced-Edition/database/pictures/";
 -- select cast(@path as char);
 
 insert into accounts values("khoa","khoa123"),("nghia","nghia123"),("quang","quang123");
@@ -57,6 +58,8 @@ insert into vehicle values("3AA-1015","V01","Sẵn sàng sử dụng", "Heil",35
 ("3AA-5555","V08","Sẵn sàng sử dụng", "Heil",35,"R03",load_file( concat(@path,"vehicle.png"))),
 ("3AA-8977","V09","Sẵn sàng sử dụng", "Heil",35,"R02",load_file( concat(@path,"vehicle.png"))),
 ("3AA-1235","V10","Sẵn sàng sử dụng", "Heil",30,"R01",load_file( concat(@path,"vehicle.png")));
+
+set @path:="E:/Projects/UWC-2.0-Enhanced-Edition/database/pictures/MCPs/";
 
 insert into mcp values("MCP01","Hùng Vương, Quận 10, TP.HCM",30,15,null,load_file( concat(@path,"mcp01.png")),"R01","A10"),
 ("MCP02","Lê Hồng Phong, Quận 10, TP.HCM",20,17,null,load_file(concat(@path,"mcp02.png")),"R02","A09"),
