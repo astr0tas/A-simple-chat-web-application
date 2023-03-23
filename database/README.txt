@@ -13,6 +13,6 @@ Step 7: Open the 'uwc_data seeding.sql' file and locate the 'set @path' commands
 Step 8: You are ready to go!
 
 
-==>> Next run the uwc_create manager file first -> uwc_db creation -> uwc_data seeding.
+==>> Next run the uwc_create manager.sql file first then uwc_db creation.sql and finally uwc_data seeding.sql
 
 ==>> Enjoy the pain!

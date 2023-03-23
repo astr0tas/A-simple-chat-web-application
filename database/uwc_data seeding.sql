@@ -72,4 +72,4 @@ insert into mcp values("MCP01","Hùng Vương, Quận 10, TP.HCM",30,15,null,loa
 ("MCP09","Ngô Quyền, Quận 10, TP.HCM",17,15,null,load_file(concat(@path,"mcp09.png")),"R09","A02"),
 ("MCP10","3 Tháng 2, Quận 10, TP.HCM",15,10,null,load_file(concat(@path,"mcp10.png")),"R10","A01");
 
--- select*from mcp;
+-- select*from employee;
