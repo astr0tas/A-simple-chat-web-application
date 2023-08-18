@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-08-18T19:05:15.031Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="zVZnGdvDAHSnBPyJH7MU" version="21.6.8" type="github">
+<mxfile host="app.diagrams.net" modified="2023-08-18T19:05:34.315Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="OspVc1IdmpC19yWYjJPZ" version="21.6.8" type="github">
   <diagram name="Page-1" id="zO1krM9RJwl2RXNE8Sop">
     <mxGraphModel dx="1965" dy="1051" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -435,10 +435,10 @@
             <mxPoint x="-7" y="16" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="PcngEi1xsUKJxS339LNE-111" value="Log" style="shape=rhombus;double=1;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
+        <mxCell id="PcngEi1xsUKJxS339LNE-111" value="Status log" style="shape=rhombus;double=1;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
           <mxGeometry x="215" y="1010" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="PcngEi1xsUKJxS339LNE-114" value="Log" style="shape=rhombus;double=1;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
+        <mxCell id="PcngEi1xsUKJxS339LNE-114" value="Status log" style="shape=rhombus;double=1;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" vertex="1" parent="1">
           <mxGeometry x="570" y="1010" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="PcngEi1xsUKJxS339LNE-116" value="" style="endArrow=none;html=1;rounded=0;" edge="1" parent="1" source="PcngEi1xsUKJxS339LNE-37" target="PcngEi1xsUKJxS339LNE-111">
