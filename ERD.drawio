@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-08-18T18:59:00.695Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="nsI7aMYPPXxuzR5rZIIn" version="21.6.8" type="github">
+<mxfile host="app.diagrams.net" modified="2023-08-18T18:59:31.794Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" etag="HUKn5Wrv49LUXqkvjmOt" version="21.6.8" type="github">
   <diagram name="Page-1" id="zO1krM9RJwl2RXNE8Sop">
     <mxGraphModel dx="1965" dy="1051" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -421,8 +421,19 @@
         <mxCell id="PcngEi1xsUKJxS339LNE-105" value="" style="resizable=0;html=1;whiteSpace=wrap;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="PcngEi1xsUKJxS339LNE-104">
           <mxGeometry x="1" relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="PcngEi1xsUKJxS339LNE-107" value="Work logs composition keys consist of: employeeID, areaID/routeID, shiftNumber and Date" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+        <mxCell id="PcngEi1xsUKJxS339LNE-107" value="Work logs composition keys consist of: employeeID, areaID/routeID,[vehicleID], shiftNumber and Date" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
           <mxGeometry x="677.5" y="500" width="112.5" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="PcngEi1xsUKJxS339LNE-108" value="" style="shape=link;html=1;rounded=0;" edge="1" parent="1" source="PcngEi1xsUKJxS339LNE-38" target="PcngEi1xsUKJxS339LNE-79">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="444" y="690" as="sourcePoint" />
+            <mxPoint x="565" y="570" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="PcngEi1xsUKJxS339LNE-109" value="1" style="resizable=0;html=1;whiteSpace=wrap;align=right;verticalAlign=bottom;" connectable="0" vertex="1" parent="PcngEi1xsUKJxS339LNE-108">
+          <mxGeometry x="1" relative="1" as="geometry">
+            <mxPoint x="-7" y="16" as="offset" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
