@@ -3,17 +3,23 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter } from "react-router-dom";
 
-const container = document.getElementById('root');
+// const root = ReactDOM.createRoot(
+//   document.getElementById('root') as HTMLElement
+// );
+// root.render(
+//   <React.StrictMode>
+//     <App />
+//   </React.StrictMode>
+// );
+
+const container: HTMLElement = document.getElementById('root') as HTMLElement;
 if (container !== null && container !== undefined)
 {
-  const root = ReactDOM.createRoot(container);
+  const root: ReactDOM.Root = ReactDOM.createRoot(container);
   root.render(
     <React.StrictMode>
-      <BrowserRouter>
-          <App />
-      </BrowserRouter>
+      <App />
     </React.StrictMode>
   );
 }

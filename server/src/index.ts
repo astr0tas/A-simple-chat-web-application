@@ -1,15 +1,24 @@
 import express, { Express, Request, Response } from 'express';
+import https from 'https';
+import fs from 'fs';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 const port: number = 8080;
 
 const app: Express = express();
-
 app.get('/', (req: Request, res: Response) =>
 {
-      res.send("Hi");
+      res.send("Welcum");
 });
 
-app.listen(port, () =>
+const __dirname = dirname(dirname(fileURLToPath(import.meta.url)));
+const server: https.Server = https.createServer({
+      key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+      cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'))
+}, app);
+
+server.listen(port, () =>
 {
-      console.log("Server now listening on port " + port);
+      console.log("Server listening on port " + port);
 });
