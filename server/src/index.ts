@@ -3,10 +3,20 @@ import https from 'https';
 import fs from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
+import cors from 'cors';
+import bodyParser from "body-parser";
 
 const port: number = 8080;
 
 const app: Express = express();
+app.use(cors({
+      origin: '*',
+      methods: '*',
+      allowedHeaders: ['Content-Type', 'Authorization'],
+      credentials: true
+}));
+app.use(express.json());
+app.use(bodyParser.json());
 app.get('/', (req: Request, res: Response) =>
 {
       res.send("Welcum");
