@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 function submitForm(): void
 {
@@ -7,6 +9,13 @@ function submitForm(): void
 
 export default function LoginComponent(): JSX.Element
 {
+      useEffect(() =>
+      {
+            axios.get('https://localhost:8080/')
+                  .then(response => { console.log(response); })
+                  .catch(error => { console.log(error); })
+      });
+
       return (
             <div className="w-full h-full flex flex-col bg-yellow-100 p-[5px] overflow-auto">
                   <div className='m-auto w-[90%] max-w-[25rem] h-[100%] min-h-[25rem] max-h-[35rem] bg-slate-50 rounded-xl border border-solid border-gray-400 flex flex-col'>
