@@ -1,0 +1,10 @@
+.error {
+      color: red;
+      font-size: 1.1rem;
+}
+
+@media only screen and (max-width:300px) {
+      .error {
+            font-size: 0.9rem;
+      }
+}
