@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-10-26T03:35:30.281Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36" etag="wlPtqMLv1vskgE_EZ4Pt" version="22.0.8" type="github">
+<mxfile host="app.diagrams.net" modified="2023-10-26T03:55:17.556Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36" etag="4Gp73JKJoWf191dXBtVM" version="22.0.8" type="github">
   <diagram name="Page-1" id="zO1krM9RJwl2RXNE8Sop">
     <mxGraphModel dx="1626" dy="870" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -340,10 +340,10 @@
         <mxCell id="PcngEi1xsUKJxS339LNE-105" value="" style="resizable=0;html=1;whiteSpace=wrap;align=right;verticalAlign=bottom;" parent="PcngEi1xsUKJxS339LNE-104" connectable="0" vertex="1">
           <mxGeometry x="1" relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="PcngEi1xsUKJxS339LNE-111" value="Status log" style="shape=rhombus;double=1;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
+        <mxCell id="PcngEi1xsUKJxS339LNE-111" value="MCP status log" style="shape=rhombus;double=1;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
           <mxGeometry x="215" y="1010" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="PcngEi1xsUKJxS339LNE-114" value="Status log" style="shape=rhombus;double=1;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
+        <mxCell id="PcngEi1xsUKJxS339LNE-114" value="Vehicle status log" style="shape=rhombus;double=1;perimeter=rhombusPerimeter;whiteSpace=wrap;html=1;align=center;" parent="1" vertex="1">
           <mxGeometry x="570" y="1010" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="PcngEi1xsUKJxS339LNE-116" value="" style="endArrow=none;html=1;rounded=0;" parent="1" source="PcngEi1xsUKJxS339LNE-37" target="PcngEi1xsUKJxS339LNE-111" edge="1">
