@@ -4,9 +4,9 @@ export class AuthenticationModel {
     constructor() {
         this.conn = mysql.createPool({
             host: "localhost",
-            user: "",
-            password: "",
-            database: "",
+            user: "uwc",
+            password: "uwc123",
+            database: "UWC_ENHANCED_EDITION",
             multipleStatements: true
         });
     }
@@ -22,33 +22,14 @@ export class AuthenticationModel {
             });
         }
     }
-    // login(username, password, type, callback)
-    // {
-    //       if (type === 1)
-    //             this.conn.query(`select employee.ID from employee join admin on admin.id=employee.id where username=? and password=?`, [username, password], (err, res) =>
-    //             {
-    //                   if (err)
-    //                         callback(null, err);
-    //                   else
-    //                         callback(res, null);
-    //             });
-    //       else if (type === 2)
-    //             this.conn.query(`select employee.ID from employee join teacher on teacher.id=employee.id where username=? and password=?`, [username, password], (err, res) =>
-    //             {
-    //                   if (err)
-    //                         callback(null, err);
-    //                   else
-    //                         callback(res, null);
-    //             });
-    //       else if (type === 3)
-    //             this.conn.query(`select employee.ID from employee join supervisor on supervisor.id=employee.id where username=? and password=?`, [username, password], (err, res) =>
-    //             {
-    //                   if (err)
-    //                         callback(null, err);
-    //                   else
-    //                         callback(res, null);
-    //             });
-    // }
+    login(username, password, callback) {
+        this.conn.query(`select * from account where username=? and password=?`, [username, password], (err, res) => {
+            if (err)
+                callback(null, err);
+            else
+                callback(res, null);
+        });
+    }
     // recovery(username, password, email, phone, callback)
     // {
     //       this.conn.query(`update employee set password=? where username=? and email=? and phone=?`, [password, username, email, phone], (err, res) =>
@@ -59,18 +40,8 @@ export class AuthenticationModel {
     //                   callback(res, null);
     //       });
     // }
-    // validateUser(username, email, phone, callback)
-    // {
-    //       this.conn.query(`select * from employee where username=? and email=? and phone=?`, [username, email, phone], (err, res) =>
-    //       {
-    //             if (err)
-    //                   callback(null, err);
-    //             else
-    //                   callback(res, null);
-    //       })
-    // }
-    validateID(id, callback) {
-        this.conn.query(`select id from admin where id=?`, [id], (err, res) => {
+    validateUser(username, callback) {
+        this.conn.query(`select username from account where username=?`, [username], (err, res) => {
             if (err)
                 callback(null, err);
             else

@@ -8,7 +8,7 @@ const request = axios.create({
       withCredentials: true
 });
 
-async function encrypt(data: any): Promise<string | false>
+async function encrypt(data: string): Promise<string | false>
 {
       const res = await axios.get(`https://${ domain }/getServerPublicKey`);
       const encryptor = new JSEncrypt();
@@ -20,7 +20,7 @@ request.interceptors.request.use(async (req) =>
 {
       // if (req.method === 'post')
       // {
-      const encryptedData = await encrypt(req.data);
+      const encryptedData = await encrypt(JSON.stringify(req.data));
       req.data = { key: key.getPublicKey(), data: encryptedData };
       // }
       return req;
@@ -31,8 +31,12 @@ request.interceptors.request.use(async (req) =>
 
 request.interceptors.response.use(res =>
 {
-      const decryptedData = key.decrypt(res.data);
-      return { ...res, data: decryptedData };
+      if (res.data.isEncrypted)
+      {
+            const decryptedData = key.decrypt(res.data.data);
+            return { ...res, data: decryptedData };
+      }
+      return { ...res, data: res.data.data };
 }, (error) =>
 {
       return Promise.reject(error);

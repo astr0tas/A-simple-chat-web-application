@@ -36,13 +36,13 @@ create table vehicle(
     maximumCap int not null check (maximumCap>0)
 );
 
-create table vehicleLog(
-	vehicleID char(10) references vehicle(ID) on delete cascade on update cascade,
-    date date,
-    time time,
-    currentPosition text not null,
-    primary key(vehicleID,date,time)
-);
+-- create table vehicleLog(
+-- 	vehicleID char(10) references vehicle(ID) on delete cascade on update cascade,
+--     date date,
+--     time time,
+--     currentPosition text not null,
+--     primary key(vehicleID,date,time)
+-- );
 
 create table area(
 	ID char(10) primary key
@@ -61,12 +61,12 @@ create table mcp(
     routeID char(10) not null references router(ID) on delete cascade on update cascade
 );
 
-create table mcpLog(
-	mcpID char(10) references MCP(ID) on delete cascade on update cascade,
-    date date,
-    time time,
-    currentCap int not null check (currentCap>=0)
-);
+-- create table mcpLog(
+-- 	mcpID char(10) references MCP(ID) on delete cascade on update cascade,
+--     date date,
+--     time time,
+--     currentCap int not null check (currentCap>=0)
+-- );
 
 create table shift(
 	number int primary key,

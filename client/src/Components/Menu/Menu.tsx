@@ -9,6 +9,8 @@ import { FaTruckMoving } from 'react-icons/fa';
 import { GiRoad } from 'react-icons/gi';
 import { RiRoadMapLine } from 'react-icons/ri';
 import '../../General css/scroll.css';
+import domain from '../../Tools/domain';
+import axios from 'axios';
 
 export default function Menu(): JSX.Element
 {
@@ -25,7 +27,17 @@ export default function Menu(): JSX.Element
 
       useEffect(() =>
       {
-            setActiveTab(window.location.pathname); // not finished
+            axios.get(`https://${ domain }/`, {
+                  withCredentials: true
+            })
+                  .then(res =>
+                  {
+                        if (!res.data.found)
+                              Navigate('/');
+                        else
+                              setActiveTab(window.location.pathname);
+                  })
+                  .catch(error => console.log(error));
 
             trackWidth();
 
@@ -72,7 +84,14 @@ export default function Menu(): JSX.Element
 
       function logOut(): void
       {
-
+            axios.get(`https://${ domain }/logout`, {
+                  withCredentials: true
+            })
+                  .then(res =>
+                  {
+                        Navigate('/');
+                  })
+                  .catch(error => console.log(error));
       }
 
       function trackWidth(): void
@@ -92,16 +111,16 @@ export default function Menu(): JSX.Element
                   <div className={ `h-full flex flex-col fixed ${ styles.navbar }` } style={ { backgroundColor: '#E6E6E6', width: dynamicWidth } } ref={ navbar }>
                         <div className={ `w-full ${ styles.dummy }` } style={ { minHeight: '50px' } }></div>
                         <div className={ `grow flex flex-col overflow-auto ${ styles.tabs } mt-md-3 hideBrowserScrollbar` } style={ { opacity: dynamicOpacity } }>
-                              <NavLink to={ "" } className={ `${ activeTab.includes('/staff') ? styles.activeTab : styles.hover } no-underline mb-3 flex items-center justify-center mt-12` } onClick={ () => setRender(!render) }>
+                              <NavLink to={ "/staff" } className={ `${ activeTab.includes('/staff') ? styles.activeTab : styles.hover } no-underline mb-3 flex items-center justify-center mt-12` } onClick={ () => setRender(!render) }>
                                     <p className={ `flex items-center justify-center p-0` } style={ { fontSize: '2rem', whiteSpace: 'nowrap', color: 'black' } }><GrUserWorker />Staff</p>
                               </NavLink>
-                              <NavLink to={ "" } className={ `${ activeTab.includes('/vehicle') ? styles.activeTab : styles.hover } no-underline mb-3 flex items-center justify-center mt-12` } onClick={ () => setRender(!render) }>
+                              <NavLink to={ "/vehicle" } className={ `${ activeTab.includes('/vehicle') ? styles.activeTab : styles.hover } no-underline mb-3 flex items-center justify-center mt-12` } onClick={ () => setRender(!render) }>
                                     <p className={ `flex items-center justify-center p-0` } style={ { fontSize: '2rem', whiteSpace: 'nowrap', color: 'black' } }><FaTruckMoving />Vehicles</p>
                               </NavLink>
-                              <NavLink to={ "" } className={ `${ activeTab.includes('/route') ? styles.activeTab : styles.hover } no-underline mb-3 flex items-center justify-center mt-12` } onClick={ () => setRender(!render) }>
+                              <NavLink to={ "/route" } className={ `${ activeTab.includes('/route') ? styles.activeTab : styles.hover } no-underline mb-3 flex items-center justify-center mt-12` } onClick={ () => setRender(!render) }>
                                     <p className={ `flex items-center justify-center p-0` } style={ { fontSize: '2rem', whiteSpace: 'nowrap', color: 'black' } }><GiRoad />Routes</p>
                               </NavLink>
-                              <NavLink to={ "" } className={ `${ activeTab.includes('/area') ? styles.activeTab : styles.hover } no-underline mb-3 flex items-center justify-center mt-12` } onClick={ () => setRender(!render) }>
+                              <NavLink to={ "/area" } className={ `${ activeTab.includes('/area') ? styles.activeTab : styles.hover } no-underline mb-3 flex items-center justify-center mt-12` } onClick={ () => setRender(!render) }>
                                     <p className={ `flex items-center justify-center p-0` } style={ { fontSize: '2rem', whiteSpace: 'nowrap', color: 'black' } }><RiRoadMapLine />Areas</p>
                               </NavLink>
                               <div className={ `${ styles.hover } mt-auto flex justify-center` } onClick={ logOut } >
