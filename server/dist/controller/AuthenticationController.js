@@ -97,4 +97,30 @@ AuthenticationRoutes.get('/logout', (req, res) => {
         });
     }
 });
+AuthenticationRoutes.post('/recoveryValidation', (req, res) => {
+    const data = JSON.parse(key.decrypt(req.body.data, 'utf8'));
+    model.validateUser(data.params.username, (result, err) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send({ message: 'Server internal error!' });
+        }
+        else {
+            if (result && result.length)
+                res.status(200).send({ isEncrypted: false, data: { found: true } });
+            else
+                res.status(200).send({ isEncrypted: false, data: { found: false } });
+        }
+    });
+});
+AuthenticationRoutes.post('/recoveryNewPassword', (req, res) => {
+    const data = JSON.parse(key.decrypt(req.body.data, 'utf8'));
+    model.recovery(data.params.username, data.params.password, (result, err) => {
+        if (err) {
+            console.log(err);
+            res.status(500).send({ message: 'Server internal error!' });
+        }
+        else
+            res.status(200).send({ isEncrypted: false, data: { message: 'Password changed!' } });
+    });
+});
 export default AuthenticationRoutes;

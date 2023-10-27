@@ -14,7 +14,7 @@ const AuthenticationRoutes: Router = express.Router();
 AuthenticationRoutes.post('/login', (req, res) =>
 {
       const data: any = JSON.parse(key.decrypt(req.body.data, 'utf8'));
-      model.login(data.params.username, data.params.password, (result: mysql.RowDataPacket[] | null, err: mysql.QueryError | null) =>
+      model.login(data.params.username, data.params.password, (result, err) =>
       {
             if (err)
             {
@@ -47,7 +47,7 @@ AuthenticationRoutes.get('/', (req, res) =>
       }
       else
       {
-            model.validateUser(req.session.username, (result: mysql.RowDataPacket[] | null, err: mysql.QueryError | null) =>
+            model.validateUser(req.session.username, (result, err) =>
             {
                   if (err)
                   {
@@ -113,7 +113,7 @@ AuthenticationRoutes.get('/logout', (req, res) =>
                               }
 
                               // Filter the list to include only the additional session files for the specified session
-                              const additionalFiles:string[] = files.filter((file) => additionalFilesPattern.test(file));
+                              const additionalFiles: string[] = files.filter((file) => additionalFilesPattern.test(file));
 
                               // Delete each additional session file
                               additionalFiles.forEach((file) =>
@@ -134,6 +134,41 @@ AuthenticationRoutes.get('/logout', (req, res) =>
                   }
             });
       }
+});
+
+AuthenticationRoutes.post('/recoveryValidation', (req, res) =>
+{
+      const data: any = JSON.parse(key.decrypt(req.body.data, 'utf8'));
+      model.validateUser(data.params.username, (result, err) =>
+      {
+            if (err)
+            {
+                  console.log(err);
+                  res.status(500).send({ message: 'Server internal error!' });
+            }
+            else
+            {
+                  if (result && result.length)
+                        res.status(200).send({ isEncrypted: false, data: { found: true } });
+                  else
+                        res.status(200).send({ isEncrypted: false, data: { found: false } });
+            }
+      });
+});
+
+AuthenticationRoutes.post('/recoveryNewPassword', (req, res) =>
+{
+      const data: any = JSON.parse(key.decrypt(req.body.data, 'utf8'));
+      model.recovery(data.params.username, data.params.password, (result, err) =>
+      {
+            if (err)
+            {
+                  console.log(err);
+                  res.status(500).send({ message: 'Server internal error!' });
+            }
+            else
+                  res.status(200).send({ isEncrypted: false, data: { message: 'Password changed!' } });
+      });
 });
 
 export default AuthenticationRoutes;

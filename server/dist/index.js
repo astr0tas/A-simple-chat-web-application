@@ -44,9 +44,13 @@ app.get('/getServerPublicKey', (req, res) => {
     res.status(200).send({ key: key.exportKey('public') });
 });
 app.use((req, res, next) => {
+    console.log('====================================');
+    console.log('Request url: ' + req.url);
+    console.log('Request method: ' + req.method);
     const contentType = req.get('Content-Type');
     console.log('Content-Type:', contentType);
-    if (req.url === '/login' || req.url === '/logout' || req.url === '/recovery' || req.url === '/getServerPublicKey')
+    console.log('====================================');
+    if (req.url === '/login' || req.url === '/logout' || req.url === '/recoveryValidation' || req.url === '/recoveryNewPassword' || req.url === '/getServerPublicKey')
         next();
     else {
         if (!req.session) {

@@ -30,16 +30,14 @@ export class AuthenticationModel {
                 callback(res, null);
         });
     }
-    // recovery(username, password, email, phone, callback)
-    // {
-    //       this.conn.query(`update employee set password=? where username=? and email=? and phone=?`, [password, username, email, phone], (err, res) =>
-    //       {
-    //             if (err)
-    //                   callback(null, err);
-    //             else
-    //                   callback(res, null);
-    //       });
-    // }
+    recovery(username, password, callback) {
+        this.conn.query(`update account set password=? where username=?`, [password, username], (err, res) => {
+            if (err)
+                callback(null, err);
+            else
+                callback(res, null);
+        });
+    }
     validateUser(username, callback) {
         this.conn.query(`select username from account where username=?`, [username], (err, res) => {
             if (err)

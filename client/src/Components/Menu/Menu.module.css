@@ -60,6 +60,18 @@
       background-color: #a0a0a0;
 }
 
+.background {
+      background-image: url('https://static.vecteezy.com/system/resources/previews/003/527/366/non_2x/green-city-park-with-buildings-background-free-vector.jpg');
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      z-index: -10;
+      opacity: 0.5;
+      position: fixed;
+      height: 100%;
+      width: 100%;
+}
+
 @media only screen and (min-width:768px) {
       .page {
             height: 100%;

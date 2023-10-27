@@ -43,16 +43,16 @@ export class AuthenticationModel
             });
       }
 
-      // recovery(username, password, email, phone, callback)
-      // {
-      //       this.conn.query(`update employee set password=? where username=? and email=? and phone=?`, [password, username, email, phone], (err, res) =>
-      //       {
-      //             if (err)
-      //                   callback(null, err);
-      //             else
-      //                   callback(res, null);
-      //       });
-      // }
+      recovery(username: string, password: string, callback: (result: mysql.ResultSetHeader[] | null, err: mysql.QueryError | null) => void)
+      {
+            this.conn.query(`update account set password=? where username=?`, [password, username], (err, res) =>
+            {
+                  if (err)
+                        callback(null, err);
+                  else
+                        callback(res as mysql.ResultSetHeader[], null);
+            });
+      }
       
       validateUser(username: string | undefined, callback: (result:mysql.RowDataPacket[] | null, err: mysql.QueryError | null) => void)
       {
