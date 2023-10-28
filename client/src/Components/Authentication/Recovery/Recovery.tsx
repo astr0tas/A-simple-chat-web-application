@@ -1,14 +1,16 @@
 import { useState } from "react"
 import request from "../../../Tools/request";
 import domain from "../../../Tools/domain";
-import { Link } from 'react-router-dom';
+import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
 import { FormEvent } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import styles from './Recovery.module.css';
-
+import { Modal } from "flowbite-react";
 
 export default function RecoveryComponent(): JSX.Element
 {
+      const Navigate: NavigateFunction = useNavigate();
+
       const [username, setUsername] = useState<string | null>(null);
       const [password, setPassword] = useState<string | null>(null);
       const [repassword, setRepassword] = useState<string | null>(null);
@@ -19,6 +21,7 @@ export default function RecoveryComponent(): JSX.Element
       const [isPasswordNotMatch, setIsPasswordNotMatch] = useState<boolean>(false);
       const [isRepasswordEmpty, setIsRepasswordEmpty] = useState<boolean>(false);
       const [validateMode, setValidateMode] = useState<boolean>(true);
+      const [showPopUp, setShowPopUp] = useState<boolean>(false);
 
       function submitValidation(e: FormEvent): void
       {
@@ -65,7 +68,7 @@ export default function RecoveryComponent(): JSX.Element
                   request.post(`https://${ domain }/recoveryNewPassword`, { params: { username: username, password: password } }, { headers: { 'Content-Type': 'application/json' } })
                         .then(res =>
                         {
-                              console.log(res);
+                              setShowPopUp(true)
                         })
                         .catch(err => console.log(err));
             }
@@ -87,6 +90,19 @@ export default function RecoveryComponent(): JSX.Element
       return (
             <>
                   <div className={ `${ styles.background }` }></div>
+                  <Modal dismissible show={ showPopUp } onClose={ () => { setShowPopUp(false); Navigate('/'); } }>
+                        <Modal.Header className="p-2"></Modal.Header>
+                        <Modal.Body>
+                              <h2 className="text-center text-4xl">Password changed successfully!</h2>
+                        </Modal.Body>
+                        <Modal.Footer className="justify-center">
+                              <button onClick={ () =>
+                              {
+                                    setShowPopUp(false);
+                                    Navigate('/');
+                              } } className="h-[3rem] min-w-[8rem] text-xl border-2 rounded-md bg-sky-600 text-white hover:cursor-pointer active:bg-sky-700">Back to login</button>
+                        </Modal.Footer>
+                  </Modal>
                   { validateMode &&
                         <div className="w-full h-full flex flex-col p-[5px] overflow-auto">
                               <div className={ `m-auto w-[90%] max-w-[25rem] h-[25rem] bg-slate-50 rounded-xl border border-solid border-gray-400 flex flex-col` }>
