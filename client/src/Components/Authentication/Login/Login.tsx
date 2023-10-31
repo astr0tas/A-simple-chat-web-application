@@ -9,6 +9,8 @@ import domain from '../../../Tools/domain';
 
 export default function LoginComponent(): JSX.Element
 {
+      document.title = "Login";
+
       const [username, setUsername] = useState<string | null>(null);
       const [password, setPassword] = useState<string | null>(null);
 

@@ -9,6 +9,8 @@ import { Modal } from "flowbite-react";
 
 export default function RecoveryComponent(): JSX.Element
 {
+      document.title = "Recovery";
+
       const Navigate: NavigateFunction = useNavigate();
 
       const [username, setUsername] = useState<string | null>(null);
