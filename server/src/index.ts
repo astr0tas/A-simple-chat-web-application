@@ -64,7 +64,7 @@ app.use((req, res, next) =>
       {
             if (!req.session)
             {
-                  res.status(400).send('Session cookie not present!');
+                  res.status(400).send({message:'Session cookie not present!'});
                   return;
             }
 
