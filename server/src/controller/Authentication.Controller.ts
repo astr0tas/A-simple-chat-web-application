@@ -1,6 +1,6 @@
 import express, { Router } from "express";
 import { key } from "../index.js"; // Note for AuthenticationController.ts: Must include `.js` extension in order to work properly!
-import { AuthenticationModel } from "../model/AuthenticationModel.js"; // Note for AuthenticationController.ts: Must include `.js` extension in order to work properly!
+import { AuthenticationModel } from "../model/Authentication.Model.js"; // Note for AuthenticationController.ts: Must include `.js` extension in order to work properly!
 import mysql from "mysql2";
 import path from 'path';
 import { fileURLToPath } from 'url';

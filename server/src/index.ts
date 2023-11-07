@@ -9,9 +9,9 @@ import { Server as SocketServer } from "socket.io";
 import NodeRSA from 'node-rsa';
 import session from "express-session";
 import FileStoreFactory from 'session-file-store';
-import { AuthenticationModel } from './model/AuthenticationModel.js'; // Note for index.ts: Must include `.js` extension in order to work properly!
+import { AuthenticationModel } from './model/Authentication.Model.js'; // Note for index.ts: Must include `.js` extension in order to work properly!
 import mysql from 'mysql2';
-import AuthenticationRoutes from './controller/AuthenticationController.js'; // Note for index.ts: Must include `.js` extension in order to work properly!
+import AuthenticationRoutes from './controller/Authentication.Controller.js'; // Note for index.ts: Must include `.js` extension in order to work properly!
 import domain from './domain.js'; // Note for index.ts: Must include `.js` extension in order to work properly!
 
 const port: number = 8080;
@@ -64,7 +64,7 @@ app.use((req, res, next) =>
       {
             if (!req.session)
             {
-                  res.status(400).send({message:'Session cookie not present!'});
+                  res.status(400).send({ message: 'Session cookie not present!' });
                   return;
             }
 
