@@ -1,45 +1,23 @@
 import express from 'express';
 import https from 'https';
-import fs from 'fs';
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
 import cors from 'cors';
 import bodyParser from "body-parser";
 import { Server as SocketServer } from "socket.io";
-import NodeRSA from 'node-rsa';
 import session from "express-session";
-import FileStoreFactory from 'session-file-store';
-import { AuthenticationModel } from './model/AuthenticationModel.js'; // Note for index.ts: Must include `.js` extension in order to work properly!
-import AuthenticationRoutes from './controller/AuthenticationController.js'; // Note for index.ts: Must include `.js` extension in order to work properly!
-import domain from './domain.js'; // Note for index.ts: Must include `.js` extension in order to work properly!
-const port = 8080;
+import { AuthenticationModel } from './model/Authentication.Model.js'; // Must include `.js` extension in order to work properly!
+import AuthenticationRoutes from './controller/Authentication.Controller.js'; // Must include `.js` extension in order to work properly!
+import exceptionURLs from './config/exceptionURL.config.js'; // Must include `.js` extension in order to work properly!
+import corsConfig from './config/cors.config.js'; // Must include `.js` extension in order to work properly!
+import sessionConfig from './config/session.config.js'; // Must include `.js` extension in order to work properly!
+import key from './config/RSAKey.config.js'; // Must include `.js` extension in order to work properly!
+import SSL from './config/SSL.config.js'; // Must include `.js` extension in order to work properly!
+import PORT from './config/PORT.config.js'; // Must include `.js` extension in order to work properly!
 const app = express();
-const key = new NodeRSA({ b: 2048 });
-key.setOptions({ encryptionScheme: 'pkcs1' });
-export { key };
-const FileStore = FileStoreFactory(session);
 const validator = new AuthenticationModel();
-app.use(cors({
-    origin: `https://${domain}`,
-    methods: '*',
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-}));
+app.use(cors(corsConfig));
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(session({
-    store: new FileStore({
-        path: `${dirname(fileURLToPath(import.meta.url))}/model/sessions`,
-    }),
-    secret: 'uwc-enhanced-edition',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: false,
-        httpOnly: true,
-        maxAge: 3600000 * 24 * 3,
-    }
-}));
+app.use(session(sessionConfig));
 app.get('/getServerPublicKey', (req, res) => {
     res.status(200).send({ key: key.exportKey('public') });
 });
@@ -50,11 +28,11 @@ app.use((req, res, next) => {
     const contentType = req.get('Content-Type');
     console.log('Content-Type:', contentType);
     console.log('====================================');
-    if (req.url === '/login' || req.url === '/logout' || req.url === '/recoveryValidation' || req.url === '/recoveryNewPassword' || req.url === '/getServerPublicKey')
+    if (exceptionURLs.includes(req.url))
         next();
     else {
         if (!req.session) {
-            res.status(400).send('Session cookie not present!');
+            res.status(400).send({ message: 'Session cookie not present!' });
             return;
         }
         validator.validateUser(req.session.username, (result, err) => {
@@ -76,12 +54,8 @@ app.use((req, res, next) => {
     }
 });
 app.use('/', AuthenticationRoutes);
-const __dirname = dirname(dirname(fileURLToPath(import.meta.url)));
-const server = https.createServer({
-    key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'))
-}, app);
+const server = https.createServer(SSL, app);
 const io = new SocketServer(server);
-server.listen(port, () => {
-    console.log("Server listening on port " + port);
+server.listen(PORT, () => {
+    console.log("Server listening on port " + PORT);
 });

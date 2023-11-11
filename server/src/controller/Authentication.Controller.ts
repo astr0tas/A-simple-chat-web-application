@@ -1,10 +1,10 @@
 import express, { Router } from "express";
-import { key } from "../index.js"; // Note for AuthenticationController.ts: Must include `.js` extension in order to work properly!
-import { AuthenticationModel } from "../model/Authentication.Model.js"; // Note for AuthenticationController.ts: Must include `.js` extension in order to work properly!
+import { AuthenticationModel } from "../model/Authentication.Model.js"; // Must include `.js` extension in order to work properly!
 import mysql from "mysql2";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import decryptor from "../tools/decryptor.tool.js"; // Must include `.js` extension in order to work properly!
 
 
 const model: AuthenticationModel = new AuthenticationModel();
@@ -13,7 +13,7 @@ const AuthenticationRoutes: Router = express.Router();
 
 AuthenticationRoutes.post('/login', (req, res) =>
 {
-      const data: any = JSON.parse(key.decrypt(req.body.data, 'utf8'));
+      const data: any = decryptor(req.body.data);
       model.login(data.params.username, data.params.password, (result, err) =>
       {
             if (err)
@@ -138,7 +138,7 @@ AuthenticationRoutes.get('/logout', (req, res) =>
 
 AuthenticationRoutes.post('/recoveryValidation', (req, res) =>
 {
-      const data: any = JSON.parse(key.decrypt(req.body.data, 'utf8'));
+      const data: any = decryptor(req.body.data);
       model.validateUser(data.params.username, (result, err) =>
       {
             if (err)
@@ -158,7 +158,7 @@ AuthenticationRoutes.post('/recoveryValidation', (req, res) =>
 
 AuthenticationRoutes.post('/recoveryNewPassword', (req, res) =>
 {
-      const data: any = JSON.parse(key.decrypt(req.body.data, 'utf8'));
+      const data: any = decryptor(req.body.data);
       model.recovery(data.params.username, data.params.password, (result, err) =>
       {
             if (err)

@@ -1,13 +1,13 @@
 import express from "express";
-import { key } from "../index.js"; // Note for AuthenticationController.ts: Must include `.js` extension in order to work properly!
-import { AuthenticationModel } from "../model/AuthenticationModel.js"; // Note for AuthenticationController.ts: Must include `.js` extension in order to work properly!
+import { AuthenticationModel } from "../model/Authentication.Model.js"; // Must include `.js` extension in order to work properly!
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import decryptor from "../tools/decryptor.tool.js"; // Must include `.js` extension in order to work properly!
 const model = new AuthenticationModel();
 const AuthenticationRoutes = express.Router();
 AuthenticationRoutes.post('/login', (req, res) => {
-    const data = JSON.parse(key.decrypt(req.body.data, 'utf8'));
+    const data = decryptor(req.body.data);
     model.login(data.params.username, data.params.password, (result, err) => {
         if (err) {
             console.log(err);
@@ -98,7 +98,7 @@ AuthenticationRoutes.get('/logout', (req, res) => {
     }
 });
 AuthenticationRoutes.post('/recoveryValidation', (req, res) => {
-    const data = JSON.parse(key.decrypt(req.body.data, 'utf8'));
+    const data = decryptor(req.body.data);
     model.validateUser(data.params.username, (result, err) => {
         if (err) {
             console.log(err);
@@ -113,7 +113,7 @@ AuthenticationRoutes.post('/recoveryValidation', (req, res) => {
     });
 });
 AuthenticationRoutes.post('/recoveryNewPassword', (req, res) => {
-    const data = JSON.parse(key.decrypt(req.body.data, 'utf8'));
+    const data = decryptor(req.body.data);
     model.recovery(data.params.username, data.params.password, (result, err) => {
         if (err) {
             console.log(err);

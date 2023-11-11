@@ -1,26 +1,17 @@
-import JSEncrypt from "jsencrypt";
 import axios from 'axios';
-import domain from "./domain";
-
-const key: JSEncrypt = new JSEncrypt();
+import key from './RSAKey.tool';
+import encryptor from './encryptor';
+import decryptor from './decryptor';
 
 const request = axios.create({
       withCredentials: true
 });
 
-async function encrypt(data: string): Promise<string | false>
-{
-      const res = await axios.get(`https://${ domain }/getServerPublicKey`);
-      const encryptor = new JSEncrypt();
-      encryptor.setPublicKey(res.data.key);
-      return encryptor.encrypt(data);
-}
-
 request.interceptors.request.use(async (req) =>
 {
       // if (req.method === 'post')
       // {
-      const encryptedData = await encrypt(JSON.stringify(req.data));
+      const encryptedData = await encryptor(req.data);
       req.data = { key: key.getPublicKey(), data: encryptedData };
       // }
       return req;
@@ -33,7 +24,7 @@ request.interceptors.response.use(res =>
 {
       if (res.data.isEncrypted)
       {
-            const decryptedData = key.decrypt(res.data.data);
+            const decryptedData = decryptor(res.data.data);
             return { ...res, data: decryptedData };
       }
       return { ...res, data: res.data.data };

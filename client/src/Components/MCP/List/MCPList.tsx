@@ -1,4 +1,4 @@
-export default function RouteDetail(): JSX.Element
+export default function MCPList(): JSX.Element
 {
       return (
             <>

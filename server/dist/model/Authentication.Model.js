@@ -1,14 +1,9 @@
 import mysql from 'mysql2';
+import Pool from '../config/Pool.config.js'; // Must include `.js` extension in order to work properly!
 export class AuthenticationModel {
     conn;
     constructor() {
-        this.conn = mysql.createPool({
-            host: "localhost",
-            user: "uwc",
-            password: "uwc123",
-            database: "UWC_ENHANCED_EDITION",
-            multipleStatements: true
-        });
+        this.conn = mysql.createPool(Pool);
     }
     destroy() {
         if (this.conn) {

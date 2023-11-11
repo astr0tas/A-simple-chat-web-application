@@ -3,9 +3,9 @@ import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import styles from './Login.module.css';
 import { FormEvent } from 'react';
-import request from '../../../Tools/request';
+import request from '../../../Tools/request.tool';
 import axios from 'axios';
-import domain from '../../../Tools/domain';
+import domain from '../../../config/domain.config';
 
 export default function LoginComponent(): JSX.Element
 {
