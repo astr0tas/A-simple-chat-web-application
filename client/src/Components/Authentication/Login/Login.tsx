@@ -5,7 +5,7 @@ import styles from './Login.module.css';
 import { FormEvent } from 'react';
 import request from '../../../Tools/request.tool';
 import axios from 'axios';
-import domain from '../../../config/domain.config';
+import domain from '../../../config/serverDomain.config';
 
 export default function LoginComponent(): JSX.Element
 {

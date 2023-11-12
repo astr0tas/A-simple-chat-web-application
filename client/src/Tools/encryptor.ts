@@ -1,4 +1,4 @@
-import domain from "../config/domain.config";
+import domain from "../config/serverDomain.config";
 import axios from "axios";
 import JSEncrypt from "jsencrypt";
 

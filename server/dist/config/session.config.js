@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 const FileStore = FileStoreFactory(session);
 const sessionConfig = {
     store: new FileStore({
-        path: `${dirname(fileURLToPath(import.meta.url))}/model/sessions`,
+        path: `${dirname(dirname(fileURLToPath(import.meta.url)))}/data/sessions`,
     }),
     secret: 'uwc-enhanced-edition',
     resave: false,

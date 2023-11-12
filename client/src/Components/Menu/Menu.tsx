@@ -9,7 +9,7 @@ import { FaTruckMoving } from 'react-icons/fa';
 import { GiRoad } from 'react-icons/gi';
 import { RiRoadMapLine } from 'react-icons/ri';
 import '../../General css/scroll.css';
-import domain from '../../config/domain.config';
+import domain from '../../config/serverDomain.config';
 import axios from 'axios';
 
 export default function Menu(): JSX.Element

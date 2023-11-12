@@ -1,6 +1,6 @@
 import { useState } from "react"
 import request from "../../../Tools/request.tool";
-import domain from "../../../config/domain.config";
+import domain from "../../../config/serverDomain.config";
 import { Link, NavigateFunction, useNavigate } from 'react-router-dom';
 import { FormEvent } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
