@@ -24,6 +24,18 @@ class authenticationController
       login(req: Request, res: Response): void
       {
             const data: any = decryptor(req.body.data);
+            let isOk: boolean = true;
+            if (!data.params.username)
+            {
+                  isOk = false;
+                  res.status(400).send({ message: "Username field is empty or null or not found!" });
+            }
+            if (!data.params.password)
+            {
+                  isOk = false;
+                  res.status(400).send({ message: "Password field is empty or null or not found!" });
+            }
+            if (!isOk) return;
             this.model.login(data.params.username, data.params.password, (result, err) =>
             {
                   if (err)
@@ -150,6 +162,11 @@ class authenticationController
       validation(req: Request, res: Response): void
       {
             const username = req.query.username;
+            if (!username)
+            {
+                  res.status(400).send({ message: "Username field is empty or null or not found!" });
+                  return;
+            }
             if (typeof (username) === "string")
                   this.model.verifyUser(username, (result, err) =>
                   {
@@ -171,6 +188,18 @@ class authenticationController
       newPassword(req: Request, res: Response): void
       {
             const data: any = decryptor(req.body.data);
+            let isOk: boolean = true;
+            if (!data.params.username)
+            {
+                  isOk = false;
+                  res.status(400).send({ message: "Username field is empty or null or not found!" });
+            }
+            if (!data.params.password)
+            {
+                  isOk = false;
+                  res.status(400).send({ message: "Password field is empty or null or not found!" });
+            }
+            if (!isOk) return;
             this.model.recovery(data.params.username, data.params.password, (result, err) =>
             {
                   if (err)
