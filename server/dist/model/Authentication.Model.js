@@ -1,6 +1,6 @@
 import mysql from 'mysql2';
 import Pool from '../config/Pool.config.js'; // Must include `.js` extension in order to work properly!
-export class AuthenticationModel {
+class authenticationModel {
     conn;
     constructor() {
         this.conn = mysql.createPool(Pool);
@@ -33,7 +33,7 @@ export class AuthenticationModel {
                 callback(res, null);
         });
     }
-    validateUser(username, callback) {
+    verifyUser(username, callback) {
         this.conn.query(`select username from account where username=?`, [username], (err, res) => {
             if (err)
                 callback(null, err);
@@ -42,3 +42,4 @@ export class AuthenticationModel {
         });
     }
 }
+export default authenticationModel;

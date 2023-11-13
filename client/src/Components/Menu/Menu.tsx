@@ -10,7 +10,7 @@ import { GiRoad } from 'react-icons/gi';
 import { RiRoadMapLine } from 'react-icons/ri';
 import '../../General css/scroll.css';
 import domain from '../../config/serverDomain.config';
-import axios from 'axios';
+import request from '../../Tools/request.tool';
 
 export default function Menu(): JSX.Element
 {
@@ -27,9 +27,7 @@ export default function Menu(): JSX.Element
 
       useEffect(() =>
       {
-            axios.get(`https://${ domain }/`, {
-                  withCredentials: true
-            })
+            request.get(`https://${ domain }/`)
                   .then(res =>
                   {
                         if (!res.data.found)
@@ -84,9 +82,7 @@ export default function Menu(): JSX.Element
 
       function logOut(): void
       {
-            axios.get(`https://${ domain }/logout`, {
-                  withCredentials: true
-            })
+            request.get(`https://${ domain }/logout`)
                   .then(res =>
                   {
                         Navigate('/');

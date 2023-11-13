@@ -34,7 +34,7 @@ export default function RecoveryComponent(): JSX.Element
             else
             {
                   setIsUsernameEmpty(false);
-                  request.post(`https://${ domain }/recoveryValidation`, { params: { username: username } }, { headers: { 'Content-Type': 'application/json' } })
+                  request.get(`https://${ domain }/recoveryValidation?username=${ username }`)
                         .then(res =>
                         {
                               if (res.data.found)

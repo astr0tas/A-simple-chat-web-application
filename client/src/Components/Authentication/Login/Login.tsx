@@ -4,7 +4,6 @@ import { AiOutlineCloseCircle } from 'react-icons/ai';
 import styles from './Login.module.css';
 import { FormEvent } from 'react';
 import request from '../../../Tools/request.tool';
-import axios from 'axios';
 import domain from '../../../config/serverDomain.config';
 
 export default function LoginComponent(): JSX.Element
@@ -50,9 +49,7 @@ export default function LoginComponent(): JSX.Element
 
       useEffect(() =>
       {
-            axios.get(`https://${ domain }/`, {
-                  withCredentials: true
-            })
+            request.get(`https://${ domain }/`)
                   .then(res =>
                   {
                         if (res.data.found)

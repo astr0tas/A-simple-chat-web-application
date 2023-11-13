@@ -2,6 +2,7 @@ import axios from 'axios';
 import key from './RSAKey.tool';
 import encryptor from './encryptor';
 import decryptor from './decryptor';
+import encryptedMethods from '../config/encryptedMethod.config';
 
 const request = axios.create({
       withCredentials: true
@@ -9,11 +10,13 @@ const request = axios.create({
 
 request.interceptors.request.use(async (req) =>
 {
-      // if (req.method === 'post')
-      // {
-      const encryptedData = await encryptor(req.data);
-      req.data = { key: key.getPublicKey(), data: encryptedData };
-      // }
+      if (req.method && encryptedMethods.includes(req.method))
+      {
+            const encryptedData = await encryptor(req.data);
+            req.data = { key: key.getPublicKey(), data: encryptedData };
+      }
+      else
+            req.data = { key: key.getPublicKey(), data: req.data };
       return req;
 }, (error) =>
 {
@@ -27,7 +30,13 @@ request.interceptors.response.use(res =>
             const decryptedData = decryptor(res.data.data);
             return { ...res, data: decryptedData };
       }
-      return { ...res, data: res.data.data };
+      else
+      {
+            if (res.data.message)
+                  return { ...res, message: res.data.message };
+            else
+                  return { ...res, data: res.data.data };
+      }
 }, (error) =>
 {
       return Promise.reject(error);
