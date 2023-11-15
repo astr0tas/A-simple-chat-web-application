@@ -81,7 +81,7 @@ class authenticationController
                               if (result && result.length)
                                     res.status(200).send({ isEncrypted: false, data: { found: true } });
                               else
-                                    res.status(401).send({ message: 'User not found!' });
+                                    res.status(401).send({ message: 'User is not found or something is wrong!' });
 
                         }
                   });
