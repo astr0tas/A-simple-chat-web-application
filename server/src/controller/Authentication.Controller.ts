@@ -107,7 +107,7 @@ class authenticationController
                   const parentDirectory: string = path.resolve(currentDirectory, '..');
 
                   // Specify the session file directory
-                  const sessionDir: string = path.join(parentDirectory, 'model', 'sessions');
+                  const sessionDir: string = path.join(parentDirectory, 'data', 'sessions');
 
                   // Define the session ID or session file name for which you want to delete its additional files
                   const sessionID: string = req.sessionID;
