@@ -99,7 +99,7 @@ class authenticationController
 
       logout(req: Request, res: Response): void
       {
-            if (!req.session)
+            if (!req.session || !req.session.username)
             {
                   res.status(400).send({ message: "Session cookie not present!" });
                   return;
