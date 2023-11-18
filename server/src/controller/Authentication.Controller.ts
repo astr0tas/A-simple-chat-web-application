@@ -1,10 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import mysql from "mysql2";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "fs";
 import decryptor from "../tools/decryptor.tool.js"; // Must include `.js` extension in order to work properly!
 import authenticationModel from "../model/authentication.model.js"; // Must include `.js` extension in order to work properly!
+import RequestError from "../tools/requestError.tool.js"; // Must include `.js` extension in order to work properly!
 
 class authenticationController
 {
@@ -21,219 +22,207 @@ class authenticationController
             this.validation = this.validation.bind(this);
       }
 
-      login(req: Request, res: Response): void
+      login(req: Request, res: Response, next: NextFunction): void
       {
-            const data: any = decryptor(req.body.data);
-            let isOk: boolean = true;
-            if (!data.params.username)
+            try
             {
-                  isOk = false;
-                  res
-                        .status(400)
-                        .send({ message: "Username field is empty or null or not found!" });
-            }
-            if (!data.params.password)
-            {
-                  isOk = false;
-                  res
-                        .status(400)
-                        .send({ message: "Password field is empty or null or not found!" });
-            }
-            if (!isOk) return;
-            this.model.login(
-                  data.params.username,
-                  data.params.password,
-                  (result, err) =>
-                  {
-                        if (err)
+                  const data: any = decryptor(req.body.data);
+                  if (!data.params.username)
+                        throw new RequestError(400, "Username field is empty or null or not found!", "Missing property");
+                  if (!data.params.password)
+                        throw new RequestError(400, "Password field is empty or null or not found!", "Missing property");
+                  this.model.login(
+                        data.params.username,
+                        data.params.password,
+                        (result, err) =>
                         {
-                              console.log(err);
-                              res.status(500).send({ message: "Server internal error!" });
-                        } else
-                        {
-                              if (result && result.length)
+                              if (!err)
                               {
-                                    req.session.username = result[0].username;
-                                    req.session.save(() =>
+                                    if (result && result.length)
                                     {
-                                          // Session saved
+                                          req.session.username = result[0].username;
+                                          req.session.save(() =>
+                                          {
+                                                // Session saved
+                                                res
+                                                      .status(200)
+                                                      .send({ isEncrypted: false, data: { found: true } });
+                                          });
+                                    } else
                                           res
                                                 .status(200)
-                                                .send({ isEncrypted: false, data: { found: true } });
-                                    });
-                              } else
-                                    res
-                                          .status(200)
-                                          .send({ isEncrypted: false, data: { found: false } });
-                        }
-                  }
-            );
-      }
-
-      isLoggedIn(req: Request, res: Response): void
-      {
-            if (!req.session || !req.session.username)
-            {
-                  res.status(200).send({ isEncrypted: false, data: { found: false } });
-                  return;
-            } else
-            {
-                  this.model.verifyUser(req.session.username, (result, err) =>
-                  {
-                        if (err)
-                        {
-                              console.log(err);
-                              res.status(500).send({ message: "Server internal error!" });
-                        } else
-                        {
-                              if (result && result.length)
-                                    res.status(200).send({ isEncrypted: false, data: { found: true } });
+                                                .send({ isEncrypted: false, data: { found: false } });
+                              }
                               else
-                                    res
-                                          .status(401)
-                                          .send({ message: "User is not found or something is wrong!" });
+                                    next(new RequestError(500, `${ err.message } of query \`${ err.sql }\``, "MySQL query error"));
                         }
-                  });
+                  );
+            }
+            catch (err)
+            {
+                  next(err);
             }
       }
 
-      logout(req: Request, res: Response): void
+      isLoggedIn(req: Request, res: Response, next: NextFunction): void
       {
-            if (!req.session || !req.session.username)
+            try
             {
-                  res.status(400).send({ message: "Session cookie not present!" });
-                  return;
-            } else
-            {
-                  // Get the current file path
-                  const currentFilePath: string = fileURLToPath(import.meta.url);
-
-                  // Get the current directory by resolving the file path
-                  const currentDirectory: string = path.dirname(currentFilePath);
-
-                  // Get the parrent directory
-                  const parentDirectory: string = path.resolve(currentDirectory, "..");
-
-                  // Specify the session file directory
-                  const sessionDir: string = path.join(parentDirectory, "data", "sessions");
-
-                  // Define the session ID or session file name for which you want to delete its additional files
-                  const sessionID: string = req.sessionID;
-
-                  // Regular expression pattern for matching the additional session files
-                  const additionalFilesPattern: RegExp = new RegExp(
-                        `^${ sessionID }.json.\\d+$`
-                  );
-                  req.session.destroy((err) =>
+                  if (!req.session || !req.session.username)
                   {
-                        if (err)
+                        res.status(200).send({ isEncrypted: false, data: { found: false } });
+                        return;
+                  } else
+                  {
+                        this.model.verifyUser(req.session.username, (result, err) =>
                         {
-                              console.log(err);
-                              console.error("Error destroying session:", err);
-                        } else
-                        {
-                              res.clearCookie("connect.sid");
-                              res.status(200).send({ message: "Logged out successfully!" });
-
-                              // Get a list of files in the session directory
-                              fs.readdir(sessionDir, (err, files) =>
+                              if (!err)
                               {
-                                    if (err)
-                                    {
-                                          console.error("Error reading session directory:", err);
-                                          return;
-                                    }
+                                    if (result && result.length)
+                                          res.status(200).send({ isEncrypted: false, data: { found: true } });
+                                    else
+                                          throw new RequestError(401, "User is not found or something is wrong!", "Authentication error");
+                              }
+                              else next(new RequestError(500, `${ err.message } of query \`${ err.sql }\``, "MySQL query error"));
+                        });
+                  }
+            }
+            catch (err)
+            {
+                  next(err);
+            }
+      }
 
-                                    // Filter the list to include only the additional session files for the specified session
-                                    const additionalFiles: string[] = files.filter((file) =>
-                                          additionalFilesPattern.test(file)
-                                    );
+      logout(req: Request, res: Response, next: NextFunction): void
+      {
+            try
+            {
+                  if (!req.session || !req.session.username)
+                        throw new RequestError(400, "Session cookie not present!", "Authentication error")
+                  else
+                  {
+                        // Get the current file path
+                        const currentFilePath: string = fileURLToPath(import.meta.url);
 
-                                    // Delete each additional session file
-                                    additionalFiles.forEach((file) =>
+                        // Get the current directory by resolving the file path
+                        const currentDirectory: string = path.dirname(currentFilePath);
+
+                        // Get the parrent directory
+                        const parentDirectory: string = path.resolve(currentDirectory, "..");
+
+                        // Specify the session file directory
+                        const sessionDir: string = path.join(parentDirectory, "data", "sessions");
+
+                        // Define the session ID or session file name for which you want to delete its additional files
+                        const sessionID: string = req.sessionID;
+
+                        // Regular expression pattern for matching the additional session files
+                        const additionalFilesPattern: RegExp = new RegExp(
+                              `^${ sessionID }.json.\\d+$`
+                        );
+                        req.session.destroy((err) =>
+                        {
+                              if (!err)
+                              {
+                                    res.clearCookie("connect.sid");
+                                    res.status(200).send({ message: "Logged out successfully!" });
+
+                                    // Get a list of files in the session directory
+                                    fs.readdir(sessionDir, (err, files) =>
                                     {
-                                          const filePath = `${ sessionDir }/${ file }`;
-                                          fs.unlink(filePath, (err) =>
+                                          if (err)
                                           {
-                                                if (err)
+                                                console.error("Error reading session directory:", err);
+                                                return;
+                                          }
+
+                                          // Filter the list to include only the additional session files for the specified session
+                                          const additionalFiles: string[] = files.filter((file) =>
+                                                additionalFilesPattern.test(file)
+                                          );
+
+                                          // Delete each additional session file
+                                          additionalFiles.forEach((file) =>
+                                          {
+                                                const filePath = `${ sessionDir }/${ file }`;
+                                                fs.unlink(filePath, (err) =>
                                                 {
-                                                      console.error(
-                                                            "Error deleting additional session file:",
-                                                            filePath,
-                                                            err
-                                                      );
-                                                } else
-                                                {
-                                                      console.log("Additional session file deleted:", filePath);
-                                                }
+                                                      if (err)
+                                                      {
+                                                            console.error(
+                                                                  "Error deleting additional session file:",
+                                                                  filePath,
+                                                                  err
+                                                            );
+                                                      } else
+                                                      {
+                                                            console.log("Additional session file deleted:", filePath);
+                                                      }
+                                                });
                                           });
                                     });
-                              });
-                        }
-                  });
-            }
-      }
-
-      validation(req: Request, res: Response): void
-      {
-            const username = req.query.username;
-            if (!username)
-            {
-                  res
-                        .status(400)
-                        .send({ message: "Username field is empty or null or not found!" });
-                  return;
-            }
-            if (typeof username === "string")
-                  this.model.verifyUser(username, (result, err) =>
-                  {
-                        if (err)
-                        {
-                              console.log(err);
-                              res.status(500).send({ message: "Server internal error!" });
-                        } else
-                        {
-                              if (result && result.length)
-                                    res.status(200).send({ isEncrypted: false, data: { found: true } });
-                              else
-                                    res
-                                          .status(200)
-                                          .send({ isEncrypted: false, data: { found: false } });
-                        }
-                  });
-      }
-
-      newPassword(req: Request, res: Response): void
-      {
-            const data: any = decryptor(req.body.data);
-            let isOk: boolean = true;
-            if (!data.params.username)
-            {
-                  isOk = false;
-                  res
-                        .status(400)
-                        .send({ message: "Username field is empty or null or not found!" });
-            }
-            if (!data.params.password)
-            {
-                  isOk = false;
-                  res
-                        .status(400)
-                        .send({ message: "Password field is empty or null or not found!" });
-            }
-            if (!isOk) return;
-            this.model.recovery(
-                  data.params.username,
-                  data.params.password,
-                  (result, err) =>
-                  {
-                        if (err)
-                        {
-                              console.log(err);
-                              res.status(500).send({ message: "Server internal error!" });
-                        } else res.status(200).send({ message: "Password changed!" });
+                              }
+                        });
                   }
-            );
+            }
+            catch (err)
+            {
+                  next(err);
+            }
+      }
+
+      validation(req: Request, res: Response, next: NextFunction): void
+      {
+            try
+            {
+                  const username = req.query.username;
+                  if (!username)
+                        throw new RequestError(400, "Username field is empty or null or not found!", "Missing property");
+                  if (typeof username === "string")
+                        this.model.verifyUser(username, (result, err) =>
+                        {
+                              if (!err)
+                              {
+                                    if (result && result.length)
+                                          res.status(200).send({ isEncrypted: false, data: { found: true } });
+                                    else
+                                          res
+                                                .status(200)
+                                                .send({ isEncrypted: false, data: { found: false } });
+                              }
+                              else next(new RequestError(500, `${ err.message } of query \`${ err.sql }\``, "MySQL query error"));
+                        });
+            }
+            catch (err)
+            {
+                  next(err);
+            }
+      }
+
+      newPassword(req: Request, res: Response, next: NextFunction): void
+      {
+            try
+            {
+                  const data: any = decryptor(req.body.data);
+                  if (!data.params.username)
+                        throw new RequestError(400, "Username field is empty or null or not found!", "Missing property");
+                  if (!data.params.password)
+                        throw new RequestError(400, "Password field is empty or null or not found!", "Missing property");
+                  this.model.recovery(
+                        data.params.username,
+                        data.params.password,
+                        (result, err) =>
+                        {
+                              if (!err)
+                                    res.status(200).send({ message: "Password changed!" });
+                              else next(new RequestError(500, `${ err.message } of query \`${ err.sql }\``, "MySQL query error"));
+                        }
+                  );
+            }
+            catch (err)
+            {
+                  next(err);
+            }
       }
 }
 

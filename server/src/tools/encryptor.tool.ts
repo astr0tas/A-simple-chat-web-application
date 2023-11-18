@@ -1,7 +1,12 @@
 import NodeRSA from "node-rsa";
 
-export default function encryptor(publicKey:string,data:any): string
+export default function encryptor(publicKey: string, data: any): any
 {
-      const key = new NodeRSA(publicKey, 'public', { encryptionScheme: 'pkcs1' });
-      return key.encrypt(data,'base64');
+      if (data)
+      {
+            const key = new NodeRSA(publicKey, 'public', { encryptionScheme: 'pkcs1' });
+            return key.encrypt(data, 'base64');
+      }
+      else
+            return null;
 }

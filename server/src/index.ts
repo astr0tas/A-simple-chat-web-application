@@ -9,6 +9,8 @@ import SSL from './config/SSL.config.js'; // Must include `.js` extension in ord
 import PORT from './config/PORT.config.js'; // Must include `.js` extension in order to work properly!
 import routes from './routes/index.route.js'; // Must include `.js` extension in order to work properly!
 import verifyRequest from './middleware/verifyRequest.middleware.js'; // Must include `.js` extension in order to work properly!
+import errorHandler from './middleware/errorHandler.middleware.js'; // Must include `.js` extension in order to work properly!
+
 
 const app: Express = express();
 
@@ -16,9 +18,12 @@ app.use(express.json()); // Allows you to access the parsed JSON body of a reque
 app.use(express.urlencoded({ extended: true })); // Handle URL encoding
 app.use(cors(corsConfig));
 app.use(session(sessionConfig));
+
 app.use(verifyRequest); // Verify requests before pass them to the handlers
 
 app.use(routes);
+
+app.use(errorHandler); // Handle errors thrown by the routers
 
 const server: https.Server = https.createServer(SSL, app);
 
