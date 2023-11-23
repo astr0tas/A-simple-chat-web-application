@@ -15,7 +15,7 @@ import errorHandler from './middleware/errorHandler.middleware.js'; // Must incl
 const app: Express = express();
 
 app.use(express.json()); // Allows you to access the parsed JSON body of a request using req.body in your route handlers.
-app.use(express.urlencoded({ extended: true })); // Handle URL encoding
+app.use(express.urlencoded({ extended: true })); // This middleware is added to the application to parse incoming requests with Content-Type: application/x-www-form-urlencoded. The extended: true option allows for parsing rich objects and arrays.
 app.use(cors(corsConfig));
 app.use(session(sessionConfig));
 
