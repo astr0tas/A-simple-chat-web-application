@@ -7,8 +7,8 @@ const authenticationRoutes: Router = express.Router();
 
 authenticationRoutes.post('/login', controller.login);
 authenticationRoutes.get('/', controller.isLoggedIn);
-authenticationRoutes.get('/logout', controller.logout);
+authenticationRoutes.delete('/logout', controller.logout);
 authenticationRoutes.get('/recoveryValidation', controller.validation);
-authenticationRoutes.post('/recoveryNewPassword', controller.newPassword);
+authenticationRoutes.put('/recoveryNewPassword', controller.newPassword);
 
 export default authenticationRoutes;

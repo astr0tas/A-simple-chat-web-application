@@ -1,3 +1,3 @@
-const encryptedMethods: string[] = ["post"];
+const encryptedMethods: string[] = ["post","put"];
 
 export default encryptedMethods;

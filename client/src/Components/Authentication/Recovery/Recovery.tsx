@@ -67,7 +67,7 @@ export default function RecoveryComponent(): JSX.Element
             {
                   setIsPasswordEmpty(false);
                   setIsRepasswordEmpty(false);
-                  request.post(`https://${ domain }/recoveryNewPassword`, { params: { username: username, password: password } }, { headers: { 'Content-Type': 'application/json' } })
+                  request.put(`https://${ domain }/recoveryNewPassword`, { params: { username: username, password: password } }, { headers: { 'Content-Type': 'application/json' } })
                         .then(res =>
                         {
                               setShowPopUp(true)

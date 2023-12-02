@@ -82,7 +82,7 @@ export default function Menu(): JSX.Element
 
       function logOut(): void
       {
-            request.get(`https://${ domain }/logout`)
+            request.delete(`https://${ domain }/logout`)
                   .then(res =>
                   {
                         Navigate('/');
