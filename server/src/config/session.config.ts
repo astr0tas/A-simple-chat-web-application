@@ -7,7 +7,7 @@ const FileStore: FileStoreFactory.FileStore = FileStoreFactory(session);
 
 const sessionConfig: any = {
       store: new FileStore({
-            path: `${ dirname(dirname(fileURLToPath(import.meta.url))) }/data/sessions`,
+            path: `${ dirname(dirname(fileURLToPath(import.meta.url))) }/data/session`,
       }),
       secret: 'uwc-enhanced-edition', // It is used to sign the session ID cookie. This is typically a secret passphrase that is known only to the server. It is used to prevent tampering with the cookie
       
