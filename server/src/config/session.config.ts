@@ -24,7 +24,7 @@ const sessionConfig: any = {
       */
 
   cookie: {
-    sameSite: "none",
+    sameSite: "None",
     secure: true, // Ensures that the session cookie is only sent over HTTPS connections
     httpOnly: true, // Prevents client-side JavaScript from accessing the cookie
     maxAge: 3600000 * 24 * 3, // Sessions will persist for 3 days

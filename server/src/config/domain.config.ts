@@ -1,3 +1,3 @@
-const domain: any = ["https://localhost:3000", "https://www.google.com"];
+const domain: any = ["https://localhost:3000"];
 
 export default domain;

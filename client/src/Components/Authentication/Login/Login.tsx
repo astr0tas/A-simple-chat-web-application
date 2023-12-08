@@ -32,7 +32,7 @@ export default function LoginComponent(): JSX.Element
             {
                   setIsUsernameEmpty(false);
                   setIsPasswordEmpty(false);
-                  request.post(`https://${ domain }/login`, { params: { username: username, password: password } }, { headers: { 'Content-Type': 'application/json' } })
+                  request.post(`${domain}/login`, { params: { username: username, password: password } }, { headers: { 'Content-Type': 'application/json' } })
                         .then(res =>
                         {
                               if (res.data.found)
@@ -49,7 +49,7 @@ export default function LoginComponent(): JSX.Element
 
       useEffect(() =>
       {
-            request.get(`https://${ domain }/`)
+            request.get(`${ domain }/`)
                   .then(res =>
                   {
                         if (res.data.found)

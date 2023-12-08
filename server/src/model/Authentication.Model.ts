@@ -29,7 +29,7 @@ class authenticationModel
 
       login(username: string, password: string, callback: (result: mysql.RowDataPacket[] | null, err: mysql.QueryError | null) => void)
       {
-            this.conn.query(`select * from account where username=? and passwords=?`, [username, password], (err, res) =>
+            this.conn.query(`select * from account where username=? and password=?`, [username, password], (err, res) =>
             {
                   if (err)
                         callback(null, err);

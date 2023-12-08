@@ -27,7 +27,7 @@ export default function Menu(): JSX.Element
 
       useEffect(() =>
       {
-            request.get(`https://${ domain }/`)
+            request.get(`${ domain }/`)
                   .then(res =>
                   {
                         if (!res.data.found)
@@ -82,7 +82,7 @@ export default function Menu(): JSX.Element
 
       function logOut(): void
       {
-            request.delete(`https://${ domain }/logout`)
+            request.delete(`${ domain }/logout`)
                   .then(res =>
                   {
                         Navigate('/');

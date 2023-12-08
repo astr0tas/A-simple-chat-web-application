@@ -34,7 +34,7 @@ export default function RecoveryComponent(): JSX.Element
             else
             {
                   setIsUsernameEmpty(false);
-                  request.get(`https://${ domain }/recoveryValidation?username=${ username }`)
+                  request.get(`${ domain }/recoveryValidation?username=${ username }`)
                         .then(res =>
                         {
                               if (res.data.found)
@@ -67,7 +67,7 @@ export default function RecoveryComponent(): JSX.Element
             {
                   setIsPasswordEmpty(false);
                   setIsRepasswordEmpty(false);
-                  request.put(`https://${ domain }/recoveryNewPassword`, { params: { username: username, password: password } }, { headers: { 'Content-Type': 'application/json' } })
+                  request.put(`${ domain }/recoveryNewPassword`, { params: { username: username, password: password } }, { headers: { 'Content-Type': 'application/json' } })
                         .then(res =>
                         {
                               setShowPopUp(true)
