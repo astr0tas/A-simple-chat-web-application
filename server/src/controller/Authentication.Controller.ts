@@ -28,9 +28,17 @@ class authenticationController
             {
                   const data: any = decryptor(req.body.data);
                   if (!data.params.username)
-                        throw new RequestError(400, "Username field is empty or null or not found!", "Missing property");
+                        throw new RequestError(
+                              400,
+                              "Username field is empty or null or not found!",
+                              "Missing property"
+                        );
                   if (!data.params.password)
-                        throw new RequestError(400, "Password field is empty or null or not found!", "Missing property");
+                        throw new RequestError(
+                              400,
+                              "Password field is empty or null or not found!",
+                              "Missing property"
+                        );
                   this.model.login(
                         data.params.username,
                         data.params.password,
@@ -52,13 +60,17 @@ class authenticationController
                                           res
                                                 .status(200)
                                                 .send({ isEncrypted: false, data: { found: false } });
-                              }
-                              else
-                                    next(new RequestError(500, `${ err.message } of query \`${ err.sql }\``, "MySQL query error"));
+                              } else
+                                    next(
+                                          new RequestError(
+                                                500,
+                                                `${ err.message } of query \`${ err.sql }\``,
+                                                "MySQL query error"
+                                          )
+                                    );
                         }
                   );
-            }
-            catch (err)
+            } catch (err)
             {
                   next(err);
             }
@@ -79,15 +91,26 @@ class authenticationController
                               if (!err)
                               {
                                     if (result && result.length)
-                                          res.status(200).send({ isEncrypted: false, data: { found: true } });
+                                          res
+                                                .status(200)
+                                                .send({ isEncrypted: false, data: { found: true } });
                                     else
-                                          throw new RequestError(401, "User is not found or something is wrong!", "Authentication error");
-                              }
-                              else next(new RequestError(500, `${ err.message } of query \`${ err.sql }\``, "MySQL query error"));
+                                          throw new RequestError(
+                                                401,
+                                                "User is not found or something is wrong!",
+                                                "Authentication error"
+                                          );
+                              } else
+                                    next(
+                                          new RequestError(
+                                                500,
+                                                `${ err.message } of query \`${ err.sql }\``,
+                                                "MySQL query error"
+                                          )
+                                    );
                         });
                   }
-            }
-            catch (err)
+            } catch (err)
             {
                   next(err);
             }
@@ -98,7 +121,11 @@ class authenticationController
             try
             {
                   if (!req.session || !req.session.username)
-                        throw new RequestError(400, "Session cookie not present!", "Authentication error")
+                        throw new RequestError(
+                              400,
+                              "Session cookie not present!",
+                              "Authentication error"
+                        );
                   else
                   {
                         // Get the current file path
@@ -111,7 +138,11 @@ class authenticationController
                         const parentDirectory: string = path.resolve(currentDirectory, "..");
 
                         // Specify the session file directory
-                        const sessionDir: string = path.join(parentDirectory, "data", "session");
+                        const sessionDir: string = path.join(
+                              parentDirectory,
+                              "data",
+                              "session"
+                        );
 
                         // Define the session ID or session file name for which you want to delete its additional files
                         const sessionID: string = req.sessionID;
@@ -164,8 +195,7 @@ class authenticationController
                               }
                         });
                   }
-            }
-            catch (err)
+            } catch (err)
             {
                   next(err);
             }
@@ -177,23 +207,34 @@ class authenticationController
             {
                   const username = req.query.username;
                   if (!username)
-                        throw new RequestError(400, "Username field is empty or null or not found!", "Missing property");
+                        throw new RequestError(
+                              400,
+                              "Username field is empty or null or not found!",
+                              "Missing property"
+                        );
                   if (typeof username === "string")
                         this.model.verifyUser(username, (result, err) =>
                         {
                               if (!err)
                               {
                                     if (result && result.length)
-                                          res.status(200).send({ isEncrypted: false, data: { found: true } });
+                                          res
+                                                .status(200)
+                                                .send({ isEncrypted: false, data: { found: true } });
                                     else
                                           res
                                                 .status(200)
                                                 .send({ isEncrypted: false, data: { found: false } });
-                              }
-                              else next(new RequestError(500, `${ err.message } of query \`${ err.sql }\``, "MySQL query error"));
+                              } else
+                                    next(
+                                          new RequestError(
+                                                500,
+                                                `${ err.message } of query \`${ err.sql }\``,
+                                                "MySQL query error"
+                                          )
+                                    );
                         });
-            }
-            catch (err)
+            } catch (err)
             {
                   next(err);
             }
@@ -205,21 +246,34 @@ class authenticationController
             {
                   const data: any = decryptor(req.body.data);
                   if (!data.params.username)
-                        throw new RequestError(400, "Username field is empty or null or not found!", "Missing property");
+                        throw new RequestError(
+                              400,
+                              "Username field is empty or null or not found!",
+                              "Missing property"
+                        );
                   if (!data.params.password)
-                        throw new RequestError(400, "Password field is empty or null or not found!", "Missing property");
+                        throw new RequestError(
+                              400,
+                              "Password field is empty or null or not found!",
+                              "Missing property"
+                        );
                   this.model.recovery(
                         data.params.username,
                         data.params.password,
                         (result, err) =>
                         {
-                              if (!err)
-                                    res.status(200).send({ message: "Password changed!" });
-                              else next(new RequestError(500, `${ err.message } of query \`${ err.sql }\``, "MySQL query error"));
+                              if (!err) res.status(200).send({ message: "Password changed!" });
+                              else
+                                    next(
+                                          new RequestError(
+                                                500,
+                                                `${ err.message } of query \`${ err.sql }\``,
+                                                "MySQL query error"
+                                          )
+                                    );
                         }
                   );
-            }
-            catch (err)
+            } catch (err)
             {
                   next(err);
             }
