@@ -54,12 +54,12 @@ class authenticationController
                                                 // Session saved
                                                 res
                                                       .status(200)
-                                                      .send({ isEncrypted: false, data: { found: true } });
+                                                      .send({ data: { found: true } });
                                           });
                                     } else
                                           res
                                                 .status(200)
-                                                .send({ isEncrypted: false, data: { found: false } });
+                                                .send({ data: { found: false } });
                               } else
                                     next(
                                           new RequestError(
@@ -93,7 +93,7 @@ class authenticationController
                                     if (result && result.length)
                                           res
                                                 .status(200)
-                                                .send({ isEncrypted: false, data: { found: true } });
+                                                .send({ data: { found: true } });
                                     else
                                           throw new RequestError(
                                                 401,
@@ -220,11 +220,11 @@ class authenticationController
                                     if (result && result.length)
                                           res
                                                 .status(200)
-                                                .send({ isEncrypted: false, data: { found: true } });
+                                                .send({ data: { found: true } });
                                     else
                                           res
                                                 .status(200)
-                                                .send({ isEncrypted: false, data: { found: false } });
+                                                .send({ data: { found: false } });
                               } else
                                     next(
                                           new RequestError(

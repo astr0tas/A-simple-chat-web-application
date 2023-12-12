@@ -75,8 +75,8 @@
 @media only screen and (min-width:768px) {
       .page {
             height: 100%;
-            width: calc(100% - 160px);
-            margin-left: 160px;
+            width: calc(100% - 200px);
+            margin-left: 200px;
       }
 
       .navToggler {

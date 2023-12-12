@@ -20,7 +20,7 @@ export default function Menu(): JSX.Element
       const [activeTab, setActiveTab] = useState<string>("");
       const [render, setRender] = useState<boolean>(false);
       const [showSidebar, setShowSidebar] = useState<boolean>(true);
-      const [dynamicWidth, setDynamicWidth] = useState<string>('160px');
+      const [dynamicWidth, setDynamicWidth] = useState<string>('200px');
       const [dynamicOpacity, setDynamicOpacity] = useState<string>('1');
 
       const Navigate: NavigateFunction = useNavigate();
@@ -74,7 +74,7 @@ export default function Menu(): JSX.Element
             }
             else
             {
-                  setDynamicWidth('160px');
+                  setDynamicWidth('200px');
                   setDynamicOpacity('1');
             }
             setShowSidebar(!showSidebar);
@@ -95,7 +95,7 @@ export default function Menu(): JSX.Element
             // This function is use to ensure the collapsed side menu will be expanded when the browser's width > 768px.
             if (window.innerWidth >= 768)
             {
-                  setDynamicWidth('160px');
+                  setDynamicWidth('200px');
                   setDynamicOpacity('1');
                   setShowSidebar(true);
             }
@@ -128,7 +128,7 @@ export default function Menu(): JSX.Element
                         </div>
 
                         <div className={ `${ styles.page } flex ` }>
-                              <div className='w-[95%] h-[95%] m-auto border-2 rounded-lg border-black' style={ {
+                              <div className='w-[95%] h-[95%] m-auto border-[3px] rounded-lg border-black' style={ {
                                     backgroundColor: '#E6E6E6'
                               } }>
                                     <Outlet />

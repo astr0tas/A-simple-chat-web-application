@@ -1,1 +1,1 @@
-The sole purpose of this project is to pratice implementing HTTPS protocol (with self-signed SSL certificates), RSA encryption scheme, typescript and websocket, so this project won't have many features.
+## The sole purpose of this project is to pratice implementing HTTPS protocol (with self-signed SSL certificates), RSA encryption scheme, typescript and websocket, so this project won't have many features.
