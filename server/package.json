@@ -20,6 +20,9 @@
     "predev": "npm i && npm run build",
     "dev": "concurrently \"npx tsc -w\" \"npx nodemon dist/index.js\""
   },
+  "nodemonConfig": {
+    "ignore":["dist/data/"]
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
