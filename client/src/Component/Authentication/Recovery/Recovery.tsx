@@ -6,19 +6,17 @@ import { FormEvent } from 'react';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import styles from './Recovery.module.css';
 import { Modal } from "flowbite-react";
+import { Helmet } from "react-helmet";
 
 export default function RecoveryComponent(): JSX.Element
 {
-      document.title = "Recovery";
-
       const Navigate: NavigateFunction = useNavigate();
 
-      const [username, setUsername] = useState<string | null>(null);
+      const [email, setEmail] = useState<string | null>(null);
       const [password, setPassword] = useState<string | null>(null);
       const [repassword, setRepassword] = useState<string | null>(null);
 
-      const [usernameFound, setUsernameFound] = useState<boolean | null>(null);
-      const [isUsernameEmpty, setIsUsernameEmpty] = useState<boolean>(false);
+      const [emailFound, setEmailFound] = useState<boolean>(true);
       const [isPasswordEmpty, setIsPasswordEmpty] = useState<boolean>(false);
       const [isPasswordNotMatch, setIsPasswordNotMatch] = useState<boolean>(false);
       const [isRepasswordEmpty, setIsRepasswordEmpty] = useState<boolean>(false);
@@ -28,25 +26,20 @@ export default function RecoveryComponent(): JSX.Element
       function submitValidation(e: FormEvent): void
       {
             e.preventDefault();
-            setUsernameFound(null);
-            if (!username)
-                  setIsUsernameEmpty(true);
-            else
-            {
-                  setIsUsernameEmpty(false);
-                  request.get(`${ domain }/recoveryValidation?username=${ username }`)
+            setEmailFound(true);
+
+            if (email && email !== '')
+                  request.get(`${ domain }/recoveryValidation?email=${ email }`)
                         .then(res =>
                         {
                               if (res.data.found)
                               {
-                                    setUsernameFound(true);
                                     setValidateMode(false);
                               }
                               else
-                                    setUsernameFound(false);
+                                    setEmailFound(false);
                         })
                         .catch(err => console.error(err));
-            }
       }
 
       function submitNewPassword(e: FormEvent): void
@@ -67,7 +60,7 @@ export default function RecoveryComponent(): JSX.Element
             {
                   setIsPasswordEmpty(false);
                   setIsRepasswordEmpty(false);
-                  request.put(`${ domain }/recoveryNewPassword`, { params: { username: username, password: password } }, { headers: { 'Content-Type': 'application/json' } })
+                  request.put(`${ domain }/recoveryNewPassword`, { params: { email: email, password: password } }, { headers: { 'Content-Type': 'application/json' } })
                         .then(res =>
                         {
                               setShowPopUp(true)
@@ -78,11 +71,9 @@ export default function RecoveryComponent(): JSX.Element
 
       function changeUser(): void
       {
-            setUsername(null);
+            setEmail(null);
             setPassword(null);
             setRepassword(null);
-            setUsernameFound(null);
-            setIsUsernameEmpty(false);
             setIsPasswordEmpty(false);
             setIsPasswordNotMatch(false);
             setIsRepasswordEmpty(false);
@@ -91,7 +82,11 @@ export default function RecoveryComponent(): JSX.Element
 
       return (
             <>
-                  <div className={ `${ styles.background }` }></div>
+                  <Helmet>
+                        <title>Recovery</title>
+                        <meta name="author" content="Nghia Duong"></meta>
+                        <meta name="description" content="Change user password"></meta>
+                  </Helmet>
                   <Modal dismissible show={ showPopUp } onClose={ () => { setShowPopUp(false); Navigate('/'); } }>
                         <Modal.Header className="p-2"></Modal.Header>
                         <Modal.Body>
@@ -115,23 +110,15 @@ export default function RecoveryComponent(): JSX.Element
                                     </div>
                                     <form className="flex flex-col mt-10 grow items-center" onSubmit={ submitValidation }>
                                           <div className='flex flex-col w-[95%] pl-5'>
-                                                <label htmlFor="usernameInput" className="font-bold text-xl">Username</label>
-                                                <input defaultValue={ '' } type="text" className="my-2 text-xl border pl-2 border-gray-500 rounded-md h-[2.5rem]" id="usernameInput" onChange={ e =>
-                                                {
-                                                      if (e.target.value === '') setUsername(null);
-                                                      else setUsername(e.target.value);
-                                                } }></input>
+                                                <label id="emailInputLabel" htmlFor="emailInput" className="font-bold text-xl">Email</label>
+                                                <input required defaultValue={ '' } type="email" className="my-2 text-xl border pl-2 border-gray-500 rounded-md h-[2.5rem]" id="emailInput" name="emailInputField" onChange={ e => setEmail(e.target.value) }></input>
                                           </div>
-                                          { isUsernameEmpty && <div className={ `flex items-center mb-5 ${ styles.error }` }>
+                                          { !emailFound && <div className={ `flex items-center ${ styles.error }` }>
                                                 <AiOutlineCloseCircle />
-                                                <p className='mb-0 ml-2'>Username field is empty!</p>
+                                                <p className='mb-0 ml-2' id="error_message_1">Email not found!</p>
                                           </div> }
-                                          { usernameFound === false && <div className={ `flex items-center mb-5 ${ styles.error }` }>
-                                                <AiOutlineCloseCircle />
-                                                <p className='mb-0 ml-2'>Username not found!</p>
-                                          </div> }
-                                          <Link to='/' className="mx-auto mt-3 text-blue-600 text-xl hover:cursor-pointer active:text-blue-400 mb-5">Back to login</Link>
-                                          <input type='submit' value="Continue" className="h-[2.5rem] min-w-[10rem] mt-auto mb-5 text-xl border-2 rounded-md bg-sky-600 text-white hover:cursor-pointer self-center active:bg-sky-700"></input>
+                                          <Link id="back_to_login_1" to='/' className="mx-auto mt-3 text-blue-600 text-xl hover:cursor-pointer active:text-blue-400 mb-5">Back to login</Link>
+                                          <input id="continue_1" type='submit' value="Continue" className="h-[2.5rem] min-w-[10rem] mt-auto mb-5 text-xl border-2 rounded-md bg-sky-600 text-white hover:cursor-pointer self-center active:bg-sky-700"></input>
                                     </form>
                               </div>
                         </div>
@@ -149,8 +136,8 @@ export default function RecoveryComponent(): JSX.Element
                                     </div>
                                     <form className="flex flex-col mt-8 grow items-center" onSubmit={ submitNewPassword }>
                                           <div className='flex flex-col w-[95%] pl-5'>
-                                                <label htmlFor="usernameInput" className="font-bold text-xl">New password</label>
-                                                <input defaultValue={ '' } type="password" className="my-2 text-xl border pl-2 border-gray-500 rounded-md h-[2.5rem]" id="usernameInput" onChange={ e =>
+                                                <label htmlFor="emailInput" className="font-bold text-xl">New password</label>
+                                                <input defaultValue={ '' } type="password" className="my-2 text-xl border pl-2 border-gray-500 rounded-md h-[2.5rem]" id="emailInput" onChange={ e =>
                                                 {
                                                       if (e.target.value === '') setPassword(null);
                                                       else setPassword(e.target.value);
