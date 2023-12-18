@@ -5,6 +5,9 @@
     "express-session": "^1.17.3",
     "mysql2": "^3.6.2",
     "node-rsa": "^1.1.1",
+    "nodemailer": "^6.9.7",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
     "rimraf": "^5.0.1",
     "session-file-store": "^1.5.0",
     "socket.io": "^4.7.2"
@@ -21,7 +24,9 @@
     "dev": "concurrently \"npx tsc -w\" \"npx nodemon dist/index.js\""
   },
   "nodemonConfig": {
-    "ignore":["dist/data/"]
+    "ignore": [
+      "dist/data/"
+    ]
   },
   "keywords": [],
   "author": "",

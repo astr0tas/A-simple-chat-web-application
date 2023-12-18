@@ -27,10 +27,10 @@ class authenticationController
             try
             {
                   const data: any = decryptor(req.body.data);
-                  if (!data.params.username)
+                  if (!data.params.email)
                         throw new RequestError(
                               400,
-                              "Username field is empty or null or not found!",
+                              "Email field is empty or null or not found!",
                               "Missing property"
                         );
                   if (!data.params.password)
@@ -40,7 +40,7 @@ class authenticationController
                               "Missing property"
                         );
                   this.model.login(
-                        data.params.username,
+                        data.params.email,
                         data.params.password,
                         (result, err) =>
                         {

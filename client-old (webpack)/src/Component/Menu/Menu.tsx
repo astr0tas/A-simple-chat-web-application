@@ -30,15 +30,15 @@ export default function Menu(): JSX.Element
 
       }, [render, Navigate]);
 
-      // function logOut(): void
-      // {
-      //       request.delete(`${ domain }/logout`)
-      //             .then(res =>
-      //             {
-      //                   Navigate('/');
-      //             })
-      //             .catch(error => console.log(error));
-      // }
+      function logOut(): void
+      {
+            // request.delete(`${ domain }/logout`)
+            //       .then(res =>
+            //       {
+            //             Navigate('/');
+            //       })
+            //       .catch(error => console.log(error));
+      }
 
       return (
             <div className="h-full w-full flex flex-col">
