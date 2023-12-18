@@ -7,6 +7,7 @@ import fs from 'fs';
 export default defineConfig({
   plugins: [react(), WindiCSS()],
   server: {
+    //cors: true, // Just like CORS in express, it control permission of incoming requests, default value is true in this case
     host: true,
     port: 3000,
     https: {
