@@ -12,21 +12,23 @@ import Error404 from './Component/Error/Error_404';
 function App(): JSX.Element
 {
   return (
-    <GoogleOAuthProvider clientId="743398544552-u332oqjqqbelblckr46939hqu0gqps3b.apps.googleusercontent.com">
-      <div className="web_background"></div>
-      <div className="App">
-        <BrowserRouter>
-          <Routes>
-            <Route index element={ <LoginComponent /> } />
-            <Route path='/recovery' element={ <RecoveryComponent /> } />
-            <Route path='/test' element={ <Menu /> }>
+    <>
+      <GoogleOAuthProvider clientId={ import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID } >
+        <div className="web_background"></div>
+        <div className="App">
+          <BrowserRouter>
+            <Routes>
+              <Route index element={ <LoginComponent /> } />
+              <Route path='/recovery' element={ <RecoveryComponent /> } />
+              <Route path='/test' element={ <Menu /> }>
 
-            </Route>
-            <Route path='*' element={ <Error404 /> } />
-          </Routes>
-        </BrowserRouter>
-      </div>
-    </GoogleOAuthProvider>
+              </Route>
+              <Route path='*' element={ <Error404 /> } />
+            </Routes>
+          </BrowserRouter>
+        </div>
+      </GoogleOAuthProvider>
+    </>
   );
 }
 

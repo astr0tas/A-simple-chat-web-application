@@ -6,6 +6,7 @@ const controller: authenticationController = new authenticationController();
 const authenticationRoutes: Router = express.Router();
 
 authenticationRoutes.post('/login', controller.login);
+authenticationRoutes.get('/loginWithGoogle', controller.loginWithGoogle);
 authenticationRoutes.get('/', controller.isLoggedIn);
 authenticationRoutes.delete('/logout', controller.logout);
 authenticationRoutes.get('/recoveryValidation', controller.validation);

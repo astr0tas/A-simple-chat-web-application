@@ -4,6 +4,13 @@
       2. Create a folder `cert` in the client root directory by typing `mkdir cert` and then go to that directory.
       3. Type `mkcert -key-file key.pem -cert-file cert.pem localhost 127.0.0.1 ::1 [<your ip address>]?` to create a SSL certificate for localhost and IP address react project.
 
+### Next create a googleOAuth.config.ts file inside src/config directory. And copy these lines
+```
+const clientId = '<your Google OAuth Credentials Client ID>';
+
+export { clientId };
+```
+
 #### Type `npm run dev` to start the react app in dev mode.
 
 #### Type `npm run build` to build a production ready version of the app (and if you want to test the deployment locally then type `npx serve -s build --ssl-cert cert/cert.pem --ssl-key cert/key.pem`).

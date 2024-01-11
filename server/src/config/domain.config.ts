@@ -1,4 +1,4 @@
-const domain: any = [
+const domain: string[] = [
   "https://localhost:3000"
 ];
 

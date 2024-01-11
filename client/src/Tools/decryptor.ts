@@ -1,6 +1,6 @@
 import key from "./RSAKey.tool";
 
-export default function decryptor(data: string): any
+export default function decryptor(data: string)
 {
       const decryptedData: string | boolean = key.decrypt(data);
       if (decryptedData === false) return null;

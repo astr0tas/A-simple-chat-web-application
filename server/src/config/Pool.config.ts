@@ -2,9 +2,9 @@ import mysql from 'mysql2';
 
 const Pool: mysql.PoolOptions = {
       host: "localhost",
-      user: "uwc",
-      password: "uwc123",
-      database: "UWC_ENHANCED_EDITION",
+      user: "web_chat",
+      password: "webchat123",
+      database: "web_chat",
       multipleStatements: true
 };
 

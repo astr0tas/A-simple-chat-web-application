@@ -15,8 +15,10 @@ export default function RecoveryComponent(): JSX.Element
       const [email, setEmail] = useState<string | null>(null);
       const [password, setPassword] = useState<string | null>(null);
       const [repassword, setRepassword] = useState<string | null>(null);
-
       const [emailFound, setEmailFound] = useState<boolean>(true);
+      const [emptyEmail, setEmptyEmail] = useState<boolean>(false);
+      const [invalidEmailFormat, setInvalidEmailFormat] = useState<boolean>(false);
+
       const [isPasswordEmpty, setIsPasswordEmpty] = useState<boolean>(false);
       const [isPasswordNotMatch, setIsPasswordNotMatch] = useState<boolean>(false);
       const [isRepasswordEmpty, setIsRepasswordEmpty] = useState<boolean>(false);
@@ -27,19 +29,37 @@ export default function RecoveryComponent(): JSX.Element
       {
             e.preventDefault();
             setEmailFound(true);
+            setEmptyEmail(false);
+            setInvalidEmailFormat(false);
 
-            if (email && email !== '')
-                  request.get(`${ domain }/recoveryValidation?email=${ email }`)
-                        .then(res =>
-                        {
-                              if (res.data.found)
-                              {
-                                    setValidateMode(false);
-                              }
-                              else
-                                    setEmailFound(false);
-                        })
-                        .catch(err => console.error(err));
+            let isOK = true;
+
+            if (!email || email === '')
+            {
+                  setEmptyEmail(true);
+                  isOK = false;
+            }
+            else
+            {
+                  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                  if (!emailRegex.test(email))
+                  {
+                        setInvalidEmailFormat(true);
+                        isOK = false;
+                  }
+            }
+            // if (isOK)
+            //       request.get(`${ domain }/recoveryValidation?email=${ email }`)
+            //             .then(res =>
+            //             {
+            //                   if (res.data.found)
+            //                   {
+            //                         setValidateMode(false);
+            //                   }
+            //                   else
+            //                         setEmailFound(false);
+            //             })
+            //             .catch(err => console.error(err));
       }
 
       function submitNewPassword(e: FormEvent): void
@@ -108,22 +128,30 @@ export default function RecoveryComponent(): JSX.Element
                                                 <h2 className="mx-auto text-4xl mt-3 text-center">User validation</h2>
                                           </div>
                                     </div>
-                                    <form className="flex flex-col mt-10 grow items-center" onSubmit={ submitValidation }>
+                                    <Link id="back_to_login_1" to='/' className="mx-auto text-blue-600 text-xl hover:cursor-pointer active:text-blue-400">Back to login</Link>
+                                    <form className="flex flex-col mt-3 grow items-center" onSubmit={ submitValidation }>
                                           <div className='flex flex-col w-[95%] pl-5'>
                                                 <label id="emailInputLabel" htmlFor="emailInput" className="font-bold text-xl">Email</label>
-                                                <input required defaultValue={ '' } type="email" className="my-2 text-xl border pl-2 border-gray-500 rounded-md h-[2.5rem]" id="emailInput" name="emailInputField" onChange={ e => setEmail(e.target.value) }></input>
+                                                <input required pattern='[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$' defaultValue={ '' } type="email" className="my-2 text-xl border pl-2 border-gray-500 rounded-md h-[2.5rem]" id="emailInput" name="emailInputField" onChange={ e => setEmail(e.target.value) }></input>
                                           </div>
                                           { !emailFound && <div className={ `flex items-center ${ styles.error }` }>
                                                 <AiOutlineCloseCircle />
                                                 <p className='mb-0 ml-2' id="error_message_1">Email not found!</p>
                                           </div> }
-                                          <Link id="back_to_login_1" to='/' className="mx-auto mt-3 text-blue-600 text-xl hover:cursor-pointer active:text-blue-400 mb-5">Back to login</Link>
+                                          { emptyEmail && <div className={ `flex items-center ${ styles.error }` }>
+                                                <AiOutlineCloseCircle />
+                                                <p className='mb-0 ml-2' id="error_message">Email field is empty!</p>
+                                          </div> }
+                                          { invalidEmailFormat && <div className={ `flex items-center ${ styles.error }` }>
+                                                <AiOutlineCloseCircle />
+                                                <p className='mb-0 ml-2' id="error_message">Email format invalid!</p>
+                                          </div> }
                                           <input id="continue_1" type='submit' value="Continue" className="h-[2.5rem] min-w-[10rem] mt-auto mb-5 text-xl border-2 rounded-md bg-sky-600 text-white hover:cursor-pointer self-center active:bg-sky-700"></input>
                                     </form>
                               </div>
                         </div>
                   }
-                  { !validateMode &&
+                  {/* { !validateMode &&
                         <div className="w-full h-full flex flex-col p-[5px] overflow-auto">
                               <div className={ `m-auto w-[90%] max-w-[25rem] h-[35rem] bg-slate-50 rounded-xl border border-solid border-gray-400 flex flex-col` }>
                                     <div className='w-full px-5 mb-3'>
@@ -166,7 +194,7 @@ export default function RecoveryComponent(): JSX.Element
                                     </form>
                               </div>
                         </div>
-                  }
+                  } */}
             </>
       )
 }

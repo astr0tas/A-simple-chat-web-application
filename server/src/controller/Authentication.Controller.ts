@@ -6,8 +6,10 @@ import fs from "fs";
 import decryptor from "../tools/decryptor.tool.js"; // Must include `.js` extension in order to work properly!
 import authenticationModel from "../model/authentication.model.js"; // Must include `.js` extension in order to work properly!
 import RequestError from "../tools/requestError.tool.js"; // Must include `.js` extension in order to work properly!
+import { jwtDecode } from 'jwt-decode';
+import sanitize from "../tools/sanitizer.tool.js";
 
-class authenticationController
+class authenticationController      
 {
       model: authenticationModel;
 
@@ -27,21 +29,53 @@ class authenticationController
             try
             {
                   const data: any = decryptor(req.body.data);
-                  if (!data.params.email)
+
+                  const email = sanitize(data.params.email);
+                  const password = sanitize(data.params.password);
+
+                  if (!email || email === '')
                         throw new RequestError(
                               400,
                               "Email field is empty or null or not found!",
-                              "Missing property"
+                              "Missing data"
                         );
-                  if (!data.params.password)
+                  else
+                  {
+                        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                        if (!emailRegex.test(email))
+                              throw new RequestError(
+                                    400,
+                                    "Email format invalid!",
+                                    "Invalid data"
+                              );
+                  }
+
+                  if (!password || password === '')
                         throw new RequestError(
                               400,
                               "Password field is empty or null or not found!",
-                              "Missing property"
+                              "Missing data"
                         );
+                  else if (password.length < 8)
+                        throw new RequestError(
+                              400,
+                              "Password must be at least 8 characters long!",
+                              "Invalid data"
+                        );
+                  else
+                  {
+                        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,}$/;
+                        if (!passwordRegex.test(password))
+                              throw new RequestError(
+                                    400,
+                                    "Password must contain at least one uppercase letter, one lowercase letter, one number and one special character!",
+                                    "Invalid data"
+                              );
+                  }
+
                   this.model.login(
-                        data.params.email,
-                        data.params.password,
+                        email,
+                        password,
                         (result, err) =>
                         {
                               if (!err)
@@ -61,15 +95,33 @@ class authenticationController
                                                 .status(200)
                                                 .send({ data: { found: false } });
                               } else
-                                    next(
-                                          new RequestError(
-                                                500,
-                                                `${ err.message } of query \`${ err.sql }\``,
-                                                "MySQL query error"
-                                          )
+                                    throw new RequestError(
+                                          500,
+                                          `${ err.message } of query \`${ err.sql }\``,
+                                          "MySQL query error"
                                     );
                         }
                   );
+            } catch (err)
+            {
+                  next(err);
+            }
+      }
+
+      loginWithGoogle(req: Request, res: Response, next: NextFunction): void
+      {
+            try
+            {
+                  const authorization = req.get('Authorization');
+                  if (!authorization) throw new RequestError(400, "`Authorization` header not found!", "Missing header");
+
+                  const info = jwtDecode(authorization.substring(7, authorization.length))
+
+                  // console.log(info);
+                  // let date = new Date(info.iat! * 1000);
+                  // console.log(date.toUTCString());
+                  // date = new Date(info.exp! * 1000);
+                  // console.log(date.toUTCString());
             } catch (err)
             {
                   next(err);
@@ -101,12 +153,10 @@ class authenticationController
                                                 "Authentication error"
                                           );
                               } else
-                                    next(
-                                          new RequestError(
-                                                500,
-                                                `${ err.message } of query \`${ err.sql }\``,
-                                                "MySQL query error"
-                                          )
+                                    throw new RequestError(
+                                          500,
+                                          `${ err.message } of query \`${ err.sql }\``,
+                                          "MySQL query error"
                                     );
                         });
                   }

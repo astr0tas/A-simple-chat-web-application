@@ -2,7 +2,7 @@ import domain from "../config/serverDomain.config";
 import axios from "axios";
 import JSEncrypt from "jsencrypt";
 
-export default async function encryptor(data: any): Promise<string | false>
+export default async function encryptor(data): Promise<string | false>
 {
       const stringifyData: string = JSON.stringify(data);
       const res = await axios.get(`${ domain }/getServerPublicKey`);
