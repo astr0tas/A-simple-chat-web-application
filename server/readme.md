@@ -2,7 +2,7 @@
 
       1. (If you have already installed mkcert then skip this step) open window powershell as administrator and type `choco install mkcert`, then type `mkcert -install` (for windows, if you use other OSes then you will need to search for the commands).
       2. Create a folder `cert` in the server root directory by typing `mkdir cert` and then go to that directory.
-      3. Type `mkcert -key-file key.pem -cert-file cert.pem localhost 127.0.0.1 ::1 [<your ip address>]?` to create a SSL certificate for your localhost and IP address server.
+      3. Type `mkcert -key-file key.pem -cert-file cert.pem localhost 127.0.0.1 ::1 [<your ip address>]` to create a SSL certificate for your localhost and IP address server.
 
 ### Then create a .env file, then declare and assign values PORT variable (example `PORT=8080`)
 
