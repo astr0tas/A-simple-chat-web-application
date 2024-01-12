@@ -9,6 +9,7 @@ import { Helmet } from 'react-helmet';
 import { Modal } from "flowbite-react";
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
 import sanitize from '../../../Tools/sanitizer.tool';
+import { reportInputValidation,clearCustomValidity } from '../../../Tools/inputValidation.tool';
 
 export default function LoginComponent(): JSX.Element
 {
@@ -52,11 +53,7 @@ export default function LoginComponent(): JSX.Element
 
             if (!sanitizedEmail || sanitizedEmail === '')
             {
-                  if (emailRef.current)
-                  {
-                        emailRef.current.setCustomValidity('Email field is empty!');
-                        emailRef.current.reportValidity();
-                  }
+                  reportInputValidation(emailRef, 'Email field is empty!');
                   return;
             }
             else
@@ -64,31 +61,19 @@ export default function LoginComponent(): JSX.Element
                   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
                   if (!emailRegex.test(sanitizedEmail))
                   {
-                        if (emailRef.current)
-                        {
-                              emailRef.current.setCustomValidity('Email format invalid!');
-                              emailRef.current.reportValidity();
-                        }
+                        reportInputValidation(emailRef, 'Email format invalid!');
                         return;
                   }
             }
 
             if (!sanitizedPassword || sanitizedPassword === '')
             {
-                  if (passwordRef.current)
-                  {
-                        passwordRef.current.setCustomValidity('Password field is empty!');
-                        passwordRef.current.reportValidity();
-                  }
+                  reportInputValidation(passwordRef, 'Password field is empty!');
                   return;
             }
             else if (sanitizedPassword.length < 8)
             {
-                  if (passwordRef.current)
-                  {
-                        passwordRef.current.setCustomValidity('Password must be at least 8 characters long!');
-                        passwordRef.current.reportValidity();
-                  }
+                  reportInputValidation(passwordRef, 'Password must be at least 8 characters long!');
                   return;
             }
             else
@@ -96,11 +81,7 @@ export default function LoginComponent(): JSX.Element
                   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#@$!%*?&])[A-Za-z\d#@$!%*?&]{8,}$/;
                   if (!passwordRegex.test(sanitizedPassword))
                   {
-                        if (passwordRef.current)
-                        {
-                              passwordRef.current.setCustomValidity('Password must contain at least one uppercase letter, one lowercase letter, one number and one special character!');
-                              passwordRef.current.reportValidity();
-                        }
+                        reportInputValidation(passwordRef, 'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character!');
                         return;
                   }
             }
@@ -168,7 +149,11 @@ export default function LoginComponent(): JSX.Element
                                           <AiOutlineCloseCircle />
                                           <p className='mb-0 ml-2' id="error_message">Email or password is not correct!</p>
                                     </div> }
-                                    <input id="submit_btn" type='submit' value="Continue" className="h-[2.5rem] min-w-[10rem] mt-3 text-xl border-2 rounded-md bg-sky-600 text-white hover:cursor-pointer self-center active:bg-sky-700 max-[400px]:text-base"></input>
+                                    <input onClick={ () =>
+                                    {
+                                          clearCustomValidity(emailRef);
+                                          clearCustomValidity(passwordRef);
+                                    }} id="submit_btn" type='submit' value="Continue" className="h-[2.5rem] min-w-[10rem] mt-3 text-xl border-2 rounded-md bg-sky-600 text-white hover:cursor-pointer self-center active:bg-sky-700 max-[400px]:text-base"></input>
                                     {
                                           (window.location.href === 'https://localhost:3000/' || window.location.href === 'https://127.0.0.1:3000/' || window.location.href === 'https://[::1]:3000/')
                                           &&
