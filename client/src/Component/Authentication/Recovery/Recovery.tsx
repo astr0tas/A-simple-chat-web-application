@@ -107,31 +107,31 @@ export default function RecoveryComponent(): JSX.Element
                         <meta name="author" content="Nghia Duong"></meta>
                         <meta name="description" content="Change user password"></meta>
                   </Helmet>
-                  <Modal dismissible show={ showPopUp } onClose={ () => { setShowPopUp(false); Navigate('/'); } }>
-                        <Modal.Header className="p-2"></Modal.Header>
+                  <Modal className="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full" dismissible show={ showPopUp } onClose={ () => { setShowPopUp(false); Navigate('/'); } }>
+                        <Modal.Header className="p-2">Notice</Modal.Header>
                         <Modal.Body>
-                              <h2 className="text-center text-4xl">Password changed successfully!</h2>
+                              <h2 className="text-center text-xl">Password changed successfully!</h2>
                         </Modal.Body>
                         <Modal.Footer className="justify-center">
                               <button onClick={ () =>
                               {
                                     setShowPopUp(false);
                                     Navigate('/');
-                              } } className="h-[3rem] min-w-[8rem] text-xl border-2 rounded-md bg-sky-600 text-white hover:cursor-pointer active:bg-sky-700">Back to login</button>
+                              } } className="h-[2.5rem] min-w-[8rem] text-md border-2 rounded-md bg-sky-600 text-white hover:cursor-pointer active:bg-sky-700">Back to login</button>
                         </Modal.Footer>
                   </Modal>
                   { validateMode &&
                         <div className="w-full h-full flex flex-col p-[5px] overflow-auto">
                               <div className={ `m-auto w-[90%] max-w-[25rem] h-[25rem] bg-slate-50 rounded-xl border border-solid border-gray-400 flex flex-col` }>
-                                    <div className='w-full px-5 mb-3'>
+                                    <div className='w-full px-3 mb-3'>
                                           <div className='border-b-2 border-gray-400 w-full flex pb-3'>
-                                                <h2 className="mx-auto text-4xl mt-3 text-center">User validation</h2>
+                                                <h1 className="mx-auto text-3xl mt-3 text-center">User validation</h1>
                                           </div>
                                     </div>
-                                    <Link id="back_to_login_1" to='/' className="mx-auto text-blue-600 text-xl hover:cursor-pointer active:text-blue-400">Back to login</Link>
+                                    <Link id="back_to_login_1" to='/' className="mx-auto text-blue-600 text-md hover:cursor-pointer active:text-blue-400">Back to login</Link>
                                     <form className="flex flex-col mt-3 grow items-center" onSubmit={ submitValidation }>
-                                          <div className='flex flex-col w-[95%] pl-5'>
-                                                <label id="emailInputLabel" htmlFor="emailInput" className="font-bold text-xl">Email</label>
+                                          <div className='flex flex-col w-full px-3'>
+                                                <label id="emailInputLabel" htmlFor="emailInput" className="font-bold text-md">Email</label>
                                                 <input required pattern='[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$' defaultValue={ '' } type="email" className="my-2 text-xl border pl-2 border-gray-500 rounded-md h-[2.5rem]" id="emailInput" name="emailInputField" onChange={ e => setEmail(e.target.value) }></input>
                                           </div>
                                           { !emailFound && <div className={ `flex items-center ${ styles.error }` }>
@@ -146,7 +146,7 @@ export default function RecoveryComponent(): JSX.Element
                                                 <AiOutlineCloseCircle />
                                                 <p className='mb-0 ml-2' id="error_message">Email format invalid!</p>
                                           </div> }
-                                          <input id="continue_1" type='submit' value="Continue" className="h-[2.5rem] min-w-[10rem] mt-auto mb-5 text-xl border-2 rounded-md bg-sky-600 text-white hover:cursor-pointer self-center active:bg-sky-700"></input>
+                                          <input id="continue_1" type='submit' value="Continue" className="h-[2.5rem] min-w-[10rem] mt-auto mb-5 text-md border-2 rounded-md bg-sky-600 text-white hover:cursor-pointer self-center active:bg-sky-700 mb-3"></input>
                                     </form>
                               </div>
                         </div>
@@ -190,7 +190,7 @@ export default function RecoveryComponent(): JSX.Element
                                                 <p className='mb-0 ml-2'>Passwords are not matched!</p>
                                           </div> }
                                           <Link to='/' className="mx-auto mt-3 text-blue-600 text-xl hover:cursor-pointer active:text-blue-400 mb-5">Back to login</Link>
-                                          <input type='submit' value="Continue" className="h-[2.5rem] min-w-[10rem] mt-auto mb-5 text-xl border-2 rounded-md bg-sky-600 text-white hover:cursor-pointer self-center active:bg-sky-700"></input>
+                                          <input type='submit' value="Continue" className="h-[2.5rem] min-w-[10rem] mt-auto mb-5 text-xl border-2 rounded-md bg-sky-600 text-white hover:cursor-pointer self-center active:bg-sky-700 mb-3"></input>
                                     </form>
                               </div>
                         </div>

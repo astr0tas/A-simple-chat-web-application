@@ -12,8 +12,11 @@ request.interceptors.request.use(async (req) =>
 {
       if (req.method && encryptedMethods.includes(req.method))
       {
-            const encryptedData = await encryptor(req.data);
-            req.data = { key: key.getPublicKey(), data: encryptedData };
+            const encryptResult = await encryptor(JSON.stringify(req.data));
+            if (!encryptResult)
+                  throw new Error('Client data encryption failed!');
+            const [encryptedData, sessionKey] = encryptResult;
+            req.data = { key: key.getPublicKey(), data: encryptedData, sessionKey };
       }
       else
             req.data = { key: key.getPublicKey(), data: req.data };
@@ -27,8 +30,10 @@ request.interceptors.response.use(res =>
 {
       if (res.data.isEncrypted)
       {
-            const decryptedData = decryptor(res.data.data);
-            return { ...res, data: decryptedData };
+            const decryptedData = decryptor(res.data.data, res.data.sessionKey);
+            if (!decryptedData)
+                  throw new Error("Client data encryption failed!");
+            return { ...res, data: JSON.parse(decryptedData) };
       }
       else
       {

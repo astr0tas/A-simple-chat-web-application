@@ -2,11 +2,12 @@ import fs from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-const __dirname = dirname(dirname(dirname(fileURLToPath(import.meta.url))));
+import dotenv from 'dotenv';
+dotenv.config();
 
 const SSL: any = {
-      key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
-      cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'))
+      key: process.env.KEY_PATH,
+      cert: process.env.CERT_PATH
 };
 
 export default SSL;

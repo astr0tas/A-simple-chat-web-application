@@ -1,7 +1,7 @@
 import styles from './Menu.module.css';
 import { Outlet, NavLink, useNavigate, NavigateFunction } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import '../../General css/scroll.css';
+import '../../css/scroll.css';
 import domain from '../../config/serverDomain.config';
 import request from '../../Tools/request.tool';
 import { AiFillMessage } from "react-icons/ai";

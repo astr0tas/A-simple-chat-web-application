@@ -1,5 +1,6 @@
 import express, { Express } from 'express';
 import https from 'https';
+import http from 'http';
 import cors from 'cors';
 import session from "express-session";
 // import { Server as SocketServer } from "socket.io";
@@ -26,7 +27,12 @@ app.use(routes);
 
 app.use(errorHandler); // Handle errors thrown by the routers
 
-const server: https.Server = https.createServer(SSL, app);
+const isHttps = process.env.IS_HTTPS === "true" || false;
+let server: (https.Server | http.Server);
+if (isHttps)
+      server = https.createServer(SSL, app);
+else
+      server = http.createServer(app);
 
 // const io: SocketServer = new SocketServer(server);
 

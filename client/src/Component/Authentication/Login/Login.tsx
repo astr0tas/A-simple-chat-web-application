@@ -6,10 +6,10 @@ import { FormEvent } from 'react';
 import request from '../../../Tools/request.tool';
 import domain from '../../../config/serverDomain.config';
 import { Helmet } from 'react-helmet';
-import { Modal } from "flowbite-react";
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
 import sanitize from '../../../Tools/sanitizer.tool';
-import { reportInputValidation,clearCustomValidity } from '../../../Tools/inputValidation.tool';
+import { reportInputValidation, clearCustomValidity } from '../../../Tools/inputValidation.tool';
+import { Dismiss } from 'flowbite';
 
 export default function LoginComponent(): JSX.Element
 {
@@ -19,7 +19,6 @@ export default function LoginComponent(): JSX.Element
       const [email, setEmail] = useState<string | null>(null);
       const [password, setPassword] = useState<string | null>(null);
       const [isWrong, setIsWrong] = useState<boolean>(false);
-      const [showPopUp, setShowPopUp] = useState<boolean>(false);
       const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
       const Navigate: NavigateFunction = useNavigate();
@@ -29,13 +28,12 @@ export default function LoginComponent(): JSX.Element
             request.get(`${ domain }/loginWithGoogle`, { headers: { 'Authorization': `Bearer ${ response.credential }` } })
                   .then(res =>
                   {
-
+                        console.log(res);
                   })
                   .catch(err =>
                   {
                         console.error(err);
 
-                        setShowPopUp(true);
                         if (err.response.status < 500)
                               setErrorMessage(err.response.data.message);
                         else
@@ -101,7 +99,6 @@ export default function LoginComponent(): JSX.Element
                   {
                         console.error(err);
 
-                        setShowPopUp(true);
                         if (err.response.status < 500)
                               setErrorMessage(err.response.data.message);
                         else
@@ -129,20 +126,20 @@ export default function LoginComponent(): JSX.Element
                   </Helmet>
                   <div className="w-full h-full flex flex-col p-[5px] overflow-auto">
                         <div className={ `m-auto w-[90%] max-w-[25rem] h-[35rem] bg-slate-50 rounded-xl border border-solid border-gray-400 flex flex-col` }>
-                              <div className='w-full px-5 mb-3'>
+                              <div className='w-full px-3 mb-3'>
                                     <div className='border-b-2 border-gray-400 w-full flex pb-3'>
-                                          <h2 className="mx-auto text-4xl mt-3">Login</h2>
+                                          <h1 className="mx-auto text-3xl mt-3">Login</h1>
                                     </div>
                               </div>
                               <form className="flex flex-col mt-10 grow items-center" onSubmit={ submitForm }>
-                                    <div className='flex flex-col w-[95%] pl-5 pr-2'>
+                                    <div className='flex flex-col w-full px-3'>
                                           <div className='flex'>
-                                                <label id="emailLabel" htmlFor="emailInput" className="font-bold text-xl">Email</label>
-                                                <Link id="create_new_account" to='/sign_up' className="ms-auto text-blue-600 text-xl hover:cursor-pointer active:text-blue-400">Sign up?</Link>
+                                                <label id="emailLabel" htmlFor="emailInput" className="font-bold text-md">Email</label>
+                                                <Link id="create_new_account" to='/sign_up' className="ms-auto text-blue-600 text-md hover:cursor-pointer active:text-blue-400">Sign up?</Link>
                                           </div>
-                                          <input ref={ emailRef } defaultValue={ '' } type="email" className="my-2 text-xl border pl-2 border-gray-500 rounded-md h-[2.5rem]" id="emailInput" name="emailInputField" onChange={ e => setEmail(e.target.value) }></input>
-                                          <label id="passwordLabel" htmlFor="passwordInput" className="font-bold text-xl">Password</label>
-                                          <input ref={ passwordRef } defaultValue={ '' } type="password" className="my-2 text-xl border pl-2 border-gray-500 rounded-md h-[2.5rem]" id="passwordInput" name="passwordInputField" onChange={ e => setPassword(e.target.value) }></input>
+                                          <input ref={ emailRef } defaultValue={ '' } type="email" className="my-2 text-md border pl-2 border-gray-500 rounded-md h-[2.5rem]" id="emailInput" name="emailInputField" onChange={ e => setEmail(e.target.value) }></input>
+                                          <label id="passwordLabel" htmlFor="passwordInput" className="font-bold text-md">Password</label>
+                                          <input ref={ passwordRef } defaultValue={ '' } type="password" className="my-2 text-md border pl-2 border-gray-500 rounded-md h-[2.5rem]" id="passwordInput" name="passwordInputField" onChange={ e => setPassword(e.target.value) }></input>
 
                                     </div>
                                     { isWrong && <div className={ `flex items-center ${ styles.error }` }>
@@ -153,34 +150,38 @@ export default function LoginComponent(): JSX.Element
                                     {
                                           clearCustomValidity(emailRef);
                                           clearCustomValidity(passwordRef);
-                                    }} id="submit_btn" type='submit' value="Continue" className="h-[2.5rem] min-w-[10rem] mt-3 text-xl border-2 rounded-md bg-sky-600 text-white hover:cursor-pointer self-center active:bg-sky-700 max-[400px]:text-base"></input>
+                                    } } id="submit_btn" type='submit' value="Continue" className="h-[2.5rem] w-[10rem] mt-3 text-md border-2 rounded-md bg-sky-600 text-white hover:cursor-pointer self-center active:bg-sky-700 max-[400px]:text-base mb-3"></input>
                                     {
                                           (window.location.href === 'https://localhost:3000/' || window.location.href === 'https://127.0.0.1:3000/' || window.location.href === 'https://[::1]:3000/')
                                           &&
                                           <>
-                                                <p className='text-lg mt-3 max-[400px]:text-base mb-2'>OR</p>
+                                                <p className='text-lg mt-3 max-[400px]:text-base mb-2'>Or</p>
                                                 <GoogleLogin
                                                       onSuccess={ signWithGoogle }
-                                                      onError={ () => { setErrorMessage("Login with Google failed!"); setShowPopUp(true); } }
+                                                      onError={ () => { setErrorMessage("Login with Google failed!"); } }
                                                       size='large'
                                                 />
                                           </>
                                     }
-                                    <Link id="recover_account" to='/recovery' className="mx-auto mt-auto text-blue-600 text-lg hover:cursor-pointer active:text-blue-400 mb-5 max-[400px]:text-base">Forgot password?</Link>
+                                    <Link id="recover_account" to='/recovery' className="mx-auto mt-auto text-blue-600 text-md hover:cursor-pointer active:text-blue-400 mb-5 max-[400px]:text-base">Forgot password?</Link>
                               </form>
                         </div>
                   </div>
-                  <Modal dismissible show={ showPopUp } onClose={ () => setShowPopUp(false) } position='center'>
-                        <Modal.Header className="p-2">
-                              <h2 className="text-center text-3xl max-[400px]:text-xl">An error occurred!</h2>
-                        </Modal.Header>
-                        <Modal.Body>
-                              <p className="text-center text-lg max-[400px]:text-md">{ errorMessage }</p>
-                        </Modal.Body>
-                        <Modal.Footer className="justify-center">
-                              <button onClick={ () => setShowPopUp(false) } className="h-[3rem] min-w-[8rem] text-lg border-2 rounded-md bg-sky-600 text-white hover:cursor-pointer active:bg-sky-700">Confirm</button>
-                        </Modal.Footer>
-                  </Modal>
+                  <div id="toast-warning" className="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 z-50 absolute top-1 right-1" role="alert">
+                        <div className="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-orange-500 bg-orange-100 rounded-lg dark:bg-orange-700 dark:text-orange-200">
+                              <svg data-dismiss-target="toast-warning" className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 0 1-2 0V6a1 1 0 0 1 2 0v5Z" />
+                              </svg>
+                              <span className="sr-only">Warning icon</span>
+                        </div>
+                        <div className="ms-3 text-sm font-normal">Improve password difficulty.</div>
+                        <button type="button" className="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-warning" aria-label="Close">
+                              <span className="sr-only">Close</span>
+                              <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                              </svg>
+                        </button>
+                  </div>
             </>
       )
 }
